@@ -13,6 +13,7 @@ import menu from './assets/menu.png';
 
 function App() {
   const [message, setMessage] = useState('');
+  const [editChatHeading, setEditChatHeading] = useState('')
 
   const [chatMessages, setChatMessages] = useState(() => {
     return JSON.parse(localStorage.getItem('chatMessages')) || []
@@ -30,6 +31,7 @@ function App() {
   const [pageNo,setPageNo] = useState(() => {
     return JSON.parse(localStorage.getItem('pageNo')) || 0
   });
+
 
   
   const [isStreaming,setIsStreaming] = useState('');
@@ -59,6 +61,10 @@ function App() {
 
   const handleChange = (event) => {
     setMessage(event.target.value)
+  }
+
+  const handleChange2 = (event) => {
+    setEditChatHeading(event.target.value)
   }
 
   const searchInCache = () => {
@@ -270,7 +276,7 @@ function App() {
           setCount(tempCount)
           let tempCounts = "chat"+tempCount.toString();
           setCurrentChat(tempCounts)
-          return ;
+          return
     }
 
 
@@ -324,7 +330,29 @@ function App() {
     setPageNo(countNo)
   }
 
-   const editHeading = () => {
+   const editHeading = (index) => {
+    let temp = []
+    for ( let i = 0; i < chats.length ; i++ ) {
+      if ( i == index ) {
+        let temp2 = {
+          isEditing : true,
+          name : ''
+        }
+        if ( chats[i].isEditing ){
+          //save the value
+        }
+        else {
+          // do nothing 
+        }
+        temp2.isEditing = !chats[i].isEditing
+        temp2.name = chats[i].name
+        temp[i] = temp2
+      }
+      else {
+        temp[i] = chats[i]
+      }
+    }
+    setChats([...temp])
     // setIsEditing
    }
 
@@ -358,8 +386,6 @@ function App() {
     }
    }
 
-   // onClick={ () => {deleteChat(value.name,keyRr)} }
-
   return (
     <div className="topDiv">
       <div className="menuButton" onClick={() => {setIsHamburger(!isHamburger);setIsHamburgerAnimate(!isHamburgerAnimate)}}>
@@ -367,7 +393,7 @@ function App() {
       </div>
       <div className={ isHamburger ? 'hamburger' : 'hamburger hamburger2'} >
         <div className="newChatButton" onClick={startNewChat} >New Chat +</div>
-        {chats?.map((value) => {
+        {chats?.map((value,index) => {
           console.log(value)
           let keyRr = "chat" + value.name.toString();
           let returnString = localStorage.getItem(keyRr);
@@ -382,10 +408,10 @@ function App() {
           quesText = quesText?.slice(0,5)
           return (
             <div className="chatsListItem">
-              <div className="chatText" onClick={ () => {fetchOldChat(value.name)}}>
+              { !value.isEditing ? <div className="chatText" onClick={ () => {fetchOldChat(value.name)}}>
                 {quesText?.length >0 ? quesText + '....' : ''}
-              </div>
-              <div className="editButton" onClick={editHeading}>E</div>
+              </div> : <input type="text" className="editHead" value={editChatHeading} onChange={handleChange2}/> }
+              <div className="editButton" onClick={() => {editHeading(index)}}>E</div>
               <div className="deleteButton" onClick={ () => {deleteChat(value.name,keyRr)} }>D</div>
 
             </div>

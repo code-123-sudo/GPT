@@ -329,6 +329,11 @@ button :: hover {
   cursor: pointer;
 }
 
+.editHead {
+  width: 90px;
+  height: 30px;
+}
+
 .chatText{
   width:90px;
   height : 30px;
