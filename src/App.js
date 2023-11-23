@@ -188,13 +188,13 @@ function App() {
 
 
   useEffect(() => {
-    if ( chatMessages.length == 1 ) {
+    if ( chatMessages?.length == 1 ) {
       let stringsConverted = JSON.stringify(chatMessages);
       console.log(stringsConverted)
       let key = "chat" + count.toString();
       console.log(key)
       localStorage.setItem(key,stringsConverted);
-      setChats([count,...chats])
+      setChats([{'name':count,'isEditing':false},...chats])
     }
   },[chatMessages])
  
@@ -209,10 +209,17 @@ function App() {
     }
     scrollToBottom();
     let tempChats = chats;
-    const index = tempChats.indexOf(pageNo);
+    let index = -1;
+    for ( let i = 0; i < tempChats.length; i++ ) {
+      if ( tempChats[i].name == pageNo ) {
+        index = i;
+      }
+    }
+    // const index = tempChats.indexOf(pageNo);
     if (index > -1 ) { 
+      let editField = tempChats[index].isEditing
       tempChats.splice(index, 1);
-      tempChats = [pageNo,...tempChats]
+      tempChats = [{'name':pageNo,'isEditing':editField},...tempChats]
       setChats(tempChats)
     }
     setStreamData("")
@@ -236,7 +243,7 @@ function App() {
 
   const startNewChat = () => {
 
-    if ( chatMessages.length == 0 ) return;
+    if ( chatMessages?.length == 0 ) return;
     
     let isOld = false;
     const keyss = Object.keys(localStorage);
@@ -260,7 +267,7 @@ function App() {
       let key = "chat" + count.toString();
       console.log(key)
       localStorage.setItem(key,stringsConverted);
-      setChats([count,...chats])
+      setChats([{'name':count,'isEditing': false},...chats])
       setChatMessages([]);
       let tempCount = count+1;
       setCount(tempCount);
@@ -272,7 +279,7 @@ function App() {
 
   const fetchOldChat = (countNo) => {
 
-    if(chatMessages.length != 0) {
+    if(chatMessages?.length != 0) {
       let stringsConverted2 = JSON.stringify(chatMessages);
       localStorage.setItem(currentChat,stringsConverted2);
       /* checking wether its a new chat or old chat */
@@ -280,11 +287,11 @@ function App() {
       let oldChatFlag = false;
 
       for ( let i = 0; i < chats.length; i++ ) {
-        if ( chats[i] == count ) oldChatFlag = true;
+        if ( chats[i].name == count ) oldChatFlag = true;
       }
 
 
-      if ( !oldChatFlag ) setChats([count,...chats])
+      if ( !oldChatFlag ) setChats([{'name':count,'isEditing':false},...chats]) 
     }
 
 
@@ -297,7 +304,7 @@ function App() {
     let retArray = JSON.parse(retString);
     setChatMessages(retArray);
     
-
+    
     /* sorting the chat order as newest first */
     setPageNo(countNo)
   }
@@ -314,7 +321,8 @@ function App() {
       <div className={ isHamburger ? 'hamburger' : 'hamburger hamburger2'} >
         <div className="newChatButton" onClick={startNewChat} >New Chat +</div>
         {chats?.map((value) => {
-          let keyRr = "chat" + value.toString();
+          console.log(value)
+          let keyRr = "chat" + value.name.toString();
           let returnString = localStorage.getItem(keyRr);
           let returnArray = JSON.parse(returnString);
           let quesText = '';
@@ -326,11 +334,11 @@ function App() {
           }
           quesText = quesText?.slice(0,5)
           return (
-            <div className="chatsListItem" onClick={ () => {fetchOldChat(value)}}>
+            <div className="chatsListItem" onClick={ () => {fetchOldChat(value.name)}}>
               <div className="chatText">
                 {quesText?.length >0 ? quesText + '....' : ''}
               </div>
-              <div className="editButton" onClick={() => {editHeading}}>E</div>
+              <div className="editButton" onClick={editHeading}>E</div>
               <div className="deleteButton">D</div>
             </div>
           )
@@ -341,7 +349,7 @@ function App() {
           <div className="box">
             <ToastContainer />
             <div className='chat-container'>
-              {chatMessages.map((value) => {
+              {chatMessages?.map((value) => {
                 if (!value.isReply) {
                   return (
                     <div className="chatLeftContainer">
@@ -396,7 +404,7 @@ function App() {
             
         </div>
       </div>
-        { chatMessages.length == 0 ?
+        { chatMessages?.length == 0 ?
           <div className="commonfaqs">
             <div className="faqs1">
               <div className="faq" onClick={() => {addUserQuestionToChat(defaultQuestions[0].question)}}>Who is Nelson Mandela</div>
