@@ -241,7 +241,7 @@ function App() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }
 
-  const startNewChat = () => {
+  const startNewChat = (isDeletion=false) => {
 
     if ( chatMessages?.length == 0 ) return;
     
@@ -252,6 +252,8 @@ function App() {
           isOld = true;
           let stringConverted = JSON.stringify(chatMessages);
           localStorage.setItem(keys,stringConverted);
+          
+
           setChatMessages([]);
           let tempCount = count+1;
           setCount(tempCount)
@@ -261,13 +263,26 @@ function App() {
           return;
       }
     });
-    if (!isOld){
+
+    if ( isDeletion ) {
+          setChatMessages([]);
+          let tempCount = count+1;
+          setCount(tempCount)
+          let tempCounts = "chat"+tempCount.toString();
+          setCurrentChat(tempCounts)
+          return ;
+    }
+
+
+    if (!isOld ){
       let stringsConverted = JSON.stringify(chatMessages);
       console.log(stringsConverted)
       let key = "chat" + count.toString();
       console.log(key)
       localStorage.setItem(key,stringsConverted);
       setChats([{'name':count,'isEditing': false},...chats])
+      
+
       setChatMessages([]);
       let tempCount = count+1;
       setCount(tempCount);
@@ -313,6 +328,38 @@ function App() {
     // setIsEditing
    }
 
+   const deleteChat = (valueName,LSkey) => {
+    let toBeDeleted = -1;
+    for ( let i = 0; i < chats.length; i++){
+      if ( chats[i].name == valueName) {
+        let temp = [];
+        for ( let j = 0, k = 0; j < chats.length; j++ ) {
+            if ( j == i ) {
+              toBeDeleted = j;
+              continue;
+            }
+            temp[k] = chats[j];
+            k++;
+        }
+        if ( LSkey == currentChat ) {
+          setChats([...temp]);
+          localStorage.removeItem(LSkey);
+          startNewChat(true)
+          // let curr = 'chat' + chats[0].name;
+          // setCurrentChat('chat'+chats[0].name)
+        }
+        else {
+          // setChatMessages([]);
+          setChats([...temp]);
+          localStorage.removeItem(LSkey);
+          startNewChat()
+        }
+      }
+    }
+   }
+
+   // onClick={ () => {deleteChat(value.name,keyRr)} }
+
   return (
     <div className="topDiv">
       <div className="menuButton" onClick={() => {setIsHamburger(!isHamburger);setIsHamburgerAnimate(!isHamburgerAnimate)}}>
@@ -334,12 +381,13 @@ function App() {
           }
           quesText = quesText?.slice(0,5)
           return (
-            <div className="chatsListItem" onClick={ () => {fetchOldChat(value.name)}}>
-              <div className="chatText">
+            <div className="chatsListItem">
+              <div className="chatText" onClick={ () => {fetchOldChat(value.name)}}>
                 {quesText?.length >0 ? quesText + '....' : ''}
               </div>
               <div className="editButton" onClick={editHeading}>E</div>
-              <div className="deleteButton">D</div>
+              <div className="deleteButton" onClick={ () => {deleteChat(value.name,keyRr)} }>D</div>
+
             </div>
           )
         })}
@@ -407,12 +455,12 @@ function App() {
         { chatMessages?.length == 0 ?
           <div className="commonfaqs">
             <div className="faqs1">
-              <div className="faq" onClick={() => {addUserQuestionToChat(defaultQuestions[0].question)}}>Who is Nelson Mandela</div>
-              <div className="faq" onClick={() => {addUserQuestionToChat(defaultQuestions[1].question)}}>Who is Rahul Dravid</div>
+              <div className="faq" onClick={() => {addUserQuestionToChat(defaultQuestions[0].question)}}>{defaultQuestions[0].question}</div>
+              <div className="faq" onClick={() => {addUserQuestionToChat(defaultQuestions[1].question)}}>{defaultQuestions[1].question}</div>
             </div>
             <div className="faqs2">
-              <div className="faq" onClick={() => {addUserQuestionToChat(defaultQuestions[2].question)}}>Who is Barack Obama</div>
-              <div className="faq" onClick={() => {addUserQuestionToChat(defaultQuestions[3].question)}}>Who is Undertaker</div>
+              <div className="faq" onClick={() => {addUserQuestionToChat(defaultQuestions[2].question)}}>{defaultQuestions[2].question}</div>
+              <div className="faq" onClick={() => {addUserQuestionToChat(defaultQuestions[3].question)}}>{defaultQuestions[3].question}</div>
             </div>
           </div> : null }
         <div className="flexRowContainer">
