@@ -317,6 +317,22 @@ button :: hover {
   border-radius: 4px;
   cursor: pointer;
   display: flex;
+}
+.editButton, .deleteButton {
+  width: 30px;
+  height: 30px;
+  background: darkgrey;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid grey;
+  cursor: pointer;
+}
+
+.chatText{
+  width:90px;
+  height : 30px;
+  display: flex;
   justify-content: center;
   align-items: center;
 }

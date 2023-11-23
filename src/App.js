@@ -302,6 +302,10 @@ function App() {
     setPageNo(countNo)
   }
 
+   const editHeading = () => {
+    // setIsEditing
+   }
+
   return (
     <div className="topDiv">
       <div className="menuButton" onClick={() => {setIsHamburger(!isHamburger);setIsHamburgerAnimate(!isHamburgerAnimate)}}>
@@ -320,10 +324,14 @@ function App() {
           if ( returnArray ){
             quesText = returnArray[0]?.text
           }
-          quesText = quesText?.slice(0,10)
+          quesText = quesText?.slice(0,5)
           return (
             <div className="chatsListItem" onClick={ () => {fetchOldChat(value)}}>
-              {quesText?.length >0 ? quesText + '....' : ''}
+              <div className="chatText">
+                {quesText?.length >0 ? quesText + '....' : ''}
+              </div>
+              <div className="editButton" onClick={() => {editHeading}}>E</div>
+              <div className="deleteButton">D</div>
             </div>
           )
         })}
