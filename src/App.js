@@ -200,7 +200,7 @@ function App() {
       let key = "chat" + count.toString();
       console.log(key)
       localStorage.setItem(key,stringsConverted);
-      setChats([{'name':count,'isEditing':false},...chats])
+      setChats([{'name':count,'isEditing':false,header:""},...chats])
     }
   },[chatMessages])
  
@@ -224,8 +224,9 @@ function App() {
     // const index = tempChats.indexOf(pageNo);
     if (index > -1 ) { 
       let editField = tempChats[index].isEditing
+      let headerField = tempChats[index].header
       tempChats.splice(index, 1);
-      tempChats = [{'name':pageNo,'isEditing':editField},...tempChats]
+      tempChats = [{'name':pageNo,'isEditing':editField,header:headerField},...tempChats]
       setChats(tempChats)
     }
     setStreamData("")
@@ -286,7 +287,7 @@ function App() {
       let key = "chat" + count.toString();
       console.log(key)
       localStorage.setItem(key,stringsConverted);
-      setChats([{'name':count,'isEditing': false},...chats])
+      setChats([{'name':count,'isEditing': false, header: ""},...chats])
       
 
       setChatMessages([]);
@@ -312,7 +313,7 @@ function App() {
       }
 
 
-      if ( !oldChatFlag ) setChats([{'name':count,'isEditing':false},...chats]) 
+      if ( !oldChatFlag ) setChats([{'name':count,'isEditing':false,header:""},...chats]) 
     }
 
 
@@ -336,20 +337,30 @@ function App() {
       if ( i == index ) {
         let temp2 = {
           isEditing : true,
-          name : ''
+          name : '',
+          header: ''
         }
+         temp2.isEditing = !chats[i].isEditing
+        temp2.name = chats[i].name
+        temp2.header = chats[i].header
         if ( chats[i].isEditing ){
+          temp2.header = editChatHeading 
           //save the value
         }
         else {
           // do nothing 
         }
-        temp2.isEditing = !chats[i].isEditing
-        temp2.name = chats[i].name
         temp[i] = temp2
       }
       else {
-        temp[i] = chats[i]
+        let tempName = chats[i].name
+        let tempHeader = chats[i].header
+        let temp3 = {
+          isEditing : false,
+          name: tempName,
+          header : tempHeader
+        }
+        temp[i] = temp3
       }
     }
     setChats([...temp])
@@ -409,7 +420,7 @@ function App() {
           return (
             <div className="chatsListItem">
               { !value.isEditing ? <div className="chatText" onClick={ () => {fetchOldChat(value.name)}}>
-                {quesText?.length >0 ? quesText + '....' : ''}
+                {value.header.length > 0  ? value.header : quesText + '....' }
               </div> : <input type="text" className="editHead" value={editChatHeading} onChange={handleChange2}/> }
               <div className="editButton" onClick={() => {editHeading(index)}}>E</div>
               <div className="deleteButton" onClick={ () => {deleteChat(value.name,keyRr)} }>D</div>
