@@ -16,7 +16,7 @@ import Modal from './components/Modal.js'
 function App() {
   const [message, setMessage] = useState('');
   const [editChatHeading, setEditChatHeading] = useState('')
-
+  const [showEditInsideIcons, setShowEditInsideIcons] = useState(false)
   const [showModalFlag,setShowModalFlag] = useState(false)
 
   const [chatMessages, setChatMessages] = useState(() => {
@@ -63,7 +63,6 @@ function App() {
   },[chatMessages,chats,currentChat,count])
 
   const deleteChat = (valueName,LSkey) => {
-    console.log("function reached here")
     let toBeDeleted = -1;
     for ( let i = 0; i < chats.length; i++){
       if ( chats[i].name == valueName) {
@@ -99,9 +98,8 @@ function App() {
     setDeleteChatKey(b)
   }
 
-  const hideModal = (shouldDelete) => {
-    if ( shouldDelete == "true" ) {
-      console.log("asasasa")
+  const hideModal = (modalAnswer) => {
+    if ( modalAnswer == "true" ) {
       deleteChat(deletingChat,deleteChatKey)
     }
     setShowModalFlag(false)
@@ -248,9 +246,7 @@ function App() {
   useEffect(() => {
     if ( chatMessages?.length == 1 ) {
       let stringsConverted = JSON.stringify(chatMessages);
-      console.log(stringsConverted)
       let key = "chat" + count.toString();
-      console.log(key)
       localStorage.setItem(key,stringsConverted);
       setChats([{'name':count,'isEditing':false,header:""},...chats])
     }
@@ -273,7 +269,7 @@ function App() {
         index = i;
       }
     }
-    // const index = tempChats.indexOf(pageNo);
+
     if (index > -1 ) { 
       let editField = tempChats[index].isEditing
       let headerField = tempChats[index].header
@@ -308,11 +304,13 @@ function App() {
     const keyss = Object.keys(localStorage);
     keyss.forEach((keys) => {
       if ( keys == currentChat) {
+          //previous was a old chat edition, save it first
           isOld = true;
           let stringConverted = JSON.stringify(chatMessages);
           localStorage.setItem(keys,stringConverted);
           
 
+          //start a new chat
           setChatMessages([]);
           let tempCount = count+1;
           setCount(tempCount)
@@ -324,6 +322,8 @@ function App() {
     });
 
     if ( isDeletion ) {
+
+          // start a new chat
           setChatMessages([]);
           let tempCount = count+1;
           setCount(tempCount)
@@ -334,14 +334,14 @@ function App() {
 
 
     if (!isOld ){
+      //previous was a new chat, save it first
       let stringsConverted = JSON.stringify(chatMessages);
-      console.log(stringsConverted)
       let key = "chat" + count.toString();
-      console.log(key)
       localStorage.setItem(key,stringsConverted);
       setChats([{'name':count,'isEditing': false, header: ""},...chats])
       
 
+      // start a new chat
       setChatMessages([]);
       let tempCount = count+1;
       setCount(tempCount);
@@ -384,6 +384,7 @@ function App() {
   }
 
    const editHeading = (index) => {
+    setShowEditInsideIcons(true)
     let temp = []
     for ( let i = 0; i < chats.length ; i++ ) {
       if ( i == index ) {
@@ -395,9 +396,44 @@ function App() {
          temp2.isEditing = !chats[i].isEditing
         temp2.name = chats[i].name
         temp2.header = chats[i].header
-        if ( chats[i].isEditing ){
-          temp2.header = editChatHeading 
+        // if ( chats[i].isEditing ){
+          // temp2.header = editChatHeading 
           //save the value
+        // }
+        // else {
+          // do nothing 
+        // }
+        temp[i] = temp2
+      }
+      else {
+        let tempName = chats[i].name
+        let tempHeader = chats[i].header
+        let temp3 = {
+          isEditing : false,
+          name: tempName,
+          header : tempHeader
+        }
+        temp[i] = temp3
+      }
+    }
+    setChats([...temp])
+   }
+
+   const editHeadingFinal =  (index) => {
+    let temp = []
+    for ( let i = 0; i < chats.length ; i++ ) {
+      if ( i == index ) {
+        let temp2 = {
+          isEditing : true,
+          name : '',
+          header: ''
+        }
+        temp2.isEditing = !chats[i].isEditing
+        temp2.name = chats[i].name
+        temp2.header = chats[i].header
+        if ( chats[i].isEditing ){
+          temp2.header = editChatHeading; 
+          // save the value
         }
         else {
           // do nothing 
@@ -416,7 +452,23 @@ function App() {
       }
     }
     setChats([...temp])
-    // setIsEditing
+    setShowEditInsideIcons(false)
+   }
+
+   const discardEditing = () => {
+    let temp = []
+    for ( let i = 0 ; i < chats.length; i++ ) {
+      let temp2 = {
+        isEditing: false,
+        name: '',
+        header: ''
+      }
+      temp2.name = chats[i].name
+      temp2.header = chats[i].header
+      temp[i] = temp2;
+    }
+    setChats([...temp])
+    setShowEditInsideIcons(false)
    }
 
   return (
@@ -445,9 +497,17 @@ function App() {
               { !value.isEditing ? <div className="chatText" onClick={ () => {fetchOldChat(value.name)}}>
                 {value.header.length > 0  ? value.header : quesText + '....' }
               </div> : <input type="text" className="editHead" value={editChatHeading} onChange={handleChange2}/> }
-              <div className="editButton" onClick={() => {editHeading(index)}}>E</div>
-              <div className="deleteButton" onClick={ () => {showModal(value.name,keyRr)} }>D</div>
-
+              
+              {showEditInsideIcons && value.isEditing ?
+                <>
+                  <div className="editButton" onClick={() => {editHeadingFinal(index)}}>Ed</div>
+                  <div className="deleteButton" onClick={ () => {discardEditing()} }>Di</div>
+                </> :
+                <>
+                <div className="editButton" onClick={() => {editHeading(index)}}>E</div>
+                <div className="deleteButton" onClick={ () => {showModal(value.name,keyRr)} }>D</div>
+                </>
+              }
             </div>
           )
         })}
