@@ -129,7 +129,6 @@ p {
 Questions
 ===============
 */
-/*deleteChat(value.name,keyRr)*/
 .topDiv{
   display: flex;
   flex-direction: row;
@@ -344,4 +343,10 @@ button :: hover {
 .box{
   margin-top: 202px;
   max-height: 69vh;
+}
+.editSo{
+  height : 16px;
+}
+.xmark{
+  height:23px;
 }

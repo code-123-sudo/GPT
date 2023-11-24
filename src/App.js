@@ -9,6 +9,8 @@ import { API_KEY, API_URL } from "./constants.js"
 
 import send from './assets/send.png'
 import menu from './assets/menu.png';
+import editSolid from './assets/edit-solid.svg'
+import xmark from './assets/xmark.svg'
 
 import Modal from './components/Modal.js'
 
@@ -500,8 +502,8 @@ function App() {
               
               {showEditInsideIcons && value.isEditing ?
                 <>
-                  <div className="editButton" onClick={() => {editHeadingFinal(index)}}>Ed</div>
-                  <div className="deleteButton" onClick={ () => {discardEditing()} }>Di</div>
+                  <div className="editButton" onClick={() => {editHeadingFinal(index)}}><img src={editSolid} className="editSo" /></div>
+                  <div className="deleteButton" onClick={ () => {discardEditing()} }><img src={xmark} className="xmark"/></div>
                 </> :
                 <>
                 <div className="editButton" onClick={() => {editHeading(index)}}>E</div>
