@@ -10,10 +10,14 @@ import { API_KEY, API_URL } from "./constants.js"
 import send from './assets/send.png'
 import menu from './assets/menu.png';
 
+import Modal from './components/Modal.js'
+
 
 function App() {
   const [message, setMessage] = useState('');
   const [editChatHeading, setEditChatHeading] = useState('')
+
+  const [showModalFlag,setShowModalFlag] = useState(false)
 
   const [chatMessages, setChatMessages] = useState(() => {
     return JSON.parse(localStorage.getItem('chatMessages')) || []
@@ -40,6 +44,9 @@ function App() {
   const [isTypingLeft,setIsTypingLeft] = useState(false);
   const [isTypingRight,setIsTypingRight] = useState(false);
 
+  const [deletingChat,setDeletingChat] = useState("")
+  const [deleteChatKey,setDeleteChatKey] = useState("")
+
    const [isHamburger,setIsHamburger] = useState(() => {
     return JSON.parse(localStorage.getItem('isHamburger')) || false
   });
@@ -54,6 +61,51 @@ function App() {
   useEffect(() => {
 
   },[chatMessages,chats,currentChat,count])
+
+  const deleteChat = (valueName,LSkey) => {
+    console.log("function reached here")
+    let toBeDeleted = -1;
+    for ( let i = 0; i < chats.length; i++){
+      if ( chats[i].name == valueName) {
+        let temp = [];
+        for ( let j = 0, k = 0; j < chats.length; j++ ) {
+            if ( j == i ) {
+              toBeDeleted = j;
+              continue;
+            }
+            temp[k] = chats[j];
+            k++;
+        }
+        if ( LSkey == currentChat ) {
+          setChats([...temp]);
+          localStorage.removeItem(LSkey);
+          startNewChat(true)
+          // let curr = 'chat' + chats[0].name;
+          // setCurrentChat('chat'+chats[0].name)
+        }
+        else {
+          // setChatMessages([]);
+          setChats([...temp]);
+          localStorage.removeItem(LSkey);
+          startNewChat()
+        }
+      }
+    }
+   }
+
+  const showModal = (a,b) => {
+    setShowModalFlag(true)
+    setDeletingChat(a)
+    setDeleteChatKey(b)
+  }
+
+  const hideModal = (shouldDelete) => {
+    if ( shouldDelete == "true" ) {
+      console.log("asasasa")
+      deleteChat(deletingChat,deleteChatKey)
+    }
+    setShowModalFlag(false)
+  }
   
   const saveInLocalStorage = (key,value) => {
     localStorage.setItem(key,value);
@@ -367,38 +419,9 @@ function App() {
     // setIsEditing
    }
 
-   const deleteChat = (valueName,LSkey) => {
-    let toBeDeleted = -1;
-    for ( let i = 0; i < chats.length; i++){
-      if ( chats[i].name == valueName) {
-        let temp = [];
-        for ( let j = 0, k = 0; j < chats.length; j++ ) {
-            if ( j == i ) {
-              toBeDeleted = j;
-              continue;
-            }
-            temp[k] = chats[j];
-            k++;
-        }
-        if ( LSkey == currentChat ) {
-          setChats([...temp]);
-          localStorage.removeItem(LSkey);
-          startNewChat(true)
-          // let curr = 'chat' + chats[0].name;
-          // setCurrentChat('chat'+chats[0].name)
-        }
-        else {
-          // setChatMessages([]);
-          setChats([...temp]);
-          localStorage.removeItem(LSkey);
-          startNewChat()
-        }
-      }
-    }
-   }
-
   return (
     <div className="topDiv">
+        <Modal show={showModalFlag} handleClose={hideModal}>Modal</Modal>
       <div className="menuButton" onClick={() => {setIsHamburger(!isHamburger);setIsHamburgerAnimate(!isHamburgerAnimate)}}>
         <img src={menu} className="iconImg" />
       </div>
@@ -423,7 +446,7 @@ function App() {
                 {value.header.length > 0  ? value.header : quesText + '....' }
               </div> : <input type="text" className="editHead" value={editChatHeading} onChange={handleChange2}/> }
               <div className="editButton" onClick={() => {editHeading(index)}}>E</div>
-              <div className="deleteButton" onClick={ () => {deleteChat(value.name,keyRr)} }>D</div>
+              <div className="deleteButton" onClick={ () => {showModal(value.name,keyRr)} }>D</div>
 
             </div>
           )
