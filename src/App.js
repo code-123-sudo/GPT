@@ -38,8 +38,6 @@ function App() {
     return JSON.parse(localStorage.getItem('pageNo')) || 0
   });
 
-
-  
   const [isStreaming,setIsStreaming] = useState('');
   const [streamData,setStreamData] = useState();
 
@@ -167,10 +165,8 @@ function App() {
     try {
       setIsTypingRight(true);
       scrollToBottom();
-
       // first search in cache for the user question
       searchInCache();
-
       if (!foundInCache){
       // if not found in cache , get answer from open chat ai
         const finalMessage = "chatgpt " + message + " Reply in a maximum of 20 words. Always reply in Hindi with English characters";
@@ -187,8 +183,6 @@ function App() {
           stream : true
           }),
         });
-
-
         async function* streamAsyncIterator(stream) {
       // Get a lock on the stream
           const reader = stream.getReader();
@@ -206,7 +200,6 @@ function App() {
             reader.releaseLock();
           }
         }
-
         let textRecieved = ""
         const decoder = new TextDecoder();
         await setIsStreaming(true);
@@ -232,18 +225,15 @@ function App() {
         setChatMessages(chatMessages => [...chatMessages,{text:textRecieved,isReply:true}]);
         foundInCache = false;
       }
-
       foundInCache=false;
       scrollToBottom();
     } 
-
     catch(error) {
       await setIsTypingRight(false);
       console.log(error)
       toast("something went wrong");
     }
   }
-
 
   useEffect(() => {
     if ( chatMessages?.length == 1 ) {
@@ -254,9 +244,6 @@ function App() {
     }
   },[chatMessages])
  
-
-
-
   const addUserQuestionToChat = async (fromCache) => { 
     if ( fromCache ){
       setChatMessages(chatMessages => [...chatMessages,{text:fromCache,isReply:false}]);
@@ -271,7 +258,6 @@ function App() {
         index = i;
       }
     }
-
     if (index > -1 ) { 
       let editField = tempChats[index].isEditing
       let headerField = tempChats[index].header
@@ -299,9 +285,7 @@ function App() {
   }
 
   const startNewChat = (isDeletion=false) => {
-
     if ( chatMessages?.length == 0 ) return;
-    
     let isOld = false;
     const keyss = Object.keys(localStorage);
     keyss.forEach((keys) => {
@@ -310,21 +294,16 @@ function App() {
           isOld = true;
           let stringConverted = JSON.stringify(chatMessages);
           localStorage.setItem(keys,stringConverted);
-          
-
           //start a new chat
           setChatMessages([]);
           let tempCount = count+1;
           setCount(tempCount)
           let tempCounts = "chat"+tempCount.toString();
           setCurrentChat(tempCounts)
-
           return;
       }
     });
-
     if ( isDeletion ) {
-
           // start a new chat
           setChatMessages([]);
           let tempCount = count+1;
@@ -333,16 +312,12 @@ function App() {
           setCurrentChat(tempCounts)
           return
     }
-
-
     if (!isOld ){
       //previous was a new chat, save it first
       let stringsConverted = JSON.stringify(chatMessages);
       let key = "chat" + count.toString();
       localStorage.setItem(key,stringsConverted);
       setChats([{'name':count,'isEditing': false, header: ""},...chats])
-      
-
       // start a new chat
       setChatMessages([]);
       let tempCount = count+1;
@@ -359,18 +334,12 @@ function App() {
       let stringsConverted2 = JSON.stringify(chatMessages);
       localStorage.setItem(currentChat,stringsConverted2);
       /* checking wether its a new chat or old chat */
-
       let oldChatFlag = false;
-
       for ( let i = 0; i < chats.length; i++ ) {
         if ( chats[i].name == count ) oldChatFlag = true;
       }
-
-
       if ( !oldChatFlag ) setChats([{'name':count,'isEditing':false,header:""},...chats]) 
     }
-
-
     let keyR = "chat" + countNo.toString();
     if ( keyR == currentChat ) return;/*user clicked on same chat button twice */
     setCurrentChat(keyR)
@@ -378,8 +347,7 @@ function App() {
     /*update the chat messages of button being clicked */
     let retString = localStorage.getItem(keyR);
     let retArray = JSON.parse(retString);
-    setChatMessages(retArray);
-    
+    setChatMessages(retArray)
     
     /* sorting the chat order as newest first */
     setPageNo(countNo)
