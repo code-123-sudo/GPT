@@ -67,14 +67,12 @@ function App() {
         return true;
       }
     })
+    setChats([...chatsAfterDeletion]);
+    localStorage.removeItem(LSkey);
     if ( LSkey == currentChat ) {
-      setChats([...chatsAfterDeletion]);
-      localStorage.removeItem(LSkey);
       startNewChat(true)
     }
     else {
-      setChats([...chatsAfterDeletion]);
-      localStorage.removeItem(LSkey);
       startNewChat()
     }
   }
