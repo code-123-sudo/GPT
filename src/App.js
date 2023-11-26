@@ -59,32 +59,33 @@ function App() {
   let refr = useRef(null);
 
   const deleteChat = (valueName,LSkey) => {
-    for ( let i = 0; i < chats.length; i++){
-      if ( chats[i].name == valueName) {
-        let temp = [];
-        for ( let j = 0, k = 0; j < chats.length; j++ ) {
-            if ( j == i ) {
-              continue;
-            }
-            temp[k] = chats[j];
-            k++;
-        }
-        if ( LSkey == currentChat ) {
-          setChats([...temp]);
-          localStorage.removeItem(LSkey);
-          startNewChat(true)
-          // let curr = 'chat' + chats[0].name;
-          // setCurrentChat('chat'+chats[0].name)
-        }
-        else {
-          // setChatMessages([]);
-          setChats([...temp]);
-          localStorage.removeItem(LSkey);
-          startNewChat()
-        }
+    let valueNameIndex = chats.find((chat) => {
+      if ( chat.name == valueName ) {
+          return true;
+      }else {
+          return false;
       }
+    })
+
+    let chatsAfterDeletion = [];
+    for ( let j = 0, k = 0; j < chats.length; j++ ) {
+      if ( j == valueNameIndex ) {
+        continue;
+      }
+      chatsAfterDeletion[k] = chats[j];
+      k++;
     }
-   }
+    if ( LSkey == currentChat ) {
+      setChats([...chatsAfterDeletion]);
+      localStorage.removeItem(LSkey);
+      startNewChat(true)
+    }
+    else {
+      setChats([...chatsAfterDeletion]);
+      localStorage.removeItem(LSkey);
+      startNewChat()
+    }
+  }
 
   const showModal = (a,b) => {
     setShowModalFlag(true)
