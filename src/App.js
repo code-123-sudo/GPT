@@ -144,6 +144,24 @@ function App() {
       setIsHamburgerAnimate(isHamburgerAnimateLS)
   },[])
 
+  const fetchFromAPI = async (API_URL,message) => {
+    let finalMessage = "chatgpt " + message + " Reply in a maximum of 20 words. Always reply in Hindi with English characters";
+    let response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo",
+        messages: [{ role: "user",content: finalMessage }],
+        temperature: 0.1,
+        stream : true
+      })
+    })
+    return response;
+  }
+
   const addAiAnswerToChat = async () => {
     try {
       setIsTypingRight(true);
@@ -152,20 +170,21 @@ function App() {
       searchInCache();
       if (!foundInCache){
       // if not found in cache , get answer from open chat ai
-        const finalMessage = "chatgpt " + message + " Reply in a maximum of 20 words. Always reply in Hindi with English characters";
-        const response = await fetch(API_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${API_KEY}`,
-            },
-          body: JSON.stringify({
-          model: "gpt-3.5-turbo",
-          messages: [{ role: "user",content: finalMessage }],
-          temperature: 0.1,
-          stream : true
-          }),
-        });
+        // const finalMessage = "chatgpt " + message + " Reply in a maximum of 20 words. Always reply in Hindi with English characters";
+        const response = await fetchFromAPI(API_URL,message); 
+        //fetch(API_URL, {
+        //   method: "POST",
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //     Authorization: `Bearer ${API_KEY}`,
+        //     },
+        //   body: JSON.stringify({
+        //   model: "gpt-3.5-turbo",
+        //   messages: [{ role: "user",content: finalMessage }],
+        //   temperature: 0.1,
+        //   stream : true
+        //   }),
+        // });
         async function* streamAsyncIterator(stream) {
       // Get a lock on the stream
           const reader = stream.getReader();
