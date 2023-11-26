@@ -59,22 +59,14 @@ function App() {
   let refr = useRef(null);
 
   const deleteChat = (valueName,LSkey) => {
-    let valueNameIndex = chats.find((chat) => {
-      if ( chat.name == valueName ) {
-          return true;
+    let chatsAfterDeletion = chats;
+    chatsAfterDeletion.filter((chatValue) => {
+      if (chatValue.name == valueName ){
+        return false;
       }else {
-          return false;
+        return true;
       }
     })
-
-    let chatsAfterDeletion = [];
-    for ( let j = 0, k = 0; j < chats.length; j++ ) {
-      if ( j == valueNameIndex ) {
-        continue;
-      }
-      chatsAfterDeletion[k] = chats[j];
-      k++;
-    }
     if ( LSkey == currentChat ) {
       setChats([...chatsAfterDeletion]);
       localStorage.removeItem(LSkey);
