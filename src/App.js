@@ -23,31 +23,28 @@ function App() {
 
   const [chatMessages, setChatMessages] = useState(() => {
     return JSON.parse(localStorage.getItem('chatMessages')) || []
-  });;
+  });
   const [chats,setChats] = useState(() => {
     return JSON.parse(localStorage.getItem('chats')) || []
-  });;
+  });
   const [currentChat,setCurrentChat] = useState(() => {
     return JSON.parse(localStorage.getItem('currentChat')) || 'chat0'
   });
   const [count,setCount] = useState(() => {
     return JSON.parse(localStorage.getItem('count')) || 0
   });
-
   const [pageNo,setPageNo] = useState(() => {
     return JSON.parse(localStorage.getItem('pageNo')) || 0
   });
 
   const [isStreaming,setIsStreaming] = useState('');
   const [streamData,setStreamData] = useState();
-
   const [isTypingLeft,setIsTypingLeft] = useState(false);
   const [isTypingRight,setIsTypingRight] = useState(false);
-
   const [deletingChat,setDeletingChat] = useState("")
   const [deleteChatKey,setDeleteChatKey] = useState("")
 
-   const [isHamburger,setIsHamburger] = useState(() => {
+  const [isHamburger,setIsHamburger] = useState(() => {
     return JSON.parse(localStorage.getItem('isHamburger')) || false
   });
   const [isHamburgerAnimate,setIsHamburgerAnimate] = useState(() => {
@@ -143,7 +140,6 @@ function App() {
       setChats(chatsLS)
       setIsHamburger(isHamburgerLS)
       setIsHamburgerAnimate(isHamburgerAnimateLS)
-
   },[])
 
   const addAiAnswerToChat = async () => {
