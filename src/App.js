@@ -245,12 +245,13 @@ function App() {
     }
     scrollToBottom();
     let tempChats = chats;
-    let index = -1;
-    for ( let i = 0; i < tempChats.length; i++ ) {
-      if ( tempChats[i].name == pageNo ) {
-        index = i;
+    let index = tempChats.find((chatValue) => {
+      if (chatValue.name == pageNo ) {
+        return true;
+      }else {
+        return false;
       }
-    }
+    })
     if (index > -1 ) { 
       let editField = tempChats[index].isEditing
       let headerField = tempChats[index].header
