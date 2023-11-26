@@ -71,7 +71,7 @@ function App() {
       // it before starting a new chat, its already deleted
     }
     else {
-      startNewChat()// the chat to be deleted is some random chat, so first save any changes to current chat before
+      startNewChat()// the chat to be deleted is some other chat other than the selected one right now, so first save any changes to current chat before
       //starting a new chat  
     }
   }
