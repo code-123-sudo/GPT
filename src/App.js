@@ -67,10 +67,12 @@ function App() {
     setChats([...chatsAfterDeletion]);
     localStorage.removeItem(LSkey);
     if ( LSkey == currentChat ) {
-      startNewChat(true)
+      startNewChat(true) // the chat to be deleted is the current chat opened , so no need to preprocess 
+      // it before starting a new chat, its already deleted
     }
     else {
-      startNewChat()
+      startNewChat()// the chat to be deleted is some random chat, so first save any changes to current chat before
+      //starting a new chat  
     }
   }
 
@@ -285,7 +287,7 @@ function App() {
       }
     });
     if ( isDeletion ) {
-          // start a new chat
+          // start a new chat, do not save previous chat
           setChatMessages([]);
           let tempCount = count+1;
           setCount(tempCount)
