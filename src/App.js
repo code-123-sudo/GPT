@@ -58,18 +58,12 @@ function App() {
   let messagesEndRef = useRef(null);
   let refr = useRef(null);
 
-  useEffect(() => {
-
-  },[chatMessages,chats,currentChat,count])
-
   const deleteChat = (valueName,LSkey) => {
-    let toBeDeleted = -1;
     for ( let i = 0; i < chats.length; i++){
       if ( chats[i].name == valueName) {
         let temp = [];
         for ( let j = 0, k = 0; j < chats.length; j++ ) {
             if ( j == i ) {
-              toBeDeleted = j;
               continue;
             }
             temp[k] = chats[j];
