@@ -162,55 +162,34 @@ function App() {
     return response;
   }
 
-  const addAiAnswerToChat = async () => {
+  async function* streamAsyncIterator(stream) {
+    // Get a lock on the stream
+    const reader = stream.getReader();
     try {
-      setIsTypingRight(true);
-      scrollToBottom();
-      // first search in cache for the user question
-      searchInCache();
-      if (!foundInCache){
-      // if not found in cache , get answer from open chat ai
-        // const finalMessage = "chatgpt " + message + " Reply in a maximum of 20 words. Always reply in Hindi with English characters";
-        const response = await fetchFromAPI(API_URL,message); 
-        //fetch(API_URL, {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //     Authorization: `Bearer ${API_KEY}`,
-        //     },
-        //   body: JSON.stringify({
-        //   model: "gpt-3.5-turbo",
-        //   messages: [{ role: "user",content: finalMessage }],
-        //   temperature: 0.1,
-        //   stream : true
-        //   }),
-        // });
-        async function* streamAsyncIterator(stream) {
-      // Get a lock on the stream
-          const reader = stream.getReader();
-          try {
-            while (true) {
-      // Read from the stream
-            const {done, value} = await reader.read();
-      // Exit if we're done
-            if (done) return;
-      // Else yield the chunk
-            yield value;
-          }
-        }
-          finally {
-            reader.releaseLock();
-          }
-        }
-        let textRecieved = ""
-        const decoder = new TextDecoder();
-        await setIsStreaming(true);
-        for await (const chunk of streamAsyncIterator(response.body)) {
-          scrollToBottom();
-          setIsTypingRight(false)
-          const data = decoder.decode(chunk)
-          const lsData = data.split("\n\n")
-          lsData.map((data) => {
+      while (true) {
+        // Read from the stream
+        const {done, value} = await reader.read();
+        // Exit if we're done
+        if (done) return;
+        // Else yield the chunk
+        yield value;
+      }
+    }
+    finally {
+      reader.releaseLock();
+    }
+  }
+
+  const getAsyncStream = async (response) => {
+      let textRecieved = ""
+      const decoder = new TextDecoder();
+      setIsStreaming(true);
+      for await (const chunk of streamAsyncIterator(response.body)) {
+        scrollToBottom();
+        setIsTypingRight(false)
+        const data = decoder.decode(chunk)
+        const lsData = data.split("\n\n")
+        lsData.map((data) => {
           try {
             const jd = JSON.parse(data.replace("data: ",""));
             if ( jd["choices"][0]["delta"]["content"] ){
@@ -219,10 +198,23 @@ function App() {
               setStreamData(textRecieved)
             }
           } catch(err) {
+            // console.log(err)
+          }
+        })
+      }
+      return textRecieved
+  }
 
-            }
-          })
-        }
+  const addAiAnswerToChat = async () => {
+    try {
+      setIsTypingRight(true);
+      scrollToBottom();
+      // first search in cache for the user question
+      searchInCache();
+      if (!foundInCache){
+        // if not found in cache , get answer from open chat ai
+        const response = await fetchFromAPI(API_URL,message);
+        const textRecieved = await getAsyncStream(response); 
         setIsStreaming(false)
         setChatMessages(chatMessages => [...chatMessages,{text:textRecieved,isReply:true}]);
         foundInCache = false;
@@ -232,7 +224,6 @@ function App() {
     } 
     catch(error) {
       await setIsTypingRight(false);
-      console.log(error)
       toast("something went wrong");
     }
   }
