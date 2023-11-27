@@ -278,32 +278,32 @@ function App() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }
 
+  const setNewEmptyChatValues = (count) => {
+    setChatMessages([]);
+    let currentCount = count+1;
+    setCount(currentCount)
+    let currentChatValue = "chat"+currentCount.toString();
+    setCurrentChat(currentChatValue)
+  }
+
   const startNewChat = (isDeletion=false) => {
     if ( chatMessages?.length == 0 ) return;
     let isOld = false;
-    const keyss = Object.keys(localStorage);
-    keyss.forEach((keys) => {
-      if ( keys == currentChat) {
+    const LSkeys = Object.keys(localStorage);
+    LSkeys.forEach((LSkey) => {
+      if ( LSkey == currentChat) {
           //previous was a old chat edition, save it first
           isOld = true;
           let stringConverted = JSON.stringify(chatMessages);
-          localStorage.setItem(keys,stringConverted);
+          localStorage.setItem(LSkey,stringConverted);
           //start a new chat
-          setChatMessages([]);
-          let tempCount = count+1;
-          setCount(tempCount)
-          let tempCounts = "chat"+tempCount.toString();
-          setCurrentChat(tempCounts)
+          setNewEmptyChatValues(count)
           return;
       }
     });
     if ( isDeletion ) {
           // start a new chat, do not save previous chat
-          setChatMessages([]);
-          let tempCount = count+1;
-          setCount(tempCount)
-          let tempCounts = "chat"+tempCount.toString();
-          setCurrentChat(tempCounts)
+          setNewEmptyChatValues(count);
           return
     }
     if (!isOld ){
@@ -313,12 +313,7 @@ function App() {
       localStorage.setItem(key,stringsConverted);
       setChats([{'name':count,'isEditing': false, header: ""},...chats])
       // start a new chat
-      setChatMessages([]);
-      let tempCount = count+1;
-      setCount(tempCount);
-      tempCount = tempCount.toString();
-      let tempChat = "chat"+tempCount;
-      setCurrentChat(tempChat)
+      setNewEmptyChatValues(count);
     }
   }
 
