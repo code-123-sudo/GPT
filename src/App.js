@@ -343,6 +343,7 @@ function App() {
   }
 
    const editHeading = (index) => {
+    setEditChatHeading("")
     setShowEditInsideIcons(true)
     let chatsAfterEdition = []
     for ( let i = 0; i < chats.length ; i++ ) {
