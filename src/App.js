@@ -324,9 +324,6 @@ function App() {
       localStorage.setItem(currentChat,stringsConverted2);
       /* checking wether its a new chat or old chat */
       let oldChatFlag = 0;
-      for ( let i = 0; i < chats.length; i++ ) {
-        if ( chats[i].name == count ) oldChatFlag = true;
-      }
       oldChatFlag = chats.find((chat)=> {
         if (chat.name == count ) return true;
         else return false;
@@ -347,38 +344,31 @@ function App() {
 
    const editHeading = (index) => {
     setShowEditInsideIcons(true)
-    let temp = []
+    let chatsAfterEdition = []
     for ( let i = 0; i < chats.length ; i++ ) {
       if ( i == index ) {
-        let temp2 = {
+        let clickedChat = {
           isEditing : true,
           name : '',
           header: ''
         }
-         temp2.isEditing = !chats[i].isEditing
-        temp2.name = chats[i].name
-        temp2.header = chats[i].header
-        // if ( chats[i].isEditing ){
-          // temp2.header = editChatHeading 
-          //save the value
-        // }
-        // else {
-          // do nothing 
-        // }
-        temp[i] = temp2
+        clickedChat.isEditing = !chats[i].isEditing
+        clickedChat.name = chats[i].name
+        clickedChat.header = chats[i].header
+        chatsAfterEdition[i] = clickedChat
       }
       else {
-        let tempName = chats[i].name
-        let tempHeader = chats[i].header
-        let temp3 = {
+        let otherChatName = chats[i].name
+        let otherChatHeader = chats[i].header
+        let otherChat = {
           isEditing : false,
-          name: tempName,
-          header : tempHeader
+          name: otherChatName,
+          header : otherChatHeader
         }
-        temp[i] = temp3
+        chatsAfterEdition[i] = otherChat
       }
     }
-    setChats([...temp])
+    setChats([...chatsAfterEdition])
    }
 
    const editHeadingFinal =  (index) => {
