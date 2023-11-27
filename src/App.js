@@ -244,8 +244,8 @@ function App() {
       setChatMessages(chatMessages => [...chatMessages,{text:message,isReply:false}]);
     }
     scrollToBottom();
-    let tempChats = chats;
-    let index = tempChats.find((chatValue) => {
+    let currentChats = chats;
+    let index = currentChats.find((chatValue) => {
       if (chatValue.name == pageNo ) {
         return true;
       }else {
@@ -253,11 +253,11 @@ function App() {
       }
     })
     if (index > -1 ) { 
-      let editField = tempChats[index].isEditing
-      let headerField = tempChats[index].header
-      tempChats.splice(index, 1);
-      tempChats = [{'name':pageNo,'isEditing':editField,header:headerField},...tempChats]
-      setChats(tempChats)
+      let editField = currentChats[index].isEditing
+      let headerField = currentChats[index].header
+      currentChats.splice(index, 1);
+      currentChats = [{'name':pageNo,'isEditing':editField,header:headerField},...currentChats]
+      setChats(currentChats)
     }
     setStreamData("")
     setMessage(null)
