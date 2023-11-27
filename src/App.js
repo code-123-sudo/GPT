@@ -323,18 +323,21 @@ function App() {
       let stringsConverted2 = JSON.stringify(chatMessages);
       localStorage.setItem(currentChat,stringsConverted2);
       /* checking wether its a new chat or old chat */
-      let oldChatFlag = false;
+      let oldChatFlag = 0;
       for ( let i = 0; i < chats.length; i++ ) {
         if ( chats[i].name == count ) oldChatFlag = true;
       }
-      if ( !oldChatFlag ) setChats([{'name':count,'isEditing':false,header:""},...chats]) 
+      oldChatFlag = chats.find((chat)=> {
+        if (chat.name == count ) return true;
+        else return false;
+      })
+      if ( oldChatFlag == -1 ) setChats([{'name':count,'isEditing':false,header:""},...chats]) 
     }
-    let keyR = "chat" + countNo.toString();
-    if ( keyR == currentChat ) return;/*user clicked on same chat button twice */
-    setCurrentChat(keyR)
-
+    let currentKey = "chat" + countNo.toString();
+    if ( currentKey == currentChat ) return;/*user clicked on same chat button twice */
+    setCurrentChat(currentKey)
     /*update the chat messages of button being clicked */
-    let retString = localStorage.getItem(keyR);
+    let retString = localStorage.getItem(currentKey);
     let retArray = JSON.parse(retString);
     setChatMessages(retArray)
     
