@@ -1,5 +1,5 @@
 import './Modal.css';
-
+import React, { useState , useEffect , useRef } from 'react';
 const Modal = ({ handleClose, show, children }) => {
   console.log("----1------")
   console.log(show)
