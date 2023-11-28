@@ -253,14 +253,11 @@ button {
   cursor:pointer;
   margin-left: -100px;
 }
-button :: hover {
-  cursor : pointer
-}
 .menuButton {
   top: 10;
-  left : 10;
-  width : 50px;
-  height : 50px;
+  left: 10;
+  width: 50px;
+  height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -312,12 +309,12 @@ button :: hover {
   width: 150px;
   height: 30px;
   background: #D3D3D3;
-  margin-top:10px;
+  margin-top: 10px;
   border-radius: 4px;
   cursor: pointer;
   display: flex;
 }
-.editButton, .deleteButton {
+.editButton {
   width: 30px;
   height: 30px;
   background: darkgrey;
@@ -327,14 +324,23 @@ button :: hover {
   border: 1px solid grey;
   cursor: pointer;
 }
-
+.deleteButton {
+  width: 30px;
+  height: 30px;
+  background: darkgrey;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid grey;
+  cursor: pointer;
+}
 .editHead {
   width: 90px;
   height: 30px;
 }
 
 .chatText{
-  width:90px;
+  width: 90px;
   height : 30px;
   display: flex;
   justify-content: center;
@@ -345,8 +351,8 @@ button :: hover {
   max-height: 69vh;
 }
 .editSo{
-  height : 16px;
+  height: 16px;
 }
 .xmark{
-  height:23px;
+  height: 23px;
 }
