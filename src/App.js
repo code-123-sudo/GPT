@@ -1,6 +1,7 @@
 import React, { useState , useEffect , useRef } from 'react';
 import { OpenAI } from "langchain/llms/openai";
 import { ChatOpenAI } from "langchain/chat_models/openai";
+import { connect } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import { data, defaultQuestions } from './data.js'
 import 'react-toastify/dist/ReactToastify.css';
@@ -15,7 +16,7 @@ import xmark from './assets/xmark.svg'
 import Modal from './components/Modal.js'
 
 
-function App() {
+function App({ countValue , increment, decrement}) {
   const [message, setMessage] = useState('');
   const [editChatHeading, setEditChatHeading] = useState('')
   const [showEditInsideIcons, setShowEditInsideIcons] = useState(false)
@@ -287,6 +288,8 @@ function App() {
   }
 
   const startNewChat = (isDeletion=false) => {
+    // increment()
+    // console.log(countValue);
     if ( chatMessages?.length == 0 ) return;
     let isOld = false;
     const LSkeys = Object.keys(localStorage);
@@ -549,4 +552,13 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  countValue: state.counter.countValue,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  increment: () => dispatch({ type: 'INCREMENT' }),
+  decrement: () => dispatch({ type: 'DECREMENT' }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
