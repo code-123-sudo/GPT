@@ -1,11 +1,16 @@
 const path = require('path');
-
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   entry: './src/index.js', // Entry point of your application
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './public/index.html',
+    }),
+  ],
   module: {
     rules: [
       {
@@ -37,7 +42,10 @@ module.exports = {
     ],
   },
   devServer: {
-    static: path.resolve(__dirname, 'dist'), // Serve from the 'dist' directory
+     static: {
+      directory: path.join(__dirname, 'dist'),
+    },
+    // static: path.resolve(__dirname, 'dist'), // Serve from the 'dist' directory
     port: 3000,
     open: true, // Open the default browser when the server starts
   },
