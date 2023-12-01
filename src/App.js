@@ -376,54 +376,58 @@ function App({ countValue , increment, decrement}) {
    }
 
    const editHeadingFinal =  (index) => {
-    let temp = []
+    let chatsAfterEditionFinal = []
     for ( let i = 0; i < chats.length ; i++ ) {
       if ( i == index ) {
-        let temp2 = {
+        let selectedChat = {
           isEditing : true,
           name : '',
           header: ''
         }
-        temp2.isEditing = !chats[i].isEditing
-        temp2.name = chats[i].name
-        temp2.header = chats[i].header
+        selectedChat.isEditing = !chats[i].isEditing
+        selectedChat.name = chats[i].name
+        selectedChat.header = chats[i].header
         if ( chats[i].isEditing ){
-          temp2.header = editChatHeading; 
+          if(!editChatHeading) {
+            selectedChat.header = " "
+          }else {
+            selectedChat.header = editChatHeading;
+          } 
           // save the value
         }
         else {
           // do nothing 
         }
-        temp[i] = temp2
+        chatsAfterEditionFinal[i] = selectedChat
       }
       else {
-        let tempName = chats[i].name
-        let tempHeader = chats[i].header
-        let temp3 = {
+        let otherChatName = chats[i].name
+        let otherChatHeader = chats[i].header
+        let otherChat = {
           isEditing : false,
-          name: tempName,
-          header : tempHeader
+          name: otherChatName,
+          header : otherChatHeader
         }
-        temp[i] = temp3
+        chatsAfterEditionFinal[i] = otherChat
       }
     }
-    setChats([...temp])
+    setChats([...chatsAfterEditionFinal])
     setShowEditInsideIcons(false)
    }
 
    const discardEditing = () => {
-    let temp = []
+    let resetChats = []
     for ( let i = 0 ; i < chats.length; i++ ) {
-      let temp2 = {
+      let resetChat = {
         isEditing: false,
         name: '',
         header: ''
       }
-      temp2.name = chats[i].name
-      temp2.header = chats[i].header
-      temp[i] = temp2;
+      resetChat.name = chats[i].name
+      resetChat.header = chats[i].header
+      resetChats[i] = resetChat;
     }
-    setChats([...temp])
+    setChats([...resetChats])
     setShowEditInsideIcons(false)
    }
 
