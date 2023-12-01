@@ -469,7 +469,8 @@ function App({ countValue , increment, decrement}) {
               }
             </div>
           )
-        })}
+          }
+        )}
       </div>
       <div className= {"chatBox " +  (isHamburgerAnimate ? 'chatBox2' : null) }>
         <div className="parentDiv">
