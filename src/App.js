@@ -7,7 +7,7 @@ import { data, defaultQuestions } from './data.js'
 import 'react-toastify/dist/ReactToastify.css';
 
 import { increment, decrement } from './actions/counterActions.js'
-import { addChat } from './actions/chatsActions.js'
+import { addChat, setChattings } from './actions/chattingsActions.js'
 
 
 import { API_KEY, API_URL } from "./constants.js"
@@ -20,7 +20,7 @@ import xmark from './assets/xmark.svg'
 import Modal from './components/Modal.js'
 
 
-function App( { counter , chattings, increment, decrement, addChat  }) {
+function App( { counter , chattings, increment, decrement, addChat, setChattings  }) {
   const [message, setMessage] = useState('');
   const [editChatHeading, setEditChatHeading] = useState('')
   const [showEditInsideIcons, setShowEditInsideIcons] = useState(false)
@@ -124,6 +124,7 @@ function App( { counter , chattings, increment, decrement, addChat  }) {
       saveInLocalStorage('chats',JSON.stringify(chats))
       saveInLocalStorage('isHamburger',JSON.stringify(isHamburger))
       saveInLocalStorage('isHamburgerAnimate',JSON.stringify(isHamburgerAnimate))
+      saveInLocalStorage('chattings',JSON.stringify(chattings))
   })
 
   // useEffect(() => {
@@ -228,7 +229,7 @@ function App( { counter , chattings, increment, decrement, addChat  }) {
       scrollToBottom();
     } 
     catch(error) {
-      await setIsTypingRight(false);
+      setIsTypingRight(false);
       toast("something went wrong");
     }
   }
@@ -249,8 +250,8 @@ function App( { counter , chattings, increment, decrement, addChat  }) {
       setChatMessages(chatMessages => [...chatMessages,{text:message,isReply:false}]);
     }
     scrollToBottom();
-    let currentChats = chats;
-    let index = currentChats.find((chatValue) => {
+    let currentChattings = chattings;
+    let index = currentChattings.find((chatValue) => {
       if (chatValue.name == pageNo ) {
         return true;
       }else {
@@ -258,10 +259,10 @@ function App( { counter , chattings, increment, decrement, addChat  }) {
       }
     })
     if (index > -1 ) { 
-      let editField = currentChats[index].isEditing
-      let headerField = currentChats[index].header
-      currentChats.splice(index, 1);
-      currentChats = [{'name':pageNo,'isEditing':editField,header:headerField},...currentChats]
+      let editField = currentChattings[index].isEditing
+      let headerField = currentChattings[index].header
+      currentChattings.splice(index, 1);
+      currentChattings = [{'name':pageNo,'isEditing':editField,header:headerField},...currentChattings]
       setChats(currentChats)
     }
     setStreamData("")
@@ -294,6 +295,7 @@ function App( { counter , chattings, increment, decrement, addChat  }) {
   const startNewChat = (isDeletion=false) => {
 
     addChat({'name':counter,'isEditing': false, header: ""})
+    setChattings([{'name':counter,'isEditing': false, header: ""},{'name':counter+1,'isEditing': false, header: ""}])
     increment()
     console.log(counter)
     console.log(chattings)
@@ -573,7 +575,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   increment: () => dispatch(increment()),
   decrement: () => dispatch(decrement()),
-  addChat: (dataObject) => dispatch(addChat(dataObject))
+  addChat: (dataObject) => dispatch(addChat(dataObject)),
+  setChattings: (dataObject) => dispatch(setChattings(dataObject))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
