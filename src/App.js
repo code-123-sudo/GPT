@@ -388,8 +388,11 @@ function App({ countValue , increment, decrement}) {
         selectedChat.name = chats[i].name
         selectedChat.header = chats[i].header
         if ( chats[i].isEditing ){
-          selectedChat.header = editChatHeading; 
-          // save the value
+          if(!editChatHeading) {
+            selectedChat.header = " "
+          }else {
+            selectedChat.header = editChatHeading;
+          } 
         }
         else {
           // do nothing 
@@ -397,14 +400,14 @@ function App({ countValue , increment, decrement}) {
         chatsAfterEditionFinal[i] = selectedChat
       }
       else {
-        let otherNonSelectedChat = {
+        let otherChatName = chats[i].name
+        let otherChatHeader = chats[i].header
+        let otherChat = {
           isEditing : false,
-          name: '',
-          header : ''
+          name: otherChatName,
+          header : otherChatHeader
         }
-        otherNonSelectedChat.name = chats[i].name
-        otherNonSelectedChat.header = chats[i].header
-        chatsAfterEditionFinal[i] = otherNonSelectedChat
+        chatsAfterEditionFinal[i] = otherChat
       }
     }
     setChats([...chatsAfterEditionFinal])
