@@ -1,14 +1,14 @@
-// reducers/counterReducer.js
+// reducers/countReducer.js
 const initialState = {
-  countValue: 0,
+  counter: 0,
 };
 
 const counterReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'INCREMENT':
-      return { countValue: state.countValue + 1 };
+      return { ...state, counter: state.counter + 1 };
     case 'DECREMENT':
-      return { countValue: state.countValue - 1 };
+      return { ...state, counter: state.counter - 1 };
     default:
       return state;
   }

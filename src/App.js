@@ -6,6 +6,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import { data, defaultQuestions } from './data.js'
 import 'react-toastify/dist/ReactToastify.css';
 
+import { increment, decrement } from './actions/counterActions.js'
+import { addChat } from './actions/chatsActions.js'
+
+
 import { API_KEY, API_URL } from "./constants.js"
 
 import send from './assets/send.png'
@@ -16,7 +20,7 @@ import xmark from './assets/xmark.svg'
 import Modal from './components/Modal.js'
 
 
-function App({ countValue , increment, decrement}) {
+function App( { counter , chattings, increment, decrement, addChat  }) {
   const [message, setMessage] = useState('');
   const [editChatHeading, setEditChatHeading] = useState('')
   const [showEditInsideIcons, setShowEditInsideIcons] = useState(false)
@@ -122,28 +126,28 @@ function App({ countValue , increment, decrement}) {
       saveInLocalStorage('isHamburgerAnimate',JSON.stringify(isHamburgerAnimate))
   })
 
-  useEffect(() => {
-      let countLS = localStorage.getItem('count')
-      let currentChatLS = localStorage.getItem('currentChat')
-      let chatMessagesLS = localStorage.getItem('chatMessages')
-      let chatsLS = localStorage.getItem('chats')
-      let isHamburgerLS = localStorage.getItem('isHamburger')
-      let isHamburgerAnimateLS = localStorage.getItem('isHamburgerAnimate')
+  // useEffect(() => {
+  //     let countLS = localStorage.getItem('count')
+  //     let currentChatLS = localStorage.getItem('currentChat')
+  //     let chatMessagesLS = localStorage.getItem('chatMessages')
+  //     let chatsLS = localStorage.getItem('chats')
+  //     let isHamburgerLS = localStorage.getItem('isHamburger')
+  //     let isHamburgerAnimateLS = localStorage.getItem('isHamburgerAnimate')
 
-      countLS = JSON.parse(countLS)
-      currentChatLS = JSON.parse(currentChatLS)
-      chatMessagesLS =  JSON.parse(chatMessagesLS)
-      chatsLS = JSON.parse(chatsLS)
-      isHamburgerLS = JSON.parse(isHamburgerLS)
-      isHamburgerAnimateLS = JSON.parse(isHamburgerAnimateLS)
+  //     countLS = JSON.parse(countLS)
+  //     currentChatLS = JSON.parse(currentChatLS)
+  //     chatMessagesLS =  JSON.parse(chatMessagesLS)
+  //     chatsLS = JSON.parse(chatsLS)
+  //     isHamburgerLS = JSON.parse(isHamburgerLS)
+  //     isHamburgerAnimateLS = JSON.parse(isHamburgerAnimateLS)
 
-      setCount(countLS)
-      setCurrentChat(currentChatLS)
-      setChatMessages(chatMessagesLS)
-      setChats(chatsLS)
-      setIsHamburger(isHamburgerLS)
-      setIsHamburgerAnimate(isHamburgerAnimateLS)
-  },[])
+  //     setCount(countLS)
+  //     setCurrentChat(currentChatLS)
+  //     setChatMessages(chatMessagesLS)
+  //     setChats(chatsLS)
+  //     setIsHamburger(isHamburgerLS)
+  //     setIsHamburgerAnimate(isHamburgerAnimateLS)
+  // },[])
 
   const fetchFromAPI = async (API_URL,message) => {
     let finalMessage = "chatgpt " + message + " Reply in a maximum of 20 words. Always reply in Hindi with English characters";
@@ -288,8 +292,13 @@ function App({ countValue , increment, decrement}) {
   }
 
   const startNewChat = (isDeletion=false) => {
-    // increment()
-    // console.log(countValue);
+
+    addChat({'name':counter,'isEditing': false, header: ""})
+    increment()
+    console.log(counter)
+    console.log(chattings)
+
+    
     if ( chatMessages?.length == 0 ) return;
     let isOld = false;
     const LSkeys = Object.keys(localStorage);
@@ -437,7 +446,7 @@ function App({ countValue , increment, decrement}) {
         <img src={menu} className="iconImg" />
       </div>
       <div className={ isHamburger ? 'hamburger' : 'hamburger hamburger2'} >
-        <div className="newChatButton" onClick={startNewChat} >New Chat +</div>
+        <div className="newChatButton" onClick={startNewChat} >New Chat +{counter}{chattings[0]?.name}</div>
         {chats?.map((value,index) => {
           console.log(value)
           let keyRr = "chat" + value.name.toString();
@@ -557,12 +566,14 @@ function App({ countValue , increment, decrement}) {
 }
 
 const mapStateToProps = (state) => ({
-  countValue: state.counter.countValue,
-});
+  counter: state.counter.counter,
+  chattings: state.chattings.chattings,
+})
 
 const mapDispatchToProps = (dispatch) => ({
-  increment: () => dispatch({ type: 'INCREMENT' }),
-  decrement: () => dispatch({ type: 'DECREMENT' }),
-});
+  increment: () => dispatch(increment()),
+  decrement: () => dispatch(decrement()),
+  addChat: (dataObject) => dispatch(addChat(dataObject))
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
