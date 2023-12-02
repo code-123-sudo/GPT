@@ -6,7 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { data, defaultQuestions } from './data.js'
 import 'react-toastify/dist/ReactToastify.css';
 
-import { increment, decrement } from './actions/counterActions.js'
+import { setCounter } from './actions/counterActions.js'
 import { addChat, setChattings } from './actions/chattingsActions.js'
 import { addMessage, setMessages } from './actions/messagesActions.js'
 import { setLiveChat } from './actions/liveChatActions.js'
@@ -22,7 +22,7 @@ import xmark from './assets/xmark.svg'
 import Modal from './components/Modal.js'
 
 
-function App( { counter , chattings, messages, liveChat, increment, decrement, addChat, setChattings, addMessage, setMessages, setLiveChat  }) {
+function App( { counter , chattings, messages, liveChat, setCounter, addChat, setChattings, addMessage, setMessages, setLiveChat  }) {
   
   const [message, setMessage] = useState('');
   const [editChatHeading, setEditChatHeading] = useState('')
@@ -38,9 +38,9 @@ function App( { counter , chattings, messages, liveChat, increment, decrement, a
   const [currentChat,setCurrentChat] = useState(() => {
     return JSON.parse(localStorage.getItem('currentChat')) || 'chat0'
   });
-  const [count,setCount] = useState(() => {
-    return JSON.parse(localStorage.getItem('count')) || 0
-  });
+  // const [count,setCount] = useState(() => {
+  //   return JSON.parse(localStorage.getItem('count')) || 0
+  // });
   const [pageNo,setPageNo] = useState(() => {
     return JSON.parse(localStorage.getItem('pageNo')) || 0
   });
@@ -121,13 +121,14 @@ function App( { counter , chattings, messages, liveChat, increment, decrement, a
   }
 
   useEffect(() => {
-      saveInLocalStorage('count',JSON.stringify(count))
+      // saveInLocalStorage('count',JSON.stringify(count))
       saveInLocalStorage('currentChat',JSON.stringify(currentChat))
       saveInLocalStorage('chatMessages',JSON.stringify(chatMessages))
       // saveInLocalStorage('chats',JSON.stringify(chats))
       saveInLocalStorage('isHamburger',JSON.stringify(isHamburger))
       saveInLocalStorage('isHamburgerAnimate',JSON.stringify(isHamburgerAnimate))
       saveInLocalStorage('chattings',JSON.stringify(chattings))
+      saveInLocalStorage('counter',JSON.stringify(counter))
       // saveInLocalStorage('chattings',JSON.stringify(chattings))
   })
 
@@ -241,10 +242,10 @@ function App( { counter , chattings, messages, liveChat, increment, decrement, a
   useEffect(() => {
     if ( chatMessages?.length == 1 ) {
       let stringsConverted = JSON.stringify(chatMessages);
-      let key = "chat" + count.toString();
+      let key = "chat" + counter.toString();
       localStorage.setItem(key,stringsConverted);
       // setChats([{'name':count,'isEditing':false,header:""},...chats])
-      setChattings([{'name':count,'isEditing':false,header:""},...chattings])
+      setChattings([{'name':counter,'isEditing':false,header:""},...chattings])
     }
   },[chatMessages])
  
@@ -304,11 +305,11 @@ function App( { counter , chattings, messages, liveChat, increment, decrement, a
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }
 
-  const setNewEmptyChatValues = (count) => {
+  const setNewEmptyChatValues = (counter) => {
     setChatMessages([]);
-    let currentCount = count+1;
-    setCount(currentCount)
-    let currentChatValue = "chat"+currentCount.toString();
+    let currentCounter = counter+1;
+    setCounter(currentCounter)
+    let currentChatValue = "chat"+currentCounter.toString();
     setCurrentChat(currentChatValue)
   }
 
@@ -335,24 +336,24 @@ function App( { counter , chattings, messages, liveChat, increment, decrement, a
           let stringConverted = JSON.stringify(chatMessages);
           localStorage.setItem(LSkey,stringConverted);
           //start a new chat
-          setNewEmptyChatValues(count)
+          setNewEmptyChatValues(counter)
           return;
       }
     });
     if ( isDeletion ) {
           // start a new chat, do not save previous chat
-          setNewEmptyChatValues(count);
+          setNewEmptyChatValues(counter);
           return
     }
     if (!isOld ){
       //previous was a new chat, save it first
       let stringsConverted = JSON.stringify(chatMessages);
-      let key = "chat" + count.toString();
+      let key = "chat" + counter.toString();
       localStorage.setItem(key,stringsConverted);
       // setChats([{'name':count,'isEditing': false, header: ""},...chats])
-      setChattings([{'name':count,'isEditing': false, header: ""},...chattings])
+      setChattings([{'name':counter,'isEditing': false, header: ""},...chattings])
       // start a new chat
-      setNewEmptyChatValues(count);
+      setNewEmptyChatValues(counter);
     }
   }
 
@@ -369,10 +370,10 @@ function App( { counter , chattings, messages, liveChat, increment, decrement, a
       // })
       // if ( oldChatFlag == -1 ) setChats([{'name':count,'isEditing':false,header:""},...chats]) 
       oldChatFlag = chattings.find((chatting)=> {
-        if (chatting.name == count ) return true;
+        if (chatting.name == counter ) return true;
         else return false;
       })
-      if ( oldChatFlag == -1 ) setChattings([{'name':count,'isEditing':false,header:""},...chattings])
+      if ( oldChatFlag == -1 ) setChattings([{'name':counter,'isEditing':false,header:""},...chattings])
 
     }
     let currentKey = "chat" + countNo.toString();
@@ -676,8 +677,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  increment: () => dispatch(increment()),
-  decrement: () => dispatch(decrement()),
+  setCounter: (dataObject) => dispatch(setCounter(dataObject)),
   addChat: (dataObject) => dispatch(addChat(dataObject)),
   setChattings: (dataObject) => dispatch(setChattings(dataObject)),
   addMessage: (dataObject) => dispatch(addMessage(dataObject)),
