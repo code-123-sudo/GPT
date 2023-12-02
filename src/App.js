@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { increment, decrement } from './actions/counterActions.js'
 import { addChat, setChattings } from './actions/chattingsActions.js'
 import { addMessage, setMessages } from './actions/messagesActions.js'
+import { setLiveChat } from './actions/liveChatActions.js'
 
 
 import { API_KEY, API_URL } from "./constants.js"
@@ -21,7 +22,8 @@ import xmark from './assets/xmark.svg'
 import Modal from './components/Modal.js'
 
 
-function App( { counter , chattings, messages, increment, decrement, addChat, setChattings, addMessage, setMessages  }) {
+function App( { counter , chattings, messages, liveChat, increment, decrement, addChat, setChattings, addMessage, setMessages, setLiveChat  }) {
+  
   const [message, setMessage] = useState('');
   const [editChatHeading, setEditChatHeading] = useState('')
   const [showEditInsideIcons, setShowEditInsideIcons] = useState(false)
@@ -30,9 +32,9 @@ function App( { counter , chattings, messages, increment, decrement, addChat, se
   const [chatMessages, setChatMessages] = useState(() => {
     return JSON.parse(localStorage.getItem('chatMessages')) || []
   });
-  const [chats,setChats] = useState(() => {
-    return JSON.parse(localStorage.getItem('chats')) || []
-  });
+  // const [chats,setChats] = useState(() => {
+  //   return JSON.parse(localStorage.getItem('chats')) || []
+  // });
   const [currentChat,setCurrentChat] = useState(() => {
     return JSON.parse(localStorage.getItem('currentChat')) || 'chat0'
   });
@@ -62,7 +64,7 @@ function App( { counter , chattings, messages, increment, decrement, addChat, se
   let refr = useRef(null);
 
   const deleteChat = (valueName,LSkey) => {
-    let chatsAfterDeletion = chats;
+    let chatsAfterDeletion = chattings;
     chatsAfterDeletion.filter((chatValue) => {
       if (chatValue.name == valueName ){
         return false;
@@ -70,7 +72,7 @@ function App( { counter , chattings, messages, increment, decrement, addChat, se
         return true;
       }
     })
-    setChats([...chatsAfterDeletion]);
+    setChattings([...chatsAfterDeletion]);
     localStorage.removeItem(LSkey);
     if ( LSkey == currentChat ) {
       startNewChat(true) // the chat to be deleted is the current chat opened , so no need to preprocess 
@@ -122,10 +124,11 @@ function App( { counter , chattings, messages, increment, decrement, addChat, se
       saveInLocalStorage('count',JSON.stringify(count))
       saveInLocalStorage('currentChat',JSON.stringify(currentChat))
       saveInLocalStorage('chatMessages',JSON.stringify(chatMessages))
-      saveInLocalStorage('chats',JSON.stringify(chats))
+      // saveInLocalStorage('chats',JSON.stringify(chats))
       saveInLocalStorage('isHamburger',JSON.stringify(isHamburger))
       saveInLocalStorage('isHamburgerAnimate',JSON.stringify(isHamburgerAnimate))
       saveInLocalStorage('chattings',JSON.stringify(chattings))
+      // saveInLocalStorage('chattings',JSON.stringify(chattings))
   })
 
   // useEffect(() => {
@@ -240,7 +243,8 @@ function App( { counter , chattings, messages, increment, decrement, addChat, se
       let stringsConverted = JSON.stringify(chatMessages);
       let key = "chat" + count.toString();
       localStorage.setItem(key,stringsConverted);
-      setChats([{'name':count,'isEditing':false,header:""},...chats])
+      // setChats([{'name':count,'isEditing':false,header:""},...chats])
+      setChattings([{'name':count,'isEditing':false,header:""},...chattings])
     }
   },[chatMessages])
  
@@ -251,6 +255,21 @@ function App( { counter , chattings, messages, increment, decrement, addChat, se
       setChatMessages(chatMessages => [...chatMessages,{text:message,isReply:false}]);
     }
     scrollToBottom();
+    // let currentChats = chats;
+    // let index = currentChats.find((chatValue) => {
+    //   if (chatValue.name == pageNo ) {
+    //     return true;
+    //   }else {
+    //     return false;
+    //   }
+    // })
+    // if (index > -1 ) { 
+    //   let editField = currentChats[index].isEditing
+    //   let headerField = currentChats[index].header
+    //   currentChats.splice(index, 1);
+    //   currentChats = [{'name':pageNo,'isEditing':editField,header:headerField},...currentChats]
+    //   setChats(currentChats)
+    // }
     let currentChattings = chattings;
     let index = currentChattings.find((chatValue) => {
       if (chatValue.name == pageNo ) {
@@ -264,7 +283,7 @@ function App( { counter , chattings, messages, increment, decrement, addChat, se
       let headerField = currentChattings[index].header
       currentChattings.splice(index, 1);
       currentChattings = [{'name':pageNo,'isEditing':editField,header:headerField},...currentChattings]
-      setChats(currentChats)
+      setChattings(currentChattings)
     }
     setStreamData("")
     setMessage(null)
@@ -295,22 +314,17 @@ function App( { counter , chattings, messages, increment, decrement, addChat, se
 
   const startNewChat = (isDeletion=false) => {
 
-    addChat({'name':counter,'isEditing': false, header: "a"})
-    setChattings([{'name':counter,'isEditing': false, header: ""},{'name':counter+1,'isEditing': false, header: ""}])
-    addMessage({text:"abab",isReply:false})
-    setMessages([...messages,{text:"dsds",isReply:false}]);
-    increment()
-    console.log(counter)
-    console.log(chattings)
-    console.log("here we go",messages)
+    // addChat({'name':counter,'isEditing': false, header: "a"})
+    // setChattings([{'name':counter,'isEditing': false, header: ""},{'name':counter+1,'isEditing': false, header: ""}])
+    // addMessage({text:"abab",isReply:false})
+    // setMessages([...messages,{text:"dsds",isReply:false}]);
+    // setLiveChat("chat1")
+    // increment()
+    // console.log(counter)
+    // console.log(chattings)
+    // console.log("here we go",messages)
+    // console.log(liveChat)
 
-
-
-
-
-
-
-    
     if ( chatMessages?.length == 0 ) return;
     let isOld = false;
     const LSkeys = Object.keys(localStorage);
@@ -335,7 +349,8 @@ function App( { counter , chattings, messages, increment, decrement, addChat, se
       let stringsConverted = JSON.stringify(chatMessages);
       let key = "chat" + count.toString();
       localStorage.setItem(key,stringsConverted);
-      setChats([{'name':count,'isEditing': false, header: ""},...chats])
+      // setChats([{'name':count,'isEditing': false, header: ""},...chats])
+      setChattings([{'name':count,'isEditing': false, header: ""},...chattings])
       // start a new chat
       setNewEmptyChatValues(count);
     }
@@ -348,11 +363,17 @@ function App( { counter , chattings, messages, increment, decrement, addChat, se
       localStorage.setItem(currentChat,stringsConverted2);
       /* checking wether its a new chat or old chat */
       let oldChatFlag = 0;
-      oldChatFlag = chats.find((chat)=> {
-        if (chat.name == count ) return true;
+      // oldChatFlag = chats.find((chat)=> {
+      //   if (chat.name == count ) return true;
+      //   else return false;
+      // })
+      // if ( oldChatFlag == -1 ) setChats([{'name':count,'isEditing':false,header:""},...chats]) 
+      oldChatFlag = chattings.find((chatting)=> {
+        if (chatting.name == count ) return true;
         else return false;
       })
-      if ( oldChatFlag == -1 ) setChats([{'name':count,'isEditing':false,header:""},...chats]) 
+      if ( oldChatFlag == -1 ) setChattings([{'name':count,'isEditing':false,header:""},...chattings])
+
     }
     let currentKey = "chat" + countNo.toString();
     if ( currentKey == currentChat ) return;/*user clicked on same chat button twice */
@@ -370,21 +391,46 @@ function App( { counter , chattings, messages, increment, decrement, addChat, se
     setEditChatHeading("")
     setShowEditInsideIcons(true)
     let chatsAfterEdition = []
-    for ( let i = 0; i < chats.length ; i++ ) {
+    // for ( let i = 0; i < chats.length ; i++ ) {
+    //   if ( i == index ) {
+    //     let clickedChat = {
+    //       isEditing : true,
+    //       name : '',
+    //       header: ''
+    //     }
+    //     clickedChat.isEditing = !chats[i].isEditing
+    //     clickedChat.name = chats[i].name
+    //     clickedChat.header = chats[i].header
+    //     chatsAfterEdition[i] = clickedChat
+    //   }
+    //   else {
+    //     let otherChatName = chats[i].name
+    //     let otherChatHeader = chats[i].header
+    //     let otherChat = {
+    //       isEditing : false,
+    //       name: otherChatName,
+    //       header : otherChatHeader
+    //     }
+    //     chatsAfterEdition[i] = otherChat
+    //   }
+    // }
+    // setChats([...chatsAfterEdition])
+
+    for ( let i = 0; i < chattings.length ; i++ ) {
       if ( i == index ) {
         let clickedChat = {
           isEditing : true,
           name : '',
           header: ''
         }
-        clickedChat.isEditing = !chats[i].isEditing
-        clickedChat.name = chats[i].name
-        clickedChat.header = chats[i].header
+        clickedChat.isEditing = !chattings[i].isEditing
+        clickedChat.name = chattings[i].name
+        clickedChat.header = chattings[i].header
         chatsAfterEdition[i] = clickedChat
       }
       else {
-        let otherChatName = chats[i].name
-        let otherChatHeader = chats[i].header
+        let otherChatName = chattings[i].name
+        let otherChatHeader = chattings[i].header
         let otherChat = {
           isEditing : false,
           name: otherChatName,
@@ -393,22 +439,57 @@ function App( { counter , chattings, messages, increment, decrement, addChat, se
         chatsAfterEdition[i] = otherChat
       }
     }
-    setChats([...chatsAfterEdition])
+    setChattings([...chatsAfterEdition])
+
    }
 
    const editHeadingFinal =  (index) => {
     let chatsAfterEditionFinal = []
-    for ( let i = 0; i < chats.length ; i++ ) {
+    // for ( let i = 0; i < chats.length ; i++ ) {
+    //   if ( i == index ) {
+    //     let selectedChat = {
+    //       isEditing : true,
+    //       name : '',
+    //       header: ''
+    //     }
+    //     selectedChat.isEditing = !chats[i].isEditing
+    //     selectedChat.name = chats[i].name
+    //     selectedChat.header = chats[i].header
+    //     if ( chats[i].isEditing ){
+    //       if(!editChatHeading) {
+    //         selectedChat.header = " "
+    //       }else {
+    //         selectedChat.header = editChatHeading;
+    //       } 
+    //     }
+    //     else {
+    //       // do nothing 
+    //     }
+    //     chatsAfterEditionFinal[i] = selectedChat
+    //   }
+    //   else {
+    //     let otherChatName = chats[i].name
+    //     let otherChatHeader = chats[i].header
+    //     let otherChat = {
+    //       isEditing : false,
+    //       name: otherChatName,
+    //       header : otherChatHeader
+    //     }
+    //     chatsAfterEditionFinal[i] = otherChat
+    //   }
+    // }
+    // setChats([...chatsAfterEditionFinal])
+    for ( let i = 0; i < chattings.length ; i++ ) {
       if ( i == index ) {
         let selectedChat = {
           isEditing : true,
           name : '',
           header: ''
         }
-        selectedChat.isEditing = !chats[i].isEditing
-        selectedChat.name = chats[i].name
-        selectedChat.header = chats[i].header
-        if ( chats[i].isEditing ){
+        selectedChat.isEditing = !chattings[i].isEditing
+        selectedChat.name = chattings[i].name
+        selectedChat.header = chattings[i].header
+        if ( chattings[i].isEditing ){
           if(!editChatHeading) {
             selectedChat.header = " "
           }else {
@@ -421,8 +502,8 @@ function App( { counter , chattings, messages, increment, decrement, addChat, se
         chatsAfterEditionFinal[i] = selectedChat
       }
       else {
-        let otherChatName = chats[i].name
-        let otherChatHeader = chats[i].header
+        let otherChatName = chattings[i].name
+        let otherChatHeader = chattings[i].header
         let otherChat = {
           isEditing : false,
           name: otherChatName,
@@ -431,23 +512,33 @@ function App( { counter , chattings, messages, increment, decrement, addChat, se
         chatsAfterEditionFinal[i] = otherChat
       }
     }
-    setChats([...chatsAfterEditionFinal])
+    setChattings([...chatsAfterEditionFinal])
     setShowEditInsideIcons(false)
    }
 
    const discardEditing = () => {
     let resetChats = []
-    for ( let i = 0 ; i < chats.length; i++ ) {
+    // for ( let i = 0 ; i < chats.length; i++ ) {
+    //   let resetChat = {
+    //     isEditing: false,
+    //     name: '',
+    //     header: ''
+    //   }
+    //   resetChat.name = chats[i].name
+    //   resetChat.header = chats[i].header
+    //   resetChats[i] = resetChat;
+    // }
+    for ( let i = 0 ; i < chattings.length; i++ ) {
       let resetChat = {
         isEditing: false,
         name: '',
         header: ''
       }
-      resetChat.name = chats[i].name
-      resetChat.header = chats[i].header
+      resetChat.name = chattings[i].name
+      resetChat.header = chattings[i].header
       resetChats[i] = resetChat;
     }
-    setChats([...resetChats])
+    setChattings([...resetChats])
     setShowEditInsideIcons(false)
    }
 
@@ -458,8 +549,8 @@ function App( { counter , chattings, messages, increment, decrement, addChat, se
         <img src={menu} className="iconImg" />
       </div>
       <div className={ isHamburger ? 'hamburger' : 'hamburger hamburger2'} >
-        <div className="newChatButton" onClick={startNewChat} >New Chat +{counter}{chattings[0]?.name}</div>
-        {chats?.map((value,index) => {
+        <div className="newChatButton" onClick={startNewChat} >New Chat +</div>
+        {chattings?.map((value,index) => {
           console.log(value)
           let keyRr = "chat" + value.name.toString();
           let returnString = localStorage.getItem(keyRr);
@@ -580,7 +671,8 @@ function App( { counter , chattings, messages, increment, decrement, addChat, se
 const mapStateToProps = (state) => ({
   counter: state.counter.counter,
   chattings: state.chattings.chattings,
-  messages: state.messages.messages
+  messages: state.messages.messages,
+  liveChat: state.liveChat.liveChat
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -590,6 +682,7 @@ const mapDispatchToProps = (dispatch) => ({
   setChattings: (dataObject) => dispatch(setChattings(dataObject)),
   addMessage: (dataObject) => dispatch(addMessage(dataObject)),
   setMessages: (dataObject) => dispatch(setMessages(dataObject)),
+  setLiveChat: (dataObject) => dispatch(setLiveChat(dataObject))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
