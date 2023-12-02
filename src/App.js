@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { increment, decrement } from './actions/counterActions.js'
 import { addChat, setChattings } from './actions/chattingsActions.js'
+import { addMessage, setMessages } from './actions/messagesActions.js'
 
 
 import { API_KEY, API_URL } from "./constants.js"
@@ -20,7 +21,7 @@ import xmark from './assets/xmark.svg'
 import Modal from './components/Modal.js'
 
 
-function App( { counter , chattings, increment, decrement, addChat, setChattings  }) {
+function App( { counter , chattings, messages, increment, decrement, addChat, setChattings, addMessage, setMessages  }) {
   const [message, setMessage] = useState('');
   const [editChatHeading, setEditChatHeading] = useState('')
   const [showEditInsideIcons, setShowEditInsideIcons] = useState(false)
@@ -294,11 +295,20 @@ function App( { counter , chattings, increment, decrement, addChat, setChattings
 
   const startNewChat = (isDeletion=false) => {
 
-    addChat({'name':counter,'isEditing': false, header: ""})
+    addChat({'name':counter,'isEditing': false, header: "a"})
     setChattings([{'name':counter,'isEditing': false, header: ""},{'name':counter+1,'isEditing': false, header: ""}])
+    addMessage({text:"abab",isReply:false})
+    setMessages([...messages,{text:"dsds",isReply:false}]);
     increment()
     console.log(counter)
     console.log(chattings)
+    console.log("here we go",messages)
+
+
+
+
+
+
 
     
     if ( chatMessages?.length == 0 ) return;
@@ -570,13 +580,16 @@ function App( { counter , chattings, increment, decrement, addChat, setChattings
 const mapStateToProps = (state) => ({
   counter: state.counter.counter,
   chattings: state.chattings.chattings,
+  messages: state.messages.messages
 })
 
 const mapDispatchToProps = (dispatch) => ({
   increment: () => dispatch(increment()),
   decrement: () => dispatch(decrement()),
   addChat: (dataObject) => dispatch(addChat(dataObject)),
-  setChattings: (dataObject) => dispatch(setChattings(dataObject))
+  setChattings: (dataObject) => dispatch(setChattings(dataObject)),
+  addMessage: (dataObject) => dispatch(addMessage(dataObject)),
+  setMessages: (dataObject) => dispatch(setMessages(dataObject)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
