@@ -1,15 +1,37 @@
 import React, { useState , useEffect , useRef } from 'react';
 import { connect } from 'react-redux';
-import Modal from './components/Modal/Modal.js'
+import Modal from '../Modal/Modal.js'
 import './HamburgerMenu.css'
+import menu from '../../assets/menu.png';
+import editSolid from '../../assets/edit-solid.svg'
+import xmark from '../../assets/xmark.svg'
 
-const HamburgerMenu = ({ isHamburger , chattings, counter, liveChat, messages }) => { 
+import { setCounter } from '../../actions/counterActions.js'
+import { addChat, setChattings } from '../../actions/chattingsActions.js'
+import { addMessage, setMessages } from '../../actions/messagesActions.js'
+import { setLiveChat } from '../../actions/liveChatActions.js'
+
+
+
+const HamburgerMenu = ({  chattings, counter, liveChat, messages , setChattings, setCounter, setLiveChat, setMessages}) => { 
   const [showEditInsideIcons, setShowEditInsideIcons] = useState(false)
   const [editChatHeading, setEditChatHeading] = useState('')
-  
+
   const [deletingChat,setDeletingChat] = useState("")
   const [deleteChatKey,setDeleteChatKey] = useState("")
   const [showModalFlag,setShowModalFlag] = useState(false)
+
+  const [isHamburger,setIsHamburger] = useState(() => {
+    return JSON.parse(localStorage.getItem('isHamburger')) || false
+  });
+  const [isHamburgerAnimate,setIsHamburgerAnimate] = useState(() => {
+    return JSON.parse(localStorage.getItem('isHamburgerAnimate')) || false
+  });
+
+
+
+
+
 
   const deleteChat = (valueName,LSkey) => {
     let chatsAfterDeletion = chattings;
@@ -204,7 +226,7 @@ const HamburgerMenu = ({ isHamburger , chattings, counter, liveChat, messages })
   }
 
   return (
-
+<>
     <Modal show={showModalFlag} handleClose={hideModal}>Modal</Modal>
 
     <div className="menuButton" onClick={() => {setIsHamburger(!isHamburger);setIsHamburgerAnimate(!isHamburgerAnimate)}}>
@@ -247,6 +269,7 @@ const HamburgerMenu = ({ isHamburger , chattings, counter, liveChat, messages })
           }
         )}
       </div>
+      </>
   )
 }
 

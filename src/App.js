@@ -11,10 +11,10 @@ import { addChat, setChattings } from './actions/chattingsActions.js'
 import { addMessage, setMessages } from './actions/messagesActions.js'
 import { setLiveChat } from './actions/liveChatActions.js'
 
-
 import { API_KEY, API_URL } from "./constants.js"
 
 import send from './assets/send.png'
+
 import menu from './assets/menu.png';
 import editSolid from './assets/edit-solid.svg'
 import xmark from './assets/xmark.svg'
@@ -23,8 +23,7 @@ import Modal from './components/Modal/Modal.js'
 
 import Commonfaqs from './components/Commonfaqs/Commonfaqs.js'
 import ChatText from './components/ChatText/ChatText.js'
-import HamburgerMenu from './components/HamburgerMenu/HamburgerMenu.js'
-
+import HamburgerMenu from './components/Hamburger/HamburgerMenu.js'
 
 function App( { counter , chattings, messages, liveChat, setCounter, addChat, setChattings, addMessage, setMessages, setLiveChat  }) {
   
@@ -365,7 +364,7 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
         )}
       </div>
 
-      <HamburgerMenu isHamburger={isHamburger}></HamburgerMenu>
+      <HamburgerMenu setPageNo={setPageNo}></HamburgerMenu>
 
 
 
