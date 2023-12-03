@@ -29,9 +29,9 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
   const [showEditInsideIcons, setShowEditInsideIcons] = useState(false)
   const [showModalFlag,setShowModalFlag] = useState(false)
 
-  const [chatMessages, setChatMessages] = useState(() => {
-    return JSON.parse(localStorage.getItem('chatMessages')) || []
-  });
+  // const [chatMessages, setChatMessages] = useState(() => {
+  //   return JSON.parse(localStorage.getItem('chatMessages')) || []
+  // });
   // const [chats,setChats] = useState(() => {
   //   return JSON.parse(localStorage.getItem('chats')) || []
   // });
@@ -112,7 +112,7 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
   const searchInCache = () => {
     data.forEach( (quesAns) => {
         if ( quesAns.question == message ) {
-          setChatMessages(chatMessages => [...chatMessages,{text:quesAns.answer,isReply:true}]);
+          addMessage({text:quesAns.answer,isReply:true});
           setIsTypingRight(false);
           foundInCache = true;
           return;
@@ -123,7 +123,7 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
   useEffect(() => {
       // saveInLocalStorage('count',JSON.stringify(count))
       // saveInLocalStorage('currentChat',JSON.stringify(currentChat))
-      saveInLocalStorage('chatMessages',JSON.stringify(chatMessages))
+      // saveInLocalStorage('chatMessages',JSON.stringify(chatMessages))
       // saveInLocalStorage('chats',JSON.stringify(chats))
       saveInLocalStorage('isHamburger',JSON.stringify(isHamburger))
       saveInLocalStorage('isHamburgerAnimate',JSON.stringify(isHamburgerAnimate))
@@ -131,6 +131,7 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
       saveInLocalStorage('chattings',JSON.stringify(chattings))
       saveInLocalStorage('counter',JSON.stringify(counter))
       saveInLocalStorage('liveChat',JSON.stringify(liveChat))
+      saveInLocalStorage('messages',JSON.stringify(messages))
       // saveInLocalStorage('chattings',JSON.stringify(chattings))
   })
 
@@ -229,7 +230,7 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
         const response = await fetchFromAPI(API_URL,message);
         const textRecieved = await getAsyncStream(response); 
         setIsStreaming(false)
-        setChatMessages(chatMessages => [...chatMessages,{text:textRecieved,isReply:true}]);
+        addMessage({text:textRecieved,isReply:true});
         foundInCache = false;
       }
       foundInCache=false;
@@ -242,20 +243,20 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
   }
 
   useEffect(() => {
-    if ( chatMessages?.length == 1 ) {
-      let stringsConverted = JSON.stringify(chatMessages);
+    if ( messages?.length == 1 ) {
+      let stringsConverted = JSON.stringify(messages);
       let key = "chat" + counter.toString();
       localStorage.setItem(key,stringsConverted);
       // setChats([{'name':count,'isEditing':false,header:""},...chats])
       setChattings([{'name':counter,'isEditing':false,header:""},...chattings])
     }
-  },[chatMessages])
+  },[messages])
  
   const addUserQuestionToChat = async (fromCache) => { 
     if ( fromCache ){
-      setChatMessages(chatMessages => [...chatMessages,{text:fromCache,isReply:false}]);
+      addMessage({text:fromCache,isReply:false});
     }else {
-      setChatMessages(chatMessages => [...chatMessages,{text:message,isReply:false}]);
+      addMessage({text:message,isReply:false});
     }
     scrollToBottom();
     // let currentChats = chats;
@@ -308,7 +309,7 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
   }
 
   const setNewEmptyChatValues = (counter) => {
-    setChatMessages([]);
+    setMessages([]);
     let currentCounter = counter+1;
     setCounter(currentCounter)
     let liveChatValue = "chat"+currentCounter.toString();
@@ -320,22 +321,30 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
     // addChat({'name':counter,'isEditing': false, header: "a"})
     // setChattings([{'name':counter,'isEditing': false, header: ""},{'name':counter+1,'isEditing': false, header: ""}])
     // addMessage({text:"abab",isReply:false})
-    // setMessages([...messages,{text:"dsds",isReply:false}]);
+    // let x = {text:"dsds",isReply:false}
+    // addMessage(x);
+    // console.log("here we go",messages)
+    // x = {text:"abcd",isReply:false}
+    // addMessage(x);
+    // console.log("here we go",messages)
+    // x = [...messages,{text:"efgh",isReply:false}]
+    // setMessages(x);
+    // console.log("here we go",messages)
     // setLiveChat("chat1")
     // increment()
     // console.log(counter)
     // console.log(chattings)
-    // console.log("here we go",messages)
+    
     // console.log(liveChat)
 
-    if ( chatMessages?.length == 0 ) return;
+    if ( messages?.length == 0 ) return;
     let isOld = false;
     const LSkeys = Object.keys(localStorage);
     LSkeys.forEach((LSkey) => {
       if ( LSkey == liveChat) {
           //previous was a old chat edition, save it first
           isOld = true;
-          let stringConverted = JSON.stringify(chatMessages);
+          let stringConverted = JSON.stringify(messages);
           localStorage.setItem(LSkey,stringConverted);
           //start a new chat
           setNewEmptyChatValues(counter)
@@ -349,7 +358,7 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
     }
     if (!isOld ){
       //previous was a new chat, save it first
-      let stringsConverted = JSON.stringify(chatMessages);
+      let stringsConverted = JSON.stringify(messages);
       let key = "chat" + counter.toString();
       localStorage.setItem(key,stringsConverted);
       // setChats([{'name':count,'isEditing': false, header: ""},...chats])
@@ -361,8 +370,8 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
 
   const fetchOldChat = (countNo) => {
 
-    if(chatMessages?.length != 0) {
-      let stringsConverted2 = JSON.stringify(chatMessages);
+    if(messages?.length != 0) {
+      let stringsConverted2 = JSON.stringify(messages);
       localStorage.setItem(liveChat,stringsConverted2);
       /* checking wether its a new chat or old chat */
       let oldChatFlag = 0;
@@ -384,7 +393,7 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
     /*update the chat messages of button being clicked */
     let retString = localStorage.getItem(liveKey);
     let retArray = JSON.parse(retString);
-    setChatMessages(retArray)
+    setMessages(retArray)
     
     /* sorting the chat order as newest first */
     setPageNo(countNo)
@@ -592,7 +601,7 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
           <div className="box">
             <ToastContainer />
             <div className='chat-container'>
-              {chatMessages?.map((value) => {
+              {messages?.map((value) => {
                 if (!value.isReply) {
                   return (
                     <div className="chatLeftContainer">
@@ -647,7 +656,7 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
             
         </div>
       </div>
-        { chatMessages?.length == 0 ?
+        { messages?.length == 0 ?
           <div className="commonfaqs">
             <div className="faqs1">
               <div className="faq" onClick={() => {addUserQuestionToChat(defaultQuestions[0].question)}}>{defaultQuestions[0].question}</div>
