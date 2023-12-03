@@ -28,11 +28,6 @@ import HamburgerMenu from './components/Hamburger/HamburgerMenu.js'
 function App( { counter , chattings, messages, liveChat, setCounter, addChat, setChattings, addMessage, setMessages, setLiveChat  }) {
   
   const [message, setMessage] = useState('');
-  const [editChatHeading, setEditChatHeading] = useState('')
-
-
-  const [showEditInsideIcons, setShowEditInsideIcons] = useState(false)
-  const [showModalFlag,setShowModalFlag] = useState(false)
 
   const [pageNo,setPageNo] = useState(() => {
     return JSON.parse(localStorage.getItem('pageNo')) || 0
@@ -43,9 +38,6 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
   const [isTypingLeft,setIsTypingLeft] = useState(false);
   const [isTypingRight,setIsTypingRight] = useState(false);
 
-  const [deletingChat,setDeletingChat] = useState("")
-  const [deleteChatKey,setDeleteChatKey] = useState("")
-
   const [isHamburger,setIsHamburger] = useState(() => {
     return JSON.parse(localStorage.getItem('isHamburger')) || false
   });
@@ -55,40 +47,6 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
 
   let foundInCache = false;
   let refr = useRef(null);
-
-  const deleteChat = (valueName,LSkey) => {
-    let chatsAfterDeletion = chattings;
-    chatsAfterDeletion.filter((chatValue) => {
-      if (chatValue.name == valueName ){
-        return false;
-      }else {
-        return true;
-      }
-    })
-    setChattings([...chatsAfterDeletion]);
-    localStorage.removeItem(LSkey);
-    if ( LSkey == liveChat ) {
-      startNewChat(true) // the chat to be deleted is the current chat opened , so no need to preprocess 
-      // it before starting a new chat, its already deleted
-    }
-    else {
-      startNewChat()// the chat to be deleted is some other chat other than the selected one right now, so first save any changes to current chat before
-      //starting a new chat  
-    }
-  }
-
-  const showModal = (a,b) => {
-    setShowModalFlag(true)
-    setDeletingChat(a)
-    setDeleteChatKey(b)
-  }
-
-  const hideModal = (modalAnswer) => {
-    if ( modalAnswer == "true" ) {
-      deleteChat(deletingChat,deleteChatKey)
-    }
-    setShowModalFlag(false)
-  }
   
   const saveInLocalStorage = (key,value) => {
     localStorage.setItem(key,value);
@@ -96,10 +54,6 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
 
   const handleChange = (event) => {
     setMessage(event.target.value)
-  }
-
-  const handleChange2 = (event) => {
-    setEditChatHeading(event.target.value)
   }
 
   const searchInCache = () => {
@@ -249,126 +203,10 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
     }
   };
 
-  const setNewEmptyChatValues = (counter) => {
-    setMessages([]);
-    let currentCounter = counter+1;
-    setCounter(currentCounter)
-    let liveChatValue = "chat"+currentCounter.toString();
-    setLiveChat(liveChatValue)
-  }
-
-  const startNewChat = (isDeletion=false) => {
-    if ( messages?.length == 0 ) return;
-    let isOld = false;
-    const LSkeys = Object.keys(localStorage);
-    LSkeys.forEach((LSkey) => {
-      if ( LSkey == liveChat) {
-          //previous was a old chat edition, save it first
-          isOld = true;
-          let stringConverted = JSON.stringify(messages);
-          localStorage.setItem(LSkey,stringConverted);
-          //start a new chat
-          setNewEmptyChatValues(counter)
-          return;
-      }
-    });
-    if ( isDeletion ) {
-          // start a new chat, do not save previous chat
-          setNewEmptyChatValues(counter);
-          return
-    }
-    if (!isOld ){
-      //previous was a new chat, save it first
-      let stringsConverted = JSON.stringify(messages);
-      let key = "chat" + counter.toString();
-      localStorage.setItem(key,stringsConverted);
-      // setChats([{'name':count,'isEditing': false, header: ""},...chats])
-      setChattings([{'name':counter,'isEditing': false, header: ""},...chattings])
-      // start a new chat
-      setNewEmptyChatValues(counter);
-    }
-  }
-
-  const fetchOldChat = (countNo) => {
-
-    if(messages?.length != 0) {
-      let stringsConverted2 = JSON.stringify(messages);
-      localStorage.setItem(liveChat,stringsConverted2);
-      /* checking wether its a new chat or old chat */
-      let oldChatFlag = 0;
-      oldChatFlag = chattings.find((chatting)=> {
-        if (chatting.name == counter ) return true;
-        else return false;
-      })
-      if ( oldChatFlag == -1 ) setChattings([{'name':counter,'isEditing':false,header:""},...chattings])
-
-    }
-    let liveKey = "chat" + countNo.toString();
-    if ( liveKey == liveChat ) return;/*user clicked on same chat button twice */
-    setLiveChat(liveKey)
-    /*update the chat messages of button being clicked */
-    let retString = localStorage.getItem(liveKey);
-    let retArray = JSON.parse(retString);
-    setMessages(retArray)
-    
-    /* sorting the chat order as newest first */
-    setPageNo(countNo)
-  }
-
    
   return (
     <div className="topDiv">
-      <Modal show={showModalFlag} handleClose={hideModal}>Modal</Modal>
-
-
-
-      <div className="menuButton" onClick={() => {setIsHamburger(!isHamburger);setIsHamburgerAnimate(!isHamburgerAnimate)}}>
-        <img src={menu} className="iconImg" />
-      </div>
-
-
-      <div className={ isHamburger ? 'hamburger' : 'hamburger hamburger2'} >
-        <div className="newChatButton" onClick={startNewChat} >New Chat +</div>
-        {chattings?.map((value,index) => {
-          console.log(value)
-          let keyRr = "chat" + value.name.toString();
-          let returnString = localStorage.getItem(keyRr);
-          let returnArray = JSON.parse(returnString);
-          let quesText = '';
-          if (!returnArray ){
-            return null;
-          }
-          if ( returnArray ){
-            quesText = returnArray[0]?.text
-          }
-          quesText = quesText?.slice(0,5)
-          return (
-            <div className="chatsListItem">
-              { !value.isEditing ? <div className="chatText" onClick={ () => {fetchOldChat(value.name)}}>
-                {value.header.length > 0  ? value.header : quesText + '....' }
-              </div> : <input type="text" className="editHead" value={editChatHeading} onChange={handleChange2}/> }
-              
-              {showEditInsideIcons && value.isEditing ?
-                <>
-                  <div className="editButton" onClick={() => {editHeadingFinal(index)}}><img src={editSolid} className="editSo" /></div>
-                  <div className="deleteButton" onClick={ () => {discardEditing()} }><img src={xmark} className="xmark"/></div>
-                </> :
-                <>
-                <div className="editButton" onClick={() => {editHeading(index)}}>E</div>
-                <div className="deleteButton" onClick={ () => {showModal(value.name,keyRr)} }>D</div>
-                </>
-              }
-            </div>
-          )
-          }
-        )}
-      </div>
-
       <HamburgerMenu setPageNo={setPageNo}></HamburgerMenu>
-
-
-
-
       <div className= {"chatBox " +  (isHamburgerAnimate ? 'chatBox2' : null) }>
         <div className="parentDiv">
           <div className="box">
