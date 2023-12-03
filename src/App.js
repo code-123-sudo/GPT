@@ -20,14 +20,18 @@ import editSolid from './assets/edit-solid.svg'
 import xmark from './assets/xmark.svg'
 
 import Modal from './components/Modal/Modal.js'
+
 import Commonfaqs from './components/Commonfaqs/Commonfaqs.js'
 import ChatText from './components/ChatText/ChatText.js'
+import HamburgerMenu from './components/HamburgerMenu/HamburgerMenu.js'
 
 
 function App( { counter , chattings, messages, liveChat, setCounter, addChat, setChattings, addMessage, setMessages, setLiveChat  }) {
   
   const [message, setMessage] = useState('');
   const [editChatHeading, setEditChatHeading] = useState('')
+
+
   const [showEditInsideIcons, setShowEditInsideIcons] = useState(false)
   const [showModalFlag,setShowModalFlag] = useState(false)
 
@@ -312,98 +316,18 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
     setPageNo(countNo)
   }
 
-   const editHeading = (index) => {
-    setEditChatHeading("")
-    setShowEditInsideIcons(true)
-    let chatsAfterEdition = []
-    for ( let i = 0; i < chattings.length ; i++ ) {
-      if ( i == index ) {
-        let clickedChat = {
-          isEditing : true,
-          name : '',
-          header: ''
-        }
-        clickedChat.isEditing = !chattings[i].isEditing
-        clickedChat.name = chattings[i].name
-        clickedChat.header = chattings[i].header
-        chatsAfterEdition[i] = clickedChat
-      }
-      else {
-        let otherChatName = chattings[i].name
-        let otherChatHeader = chattings[i].header
-        let otherChat = {
-          isEditing : false,
-          name: otherChatName,
-          header : otherChatHeader
-        }
-        chatsAfterEdition[i] = otherChat
-      }
-    }
-    setChattings([...chatsAfterEdition])
-
-   }
-
-   const editHeadingFinal =  (index) => {
-    let chatsAfterEditionFinal = []
-    for ( let i = 0; i < chattings.length ; i++ ) {
-      if ( i == index ) {
-        let selectedChat = {
-          isEditing : true,
-          name : '',
-          header: ''
-        }
-        selectedChat.isEditing = !chattings[i].isEditing
-        selectedChat.name = chattings[i].name
-        selectedChat.header = chattings[i].header
-        if ( chattings[i].isEditing ){
-          if(!editChatHeading) {
-            selectedChat.header = " "
-          }else {
-            selectedChat.header = editChatHeading;
-          } 
-        }
-        else {
-          // do nothing 
-        }
-        chatsAfterEditionFinal[i] = selectedChat
-      }
-      else {
-        let otherChatName = chattings[i].name
-        let otherChatHeader = chattings[i].header
-        let otherChat = {
-          isEditing : false,
-          name: otherChatName,
-          header : otherChatHeader
-        }
-        chatsAfterEditionFinal[i] = otherChat
-      }
-    }
-    setChattings([...chatsAfterEditionFinal])
-    setShowEditInsideIcons(false)
-   }
-
-   const discardEditing = () => {
-    let resetChats = []
-    for ( let i = 0 ; i < chattings.length; i++ ) {
-      let resetChat = {
-        isEditing: false,
-        name: '',
-        header: ''
-      }
-      resetChat.name = chattings[i].name
-      resetChat.header = chattings[i].header
-      resetChats[i] = resetChat;
-    }
-    setChattings([...resetChats])
-    setShowEditInsideIcons(false)
-   }
-
+   
   return (
     <div className="topDiv">
-        <Modal show={showModalFlag} handleClose={hideModal}>Modal</Modal>
+      <Modal show={showModalFlag} handleClose={hideModal}>Modal</Modal>
+
+
+
       <div className="menuButton" onClick={() => {setIsHamburger(!isHamburger);setIsHamburgerAnimate(!isHamburgerAnimate)}}>
         <img src={menu} className="iconImg" />
       </div>
+
+
       <div className={ isHamburger ? 'hamburger' : 'hamburger hamburger2'} >
         <div className="newChatButton" onClick={startNewChat} >New Chat +</div>
         {chattings?.map((value,index) => {
@@ -440,13 +364,19 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
           }
         )}
       </div>
+
+      <HamburgerMenu isHamburger={isHamburger}></HamburgerMenu>
+
+
+
+
       <div className= {"chatBox " +  (isHamburgerAnimate ? 'chatBox2' : null) }>
         <div className="parentDiv">
           <div className="box">
             <ToastContainer />
             <ChatText isStreaming={isStreaming} isTypingLeft={isTypingLeft} isTypingRight={isTypingRight} streamData={streamData}></ChatText>  
+          </div>
         </div>
-      </div>
         { messages?.length == 0 ?
           <Commonfaqs addUserQuestionToChat={addUserQuestionToChat}> </Commonfaqs> : null }
         <div className="flexRowContainer">
@@ -458,6 +388,8 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
           </div>
         </div>
       </div>
+
+
     </div>
   );
 }

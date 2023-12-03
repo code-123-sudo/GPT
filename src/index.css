@@ -197,17 +197,7 @@ button :: hover {
   height : 30px;
   width : 30px;
 }
-.newChatButton {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 30px;
-  width: 150px;
-  background: #D3D3D3;
-  margin-top: 50px;
-  border-radius: 4px;
-  cursor: pointer;
-}
+
 .chatBox {
   display: flex;
   flex-direction: column;
@@ -220,59 +210,8 @@ button :: hover {
   flex-direction: column;*/
   width: calc(100% - 200px);
 }
-.hamburger {
-  height : 100vh;
-  width : 200px;
-  background: grey;
-  margin-left: 0px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: 0.2s cubic-bezier(.36,-0.01,0,.77);
- /*transition: 0.2s;*/
-}
-.hamburger2 {
-  margin-left: -200px;
-}
-.chatsListItem {
-  width: 150px;
-  height: 30px;
-  background: #D3D3D3;
-  margin-top:10px;
-  border-radius: 4px;
-  cursor: pointer;
-  display: flex;
-}
-.editButton, .deleteButton {
-  width: 30px;
-  height: 30px;
-  background: darkgrey;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid grey;
-  cursor: pointer;
-}
 
-.editHead {
-  width: 90px;
-  height: 30px;
-}
-
-.chatText{
-  width:90px;
-  height : 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 .box{
   margin-top: 202px;
   max-height: 69vh;
-}
-.editSo{
-  height : 16px;
-}
-.xmark{
-  height:23px;
 }
