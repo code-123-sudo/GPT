@@ -29,18 +29,6 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
   const [showEditInsideIcons, setShowEditInsideIcons] = useState(false)
   const [showModalFlag,setShowModalFlag] = useState(false)
 
-  // const [chatMessages, setChatMessages] = useState(() => {
-  //   return JSON.parse(localStorage.getItem('chatMessages')) || []
-  // });
-  // const [chats,setChats] = useState(() => {
-  //   return JSON.parse(localStorage.getItem('chats')) || []
-  // });
-  // const [currentChat,setCurrentChat] = useState(() => {
-  //   return JSON.parse(localStorage.getItem('currentChat')) || 'chat0'
-  // });
-  // const [count,setCount] = useState(() => {
-  //   return JSON.parse(localStorage.getItem('count')) || 0
-  // });
   const [pageNo,setPageNo] = useState(() => {
     return JSON.parse(localStorage.getItem('pageNo')) || 0
   });
@@ -121,10 +109,7 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
   }
 
   useEffect(() => {
-      // saveInLocalStorage('count',JSON.stringify(count))
-      // saveInLocalStorage('currentChat',JSON.stringify(currentChat))
-      // saveInLocalStorage('chatMessages',JSON.stringify(chatMessages))
-      // saveInLocalStorage('chats',JSON.stringify(chats))
+      
       saveInLocalStorage('isHamburger',JSON.stringify(isHamburger))
       saveInLocalStorage('isHamburgerAnimate',JSON.stringify(isHamburgerAnimate))
 
@@ -132,31 +117,8 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
       saveInLocalStorage('counter',JSON.stringify(counter))
       saveInLocalStorage('liveChat',JSON.stringify(liveChat))
       saveInLocalStorage('messages',JSON.stringify(messages))
-      // saveInLocalStorage('chattings',JSON.stringify(chattings))
+      
   })
-
-  // useEffect(() => {
-  //     let countLS = localStorage.getItem('count')
-  //     let currentChatLS = localStorage.getItem('currentChat')
-  //     let chatMessagesLS = localStorage.getItem('chatMessages')
-  //     let chatsLS = localStorage.getItem('chats')
-  //     let isHamburgerLS = localStorage.getItem('isHamburger')
-  //     let isHamburgerAnimateLS = localStorage.getItem('isHamburgerAnimate')
-
-  //     countLS = JSON.parse(countLS)
-  //     currentChatLS = JSON.parse(currentChatLS)
-  //     chatMessagesLS =  JSON.parse(chatMessagesLS)
-  //     chatsLS = JSON.parse(chatsLS)
-  //     isHamburgerLS = JSON.parse(isHamburgerLS)
-  //     isHamburgerAnimateLS = JSON.parse(isHamburgerAnimateLS)
-
-  //     setCount(countLS)
-  //     setCurrentChat(currentChatLS)
-  //     setChatMessages(chatMessagesLS)
-  //     setChats(chatsLS)
-  //     setIsHamburger(isHamburgerLS)
-  //     setIsHamburgerAnimate(isHamburgerAnimateLS)
-  // },[])
 
   const fetchFromAPI = async (API_URL,message) => {
     let finalMessage = "chatgpt " + message + " Reply in a maximum of 20 words. Always reply in Hindi with English characters";
@@ -259,21 +221,6 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
       addMessage({text:message,isReply:false});
     }
     scrollToBottom();
-    // let currentChats = chats;
-    // let index = currentChats.find((chatValue) => {
-    //   if (chatValue.name == pageNo ) {
-    //     return true;
-    //   }else {
-    //     return false;
-    //   }
-    // })
-    // if (index > -1 ) { 
-    //   let editField = currentChats[index].isEditing
-    //   let headerField = currentChats[index].header
-    //   currentChats.splice(index, 1);
-    //   currentChats = [{'name':pageNo,'isEditing':editField,header:headerField},...currentChats]
-    //   setChats(currentChats)
-    // }
     let currentChattings = chattings;
     let index = currentChattings.find((chatValue) => {
       if (chatValue.name == pageNo ) {
@@ -317,26 +264,6 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
   }
 
   const startNewChat = (isDeletion=false) => {
-
-    // addChat({'name':counter,'isEditing': false, header: "a"})
-    // setChattings([{'name':counter,'isEditing': false, header: ""},{'name':counter+1,'isEditing': false, header: ""}])
-    // addMessage({text:"abab",isReply:false})
-    // let x = {text:"dsds",isReply:false}
-    // addMessage(x);
-    // console.log("here we go",messages)
-    // x = {text:"abcd",isReply:false}
-    // addMessage(x);
-    // console.log("here we go",messages)
-    // x = [...messages,{text:"efgh",isReply:false}]
-    // setMessages(x);
-    // console.log("here we go",messages)
-    // setLiveChat("chat1")
-    // increment()
-    // console.log(counter)
-    // console.log(chattings)
-    
-    // console.log(liveChat)
-
     if ( messages?.length == 0 ) return;
     let isOld = false;
     const LSkeys = Object.keys(localStorage);
@@ -375,11 +302,6 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
       localStorage.setItem(liveChat,stringsConverted2);
       /* checking wether its a new chat or old chat */
       let oldChatFlag = 0;
-      // oldChatFlag = chats.find((chat)=> {
-      //   if (chat.name == count ) return true;
-      //   else return false;
-      // })
-      // if ( oldChatFlag == -1 ) setChats([{'name':count,'isEditing':false,header:""},...chats]) 
       oldChatFlag = chattings.find((chatting)=> {
         if (chatting.name == counter ) return true;
         else return false;
@@ -403,31 +325,6 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
     setEditChatHeading("")
     setShowEditInsideIcons(true)
     let chatsAfterEdition = []
-    // for ( let i = 0; i < chats.length ; i++ ) {
-    //   if ( i == index ) {
-    //     let clickedChat = {
-    //       isEditing : true,
-    //       name : '',
-    //       header: ''
-    //     }
-    //     clickedChat.isEditing = !chats[i].isEditing
-    //     clickedChat.name = chats[i].name
-    //     clickedChat.header = chats[i].header
-    //     chatsAfterEdition[i] = clickedChat
-    //   }
-    //   else {
-    //     let otherChatName = chats[i].name
-    //     let otherChatHeader = chats[i].header
-    //     let otherChat = {
-    //       isEditing : false,
-    //       name: otherChatName,
-    //       header : otherChatHeader
-    //     }
-    //     chatsAfterEdition[i] = otherChat
-    //   }
-    // }
-    // setChats([...chatsAfterEdition])
-
     for ( let i = 0; i < chattings.length ; i++ ) {
       if ( i == index ) {
         let clickedChat = {
@@ -457,40 +354,6 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
 
    const editHeadingFinal =  (index) => {
     let chatsAfterEditionFinal = []
-    // for ( let i = 0; i < chats.length ; i++ ) {
-    //   if ( i == index ) {
-    //     let selectedChat = {
-    //       isEditing : true,
-    //       name : '',
-    //       header: ''
-    //     }
-    //     selectedChat.isEditing = !chats[i].isEditing
-    //     selectedChat.name = chats[i].name
-    //     selectedChat.header = chats[i].header
-    //     if ( chats[i].isEditing ){
-    //       if(!editChatHeading) {
-    //         selectedChat.header = " "
-    //       }else {
-    //         selectedChat.header = editChatHeading;
-    //       } 
-    //     }
-    //     else {
-    //       // do nothing 
-    //     }
-    //     chatsAfterEditionFinal[i] = selectedChat
-    //   }
-    //   else {
-    //     let otherChatName = chats[i].name
-    //     let otherChatHeader = chats[i].header
-    //     let otherChat = {
-    //       isEditing : false,
-    //       name: otherChatName,
-    //       header : otherChatHeader
-    //     }
-    //     chatsAfterEditionFinal[i] = otherChat
-    //   }
-    // }
-    // setChats([...chatsAfterEditionFinal])
     for ( let i = 0; i < chattings.length ; i++ ) {
       if ( i == index ) {
         let selectedChat = {
@@ -530,16 +393,6 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
 
    const discardEditing = () => {
     let resetChats = []
-    // for ( let i = 0 ; i < chats.length; i++ ) {
-    //   let resetChat = {
-    //     isEditing: false,
-    //     name: '',
-    //     header: ''
-    //   }
-    //   resetChat.name = chats[i].name
-    //   resetChat.header = chats[i].header
-    //   resetChats[i] = resetChat;
-    // }
     for ( let i = 0 ; i < chattings.length; i++ ) {
       let resetChat = {
         isEditing: false,
