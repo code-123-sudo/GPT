@@ -1,6 +1,6 @@
 // reducers/countReducer.js
 const initialState = {
-  counter: 0,
+  counter: JSON.parse(localStorage.getItem('counter')) || 0,
 };
 
 const counterReducer = (state = initialState, action) => {

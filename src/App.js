@@ -35,9 +35,9 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
   // const [chats,setChats] = useState(() => {
   //   return JSON.parse(localStorage.getItem('chats')) || []
   // });
-  const [currentChat,setCurrentChat] = useState(() => {
-    return JSON.parse(localStorage.getItem('currentChat')) || 'chat0'
-  });
+  // const [currentChat,setCurrentChat] = useState(() => {
+  //   return JSON.parse(localStorage.getItem('currentChat')) || 'chat0'
+  // });
   // const [count,setCount] = useState(() => {
   //   return JSON.parse(localStorage.getItem('count')) || 0
   // });
@@ -74,7 +74,7 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
     })
     setChattings([...chatsAfterDeletion]);
     localStorage.removeItem(LSkey);
-    if ( LSkey == currentChat ) {
+    if ( LSkey == liveChat ) {
       startNewChat(true) // the chat to be deleted is the current chat opened , so no need to preprocess 
       // it before starting a new chat, its already deleted
     }
@@ -122,13 +122,15 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
 
   useEffect(() => {
       // saveInLocalStorage('count',JSON.stringify(count))
-      saveInLocalStorage('currentChat',JSON.stringify(currentChat))
+      // saveInLocalStorage('currentChat',JSON.stringify(currentChat))
       saveInLocalStorage('chatMessages',JSON.stringify(chatMessages))
       // saveInLocalStorage('chats',JSON.stringify(chats))
       saveInLocalStorage('isHamburger',JSON.stringify(isHamburger))
       saveInLocalStorage('isHamburgerAnimate',JSON.stringify(isHamburgerAnimate))
+
       saveInLocalStorage('chattings',JSON.stringify(chattings))
       saveInLocalStorage('counter',JSON.stringify(counter))
+      saveInLocalStorage('liveChat',JSON.stringify(liveChat))
       // saveInLocalStorage('chattings',JSON.stringify(chattings))
   })
 
@@ -309,8 +311,8 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
     setChatMessages([]);
     let currentCounter = counter+1;
     setCounter(currentCounter)
-    let currentChatValue = "chat"+currentCounter.toString();
-    setCurrentChat(currentChatValue)
+    let liveChatValue = "chat"+currentCounter.toString();
+    setLiveChat(liveChatValue)
   }
 
   const startNewChat = (isDeletion=false) => {
@@ -330,7 +332,7 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
     let isOld = false;
     const LSkeys = Object.keys(localStorage);
     LSkeys.forEach((LSkey) => {
-      if ( LSkey == currentChat) {
+      if ( LSkey == liveChat) {
           //previous was a old chat edition, save it first
           isOld = true;
           let stringConverted = JSON.stringify(chatMessages);
@@ -361,7 +363,7 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
 
     if(chatMessages?.length != 0) {
       let stringsConverted2 = JSON.stringify(chatMessages);
-      localStorage.setItem(currentChat,stringsConverted2);
+      localStorage.setItem(liveChat,stringsConverted2);
       /* checking wether its a new chat or old chat */
       let oldChatFlag = 0;
       // oldChatFlag = chats.find((chat)=> {
@@ -376,11 +378,11 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
       if ( oldChatFlag == -1 ) setChattings([{'name':counter,'isEditing':false,header:""},...chattings])
 
     }
-    let currentKey = "chat" + countNo.toString();
-    if ( currentKey == currentChat ) return;/*user clicked on same chat button twice */
-    setCurrentChat(currentKey)
+    let liveKey = "chat" + countNo.toString();
+    if ( liveKey == liveChat ) return;/*user clicked on same chat button twice */
+    setLiveChat(liveKey)
     /*update the chat messages of button being clicked */
-    let retString = localStorage.getItem(currentKey);
+    let retString = localStorage.getItem(liveKey);
     let retArray = JSON.parse(retString);
     setChatMessages(retArray)
     
