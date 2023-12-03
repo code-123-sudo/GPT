@@ -19,7 +19,9 @@ import menu from './assets/menu.png';
 import editSolid from './assets/edit-solid.svg'
 import xmark from './assets/xmark.svg'
 
-import Modal from './components/Modal.js'
+import Modal from './components/Modal/Modal.js'
+import Commonfaqs from './components/Commonfaqs/Commonfaqs.js'
+import ChatText from './components/ChatText/ChatText.js'
 
 
 function App( { counter , chattings, messages, liveChat, setCounter, addChat, setChattings, addMessage, setMessages, setLiveChat  }) {
@@ -37,6 +39,7 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
   const [streamData,setStreamData] = useState();
   const [isTypingLeft,setIsTypingLeft] = useState(false);
   const [isTypingRight,setIsTypingRight] = useState(false);
+
   const [deletingChat,setDeletingChat] = useState("")
   const [deleteChatKey,setDeleteChatKey] = useState("")
 
@@ -48,7 +51,6 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
   });
 
   let foundInCache = false;
-  let messagesEndRef = useRef(null);
   let refr = useRef(null);
 
   const deleteChat = (valueName,LSkey) => {
@@ -161,7 +163,6 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
       const decoder = new TextDecoder();
       setIsStreaming(true);
       for await (const chunk of streamAsyncIterator(response.body)) {
-        scrollToBottom();
         setIsTypingRight(false)
         const data = decoder.decode(chunk)
         const lsData = data.split("\n\n")
@@ -184,7 +185,6 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
   const addAiAnswerToChat = async () => {
     try {
       setIsTypingRight(true);
-      scrollToBottom();
       // first search in cache for the user question
       searchInCache();
       if (!foundInCache){
@@ -196,7 +196,6 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
         foundInCache = false;
       }
       foundInCache=false;
-      scrollToBottom();
     } 
     catch(error) {
       setIsTypingRight(false);
@@ -220,7 +219,6 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
     }else {
       addMessage({text:message,isReply:false});
     }
-    scrollToBottom();
     let currentChattings = chattings;
     let index = currentChattings.find((chatValue) => {
       if (chatValue.name == pageNo ) {
@@ -238,22 +236,15 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
     }
     setStreamData("")
     setMessage(null)
-    scrollToBottom();
     addAiAnswerToChat();
-    scrollToBottom();
   }
 
   const enterKeySend = e => {
     if (e.keyCode === 13) {
       refr.current.value = "";
-      scrollToBottom();
       addUserQuestionToChat();
     }
   };
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }
 
   const setNewEmptyChatValues = (counter) => {
     setMessages([]);
@@ -453,73 +444,11 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
         <div className="parentDiv">
           <div className="box">
             <ToastContainer />
-            <div className='chat-container'>
-              {messages?.map((value) => {
-                if (!value.isReply) {
-                  return (
-                    <div className="chatLeftContainer">
-                      <div className="user">You</div>
-                      <div className='chat-left'>
-                        {value.text}
-                      </div>
-                    </div>
-                  )
-                } else {
-                  return (
-                    <div className="chatLeftContainer">
-                      <div className="user">Assistant</div>
-                      <div className='chat-right'>
-                        {value.text}
-                      </div>
-                    </div>
-                  )
-                }
-              })}
-            {
-              isTypingLeft &&
-                <div className="chatLeftContainer">
-                  <div className="user">Assistant</div>
-                  <div className='chat-left'>
-                    ...typing
-                  </div>
-                </div>
-              }
-              {
-               isTypingRight &&
-               <div className="chatLeftContainer">
-                  <div className="user">Assistant</div>
-                  <div className='chat-right'>
-                    ...typing
-                  </div>
-                </div>
-              }
-              {
-              isStreaming &&
-                <div className="chatLeftContainer">
-                  <div className="user">Assistant</div>
-                  <div className='chat-right'>
-                    {streamData}
-                  </div>
-                </div>
-              }
-              <div className="scroll-point" ref={messagesEndRef}>
-              </div> 
-          </div>
-           
-            
+            <ChatText isStreaming={isStreaming} isTypingLeft={isTypingLeft} isTypingRight={isTypingRight} streamData={streamData}></ChatText>  
         </div>
       </div>
         { messages?.length == 0 ?
-          <div className="commonfaqs">
-            <div className="faqs1">
-              <div className="faq" onClick={() => {addUserQuestionToChat(defaultQuestions[0].question)}}>{defaultQuestions[0].question}</div>
-              <div className="faq" onClick={() => {addUserQuestionToChat(defaultQuestions[1].question)}}>{defaultQuestions[1].question}</div>
-            </div>
-            <div className="faqs2">
-              <div className="faq" onClick={() => {addUserQuestionToChat(defaultQuestions[2].question)}}>{defaultQuestions[2].question}</div>
-              <div className="faq" onClick={() => {addUserQuestionToChat(defaultQuestions[3].question)}}>{defaultQuestions[3].question}</div>
-            </div>
-          </div> : null }
+          <Commonfaqs addUserQuestionToChat={addUserQuestionToChat}> </Commonfaqs> : null }
         <div className="flexRowContainer">
           <div className="flexRow">
             <div className="inputContainer">
