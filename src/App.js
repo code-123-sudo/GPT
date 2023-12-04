@@ -165,7 +165,6 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
       let stringsConverted = JSON.stringify(messages);
       let key = "chat" + counter.toString();
       localStorage.setItem(key,stringsConverted);
-      // setChats([{'name':count,'isEditing':false,header:""},...chats])
       setChattings([{'name':counter,'isEditing':false,header:""},...chattings])
     }
   },[messages])

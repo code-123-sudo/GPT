@@ -152,25 +152,6 @@ main {
   height : 47vh;
 }
 
-.flexRow{
-  display: flex;
-  flex-direction: row;
-  position: fixed;
-  bottom: 35px;
-}
-.flexRowContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.icon {
-  margin-left: -54px;
-}
-input {
-  width : 700px;
-  height : 50px;
-  font-size: 20px;
-}
 button {
   height : 50px;
   background-color : #87CEEB;
@@ -214,4 +195,24 @@ button :: hover {
 .box{
   margin-top: 202px;
   max-height: 69vh;
+}
+input {
+  width : 700px;
+  height : 50px;
+  font-size: 20px;
+}
+
+.flexRow{
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  bottom: 35px;
+}
+.flexRowContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.icon {
+  margin-left: -54px;
 }
