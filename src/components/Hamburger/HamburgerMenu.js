@@ -13,7 +13,7 @@ import { setLiveChat } from '../../actions/liveChatActions.js'
 
 
 
-const HamburgerMenu = ({  chattings, counter, liveChat, messages , setChattings, setCounter, setLiveChat, setMessages}) => { 
+const HamburgerMenu = ({  chattings, counter, liveChat, messages , setChattings, setCounter, setLiveChat, setMessages, setPageNo}) => { 
   const [showEditInsideIcons, setShowEditInsideIcons] = useState(false)
   const [editChatHeading, setEditChatHeading] = useState('')
 
@@ -27,11 +27,6 @@ const HamburgerMenu = ({  chattings, counter, liveChat, messages , setChattings,
   const [isHamburgerAnimate,setIsHamburgerAnimate] = useState(() => {
     return JSON.parse(localStorage.getItem('isHamburgerAnimate')) || false
   });
-
-
-
-
-
 
   const deleteChat = (valueName,LSkey) => {
     let chatsAfterDeletion = chattings;
@@ -236,7 +231,6 @@ const HamburgerMenu = ({  chattings, counter, liveChat, messages , setChattings,
     <div className={ isHamburger ? 'hamburger' : 'hamburger hamburger2'} >
         <div className="newChatButton" onClick={startNewChat} >New Chat +</div>
         {chattings?.map((value,index) => {
-          console.log(value)
           let keyRr = "chat" + value.name.toString();
           let returnString = localStorage.getItem(keyRr);
           let returnArray = JSON.parse(returnString);

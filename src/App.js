@@ -176,8 +176,8 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
     }else {
       addMessage({text:message,isReply:false});
     }
-    let currentChattings = chattings;
-    let index = currentChattings.find((chatValue) => {
+    let currentChattings = chattings; 
+    let index = currentChattings.findIndex((chatValue) => {
       if (chatValue.name == pageNo ) {
         return true;
       }else {
