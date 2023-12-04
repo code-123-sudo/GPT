@@ -82,7 +82,7 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
       
   })
 
-  const fetchFromAPI = async (API_URL,message) => {
+  const fetchFromAPI = async (API_URL,API_KEY,message) => {
     let finalMessage = "chatgpt " + message + " Reply in a maximum of 20 words. Always reply in Hindi with English characters";
     let response = await fetch(API_URL, {
       method: "POST",
@@ -149,7 +149,7 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
       let cacheAns = searchInCache(message)
       if (!cacheAns){
         // if not found in cache , get answer from open chat ai
-        const response = await fetchFromAPI(API_URL,message);
+        const response = await fetchFromAPI(API_URL,API_KEY,message);
         const textRecieved = await getAsyncStream(response); 
         setIsStreaming(false)
         addMessage({text:textRecieved,isReply:true});
