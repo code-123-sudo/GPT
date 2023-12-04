@@ -56,15 +56,18 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
     setMessage(event.target.value)
   }
 
-  const searchInCache = () => {
+  const searchInCache = (message) => {
+    let ans = {}
+    let flag = false;
     data.forEach( (quesAns) => {
         if ( quesAns.question == message ) {
-          addMessage({text:quesAns.answer,isReply:true});
-          setIsTypingRight(false);
           foundInCache = true;
-          return;
+          ans = {text:quesAns.answer,isReply:true};
+          flag = true;
         }
     })
+    if (flag) return ans;
+    return false
   }
 
   useEffect(() => {
@@ -143,16 +146,17 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
     try {
       setIsTypingRight(true);
       // first search in cache for the user question
-      searchInCache();
-      if (!foundInCache){
+      let cacheAns = searchInCache(message)
+      if (!cacheAns){
         // if not found in cache , get answer from open chat ai
         const response = await fetchFromAPI(API_URL,message);
         const textRecieved = await getAsyncStream(response); 
         setIsStreaming(false)
         addMessage({text:textRecieved,isReply:true});
-        foundInCache = false;
+      } else {
+        setIsTypingRight(false);
+        addMessage(cacheAns)
       }
-      foundInCache=false;
     } 
     catch(error) {
       setIsTypingRight(false);
@@ -168,14 +172,8 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
       setChattings([{'name':counter,'isEditing':false,header:""},...chattings])
     }
   },[messages])
- 
-  const addUserQuestionToChat = async (fromCache) => { 
-    if ( fromCache ){
-      addMessage({text:fromCache,isReply:false});
-    }else {
-      addMessage({text:message,isReply:false});
-    }
-    let currentChattings = chattings; 
+
+  const sortLatestChatUp = (currentChattings,pageNo) => {
     let index = currentChattings.findIndex((chatValue) => {
       if (chatValue.name == pageNo ) {
         return true;
@@ -188,6 +186,19 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
       let headerField = currentChattings[index].header
       currentChattings.splice(index, 1);
       currentChattings = [{'name':pageNo,'isEditing':editField,header:headerField},...currentChattings]
+      return currentChattings
+    }
+    return false;
+  }
+ 
+  const addUserQuestionToChat = async (fromCache) => { 
+    if ( fromCache ){
+      addMessage({text:fromCache,isReply:false});
+    }else {
+      addMessage({text:message,isReply:false});
+    }
+    let currentChattings = sortLatestChatUp(chattings,pageNo); 
+    if(currentChattings){
       setChattings(currentChattings)
     }
     setStreamData("")
