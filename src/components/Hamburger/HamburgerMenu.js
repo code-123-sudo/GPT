@@ -10,7 +10,7 @@ import { setCounter } from '../../actions/counterActions.js'
 import { addChat, setChattings } from '../../actions/chattingsActions.js'
 import { addMessage, setMessages } from '../../actions/messagesActions.js'
 import { setLiveChat } from '../../actions/liveChatActions.js'
-
+import { setPageNo } from '../../actions/commonActions.js'
 
 
 const HamburgerMenu = ({  chattings, counter, liveChat, messages , setChattings, setCounter, setLiveChat, setMessages, setPageNo}) => { 
@@ -275,6 +275,7 @@ const mapDispatchToProps = (dispatch) => ({
   setMessages: (dataObject) => dispatch(setMessages(dataObject)),
   setLiveChat: (dataObject) => dispatch(setLiveChat(dataObject)),
   setCounter: (dataObject) => dispatch(setCounter(dataObject)),
+  setPageNo:  (dataObject) => dispatch(setPageNo(dataObject)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(HamburgerMenu);

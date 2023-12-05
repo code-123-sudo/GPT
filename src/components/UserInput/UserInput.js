@@ -25,6 +25,8 @@ import { streamAsyncIterator, saveInLocalStorage, searchInCache, fetchFromAPI, s
 
 import { API_KEY, API_URL } from "../../constants.js"
 
+import Commonfaqs from "../Commonfaqs/Commonfaqs.js" 
+
 const UserInput = ({ counter , chattings, messages, liveChat, setCounter, addChat, setChattings, addMessage, setMessages, setLiveChat, message , setMessage ,
     	pageNo , setPageNo , isStreaming , setIsStreaming , streamData , setStreamData , isTypingLeft , setIsTypingLeft ,
     	isTypingRight , setIsTypingRight , isHamburger , setIsHamburger , isHamburgerAnimate , setIsHamburgerAnimate }) => {
@@ -123,6 +125,8 @@ const UserInput = ({ counter , chattings, messages, liveChat, setCounter, addCha
   };
 
 	return (
+		<div>
+		{messages.length == 0 ? <Commonfaqs addUserQuestionToChat={addUserQuestionToChat} > </Commonfaqs> : null}
 		<div className="flexRowContainer">
           <div className="flexRow">
             <div className="inputContainer">
@@ -130,6 +134,7 @@ const UserInput = ({ counter , chattings, messages, liveChat, setCounter, addCha
             </div>
             <div className="icon" onClick={addUserQuestionToChat}> <img src={send} /> </div>
           </div>
+        </div>
         </div>
 	)
 }
