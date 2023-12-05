@@ -10,6 +10,7 @@ import { setCounter } from './actions/counterActions.js'
 import { addChat, setChattings } from './actions/chattingsActions.js'
 import { addMessage, setMessages } from './actions/messagesActions.js'
 import { setLiveChat } from './actions/liveChatActions.js'
+import { setMessage } from './actions/commonActions.js'
 
 import { API_KEY, API_URL } from "./constants.js"
 
@@ -27,9 +28,8 @@ import HamburgerMenu from './components/Hamburger/HamburgerMenu.js'
 
 import { streamAsyncIterator, saveInLocalStorage, searchInCache, fetchFromAPI, sortLatestChatUp } from './utilities/generalUtilities.js'
 
-function App( { counter , chattings, messages, liveChat, setCounter, addChat, setChattings, addMessage, setMessages, setLiveChat  }) {
+function App( { counter , chattings, messages, liveChat, setCounter, addChat, setChattings, addMessage, setMessages, setLiveChat, message , setMessage   }) {
   
-  const [message, setMessage] = useState('');
 
   const [pageNo,setPageNo] = useState(() => {
     return JSON.parse(localStorage.getItem('pageNo')) || 0
@@ -52,6 +52,7 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
   
 
   const handleChange = (event) => {
+
     setMessage(event.target.value)
   }
 
@@ -124,6 +125,7 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
   },[messages])
  
   const addUserQuestionToChat = async (fromCache) => { 
+
     if ( fromCache ){
       addMessage({text:fromCache,isReply:false});
     }else {
@@ -177,7 +179,8 @@ const mapStateToProps = (state) => ({
   counter: state.counter.counter,
   chattings: state.chattings.chattings,
   messages: state.messages.messages,
-  liveChat: state.liveChat.liveChat
+  liveChat: state.liveChat.liveChat,
+  message: state.common.message
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -186,7 +189,8 @@ const mapDispatchToProps = (dispatch) => ({
   setChattings: (dataObject) => dispatch(setChattings(dataObject)),
   addMessage: (dataObject) => dispatch(addMessage(dataObject)),
   setMessages: (dataObject) => dispatch(setMessages(dataObject)),
-  setLiveChat: (dataObject) => dispatch(setLiveChat(dataObject))
+  setLiveChat: (dataObject) => dispatch(setLiveChat(dataObject)),
+  setMessage: (dataValue) => dispatch(setMessage(dataValue))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
