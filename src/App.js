@@ -41,22 +41,6 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
     isTypingRight , setIsTypingRight , isHamburger , setIsHamburger , isHamburgerAnimate , setIsHamburgerAnimate 
  }) {
   
-
-  // const [pageNo,setPageNo] = useState(() => {
-  //   return JSON.parse(localStorage.getItem('pageNo')) || 0
-  // });
-
-  // const [isStreaming,setIsStreaming] = useState('');
-  // const [streamData,setStreamData] = useState();
-  // const [isTypingLeft,setIsTypingLeft] = useState(false);
-  // const [isTypingRight,setIsTypingRight] = useState(false);
-
-  // const [isHamburger,setIsHamburger] = useState(() => {
-  //   return JSON.parse(localStorage.getItem('isHamburger')) || false
-  // });
-  // const [isHamburgerAnimate,setIsHamburgerAnimate] = useState(() => {
-  //   return JSON.parse(localStorage.getItem('isHamburgerAnimate')) || false
-  // });
   let refr = useRef(null);
   
 
@@ -76,6 +60,12 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
       saveInLocalStorage('messages',JSON.stringify(messages))
       
   })
+
+  useEffect( () => {
+    console.log("message is",message)
+    console.log("isStreaming is",isStreaming)
+    console.log("streamData is",streamData)
+  },[message,isStreaming,streamData])
 
   const getAsyncStream = async (response) => {
       let textRecieved = ""
@@ -183,24 +173,6 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
     </div>
   );
 }
-
-
-//// message: '',
-//   pageNo: JSON.parse(localStorage.getItem('pageNo')) || 0,
-//   isStreaming: '',
-//   streamData: '',
-//   isTypingLeft: false,
-//   isTypingRight: false,
-//   isHamburger: JSON.parse(localStorage.getItem('isHamburger')) || false,
-//   isHamburgerAnimate: JSON.parse(localStorage.getItem('isHamburgerAnimate')) || false
-
-
-
-
-
-
-
-
 
 const mapStateToProps = (state) => ({
   counter: state.counter.counter,
