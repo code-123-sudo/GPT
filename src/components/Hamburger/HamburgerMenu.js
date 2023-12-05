@@ -21,12 +21,8 @@ const HamburgerMenu = ({  chattings, counter, liveChat, messages , setChattings,
   const [deleteChatKey,setDeleteChatKey] = useState("")
   const [showModalFlag,setShowModalFlag] = useState(false)
 
-  const [isHamburger,setIsHamburger] = useState(() => {
-    return JSON.parse(localStorage.getItem('isHamburger')) || false
-  });
-  const [isHamburgerAnimate,setIsHamburgerAnimate] = useState(() => {
-    return JSON.parse(localStorage.getItem('isHamburgerAnimate')) || false
-  });
+  const [isHamburger,setIsHamburger] = useState(false);
+  const [isHamburgerAnimate,setIsHamburgerAnimate] = useState(false);
 
   const deleteChat = (valueName,LSkey) => {
     let chatsAfterDeletion = chattings;
