@@ -20,7 +20,7 @@ const saveInLocalStorage = (key,value) => {
     localStorage.setItem(key,value);
 }
 
-const searchInCache = (message) => {
+const searchInCache = (message,data) => {
   let ans = {}
   let flag = false;
   data.forEach( (quesAns) => {
