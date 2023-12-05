@@ -10,7 +10,15 @@ import { setCounter } from './actions/counterActions.js'
 import { addChat, setChattings } from './actions/chattingsActions.js'
 import { addMessage, setMessages } from './actions/messagesActions.js'
 import { setLiveChat } from './actions/liveChatActions.js'
+
 import { setMessage } from './actions/commonActions.js'
+import { setPageNo } from './actions/commonActions.js'
+import { setIsStreaming } from './actions/commonActions.js'
+import { setStreamData } from './actions/commonActions.js'
+import { setIsTypingLeft } from './actions/commonActions.js'
+import { setIsTypingRight } from './actions/commonActions.js'
+import { setIsHamburger } from './actions/commonActions.js'
+import { setIsHamburgerAnimate } from './actions/commonActions.js'
 
 import { API_KEY, API_URL } from "./constants.js"
 
@@ -28,26 +36,27 @@ import HamburgerMenu from './components/Hamburger/HamburgerMenu.js'
 
 import { streamAsyncIterator, saveInLocalStorage, searchInCache, fetchFromAPI, sortLatestChatUp } from './utilities/generalUtilities.js'
 
-function App( { counter , chattings, messages, liveChat, setCounter, addChat, setChattings, addMessage, setMessages, setLiveChat, message , setMessage   }) {
+function App( { counter , chattings, messages, liveChat, setCounter, addChat, setChattings, addMessage, setMessages, setLiveChat, message , setMessage ,
+    pageNo , setPageNo , isStreaming , setIsStreaming , streamData , setStreamData , isTypingLeft , setIsTypingLeft ,
+    isTypingRight , setIsTypingRight , isHamburger , setIsHamburger , isHamburgerAnimate , setIsHamburgerAnimate 
+ }) {
   
 
-  const [pageNo,setPageNo] = useState(() => {
-    return JSON.parse(localStorage.getItem('pageNo')) || 0
-  });
+  // const [pageNo,setPageNo] = useState(() => {
+  //   return JSON.parse(localStorage.getItem('pageNo')) || 0
+  // });
 
-  const [isStreaming,setIsStreaming] = useState('');
-  const [streamData,setStreamData] = useState();
-  const [isTypingLeft,setIsTypingLeft] = useState(false);
-  const [isTypingRight,setIsTypingRight] = useState(false);
+  // const [isStreaming,setIsStreaming] = useState('');
+  // const [streamData,setStreamData] = useState();
+  // const [isTypingLeft,setIsTypingLeft] = useState(false);
+  // const [isTypingRight,setIsTypingRight] = useState(false);
 
-  const [isHamburger,setIsHamburger] = useState(() => {
-    return JSON.parse(localStorage.getItem('isHamburger')) || false
-  });
-  const [isHamburgerAnimate,setIsHamburgerAnimate] = useState(() => {
-    return JSON.parse(localStorage.getItem('isHamburgerAnimate')) || false
-  });
-
-  let foundInCache = false;
+  // const [isHamburger,setIsHamburger] = useState(() => {
+  //   return JSON.parse(localStorage.getItem('isHamburger')) || false
+  // });
+  // const [isHamburgerAnimate,setIsHamburgerAnimate] = useState(() => {
+  //   return JSON.parse(localStorage.getItem('isHamburgerAnimate')) || false
+  // });
   let refr = useRef(null);
   
 
@@ -175,12 +184,37 @@ function App( { counter , chattings, messages, liveChat, setCounter, addChat, se
   );
 }
 
+
+//// message: '',
+//   pageNo: JSON.parse(localStorage.getItem('pageNo')) || 0,
+//   isStreaming: '',
+//   streamData: '',
+//   isTypingLeft: false,
+//   isTypingRight: false,
+//   isHamburger: JSON.parse(localStorage.getItem('isHamburger')) || false,
+//   isHamburgerAnimate: JSON.parse(localStorage.getItem('isHamburgerAnimate')) || false
+
+
+
+
+
+
+
+
+
 const mapStateToProps = (state) => ({
   counter: state.counter.counter,
   chattings: state.chattings.chattings,
   messages: state.messages.messages,
   liveChat: state.liveChat.liveChat,
-  message: state.common.message
+  message: state.common.message,
+  pageNo: state.common.pageNo,
+  isStreaming: state.common.isStreaming,
+  streamData: state.common.streamData,
+  isTypingLeft: state.common.isTypingLeft,
+  isTypingRight: state.common.isTypingRight,
+  isHamburger: state.common.isHamburger,
+  isHamburgerAnimate: state.common.isHamburgerAnimate
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -190,7 +224,14 @@ const mapDispatchToProps = (dispatch) => ({
   addMessage: (dataObject) => dispatch(addMessage(dataObject)),
   setMessages: (dataObject) => dispatch(setMessages(dataObject)),
   setLiveChat: (dataObject) => dispatch(setLiveChat(dataObject)),
-  setMessage: (dataValue) => dispatch(setMessage(dataValue))
+  setMessage: (dataValue) => dispatch(setMessage(dataValue)),
+  setPageNo: (dataValue) => dispatch(setPageNo(dataValue)),
+  setIsStreaming: (dataValue) => dispatch(setIsStreaming(dataValue)),
+  setStreamData: (dataValue) => dispatch(setStreamData(dataValue)),
+  setIsTypingLeft: (dataValue) => dispatch(setIsTypingLeft(dataValue)),
+  setIsTypingRight: (dataValue) => dispatch(setIsTypingRight(dataValue)),
+  setIsHamburger: (dataValue) => dispatch(setIsHamburger(dataValue)),
+  setIsHamburgerAnimate: (dataValue) => dispatch(setIsHamburgerAnimate(dataValue))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -25,7 +25,6 @@ const searchInCache = (message,data) => {
   let flag = false;
   data.forEach( (quesAns) => {
       if ( quesAns.question == message ) {
-        foundInCache = true;
         ans = {text:quesAns.answer,isReply:true};
         flag = true;
       }
