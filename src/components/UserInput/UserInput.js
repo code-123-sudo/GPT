@@ -14,11 +14,8 @@ import { setIsTypingLeft } from '../../actions/commonActions.js'
 import { setIsTypingRight } from '../../actions/commonActions.js'
 import { setIsHamburger } from '../../actions/commonActions.js'
 import { setIsHamburgerAnimate } from '../../actions/commonActions.js'
-
-import { setCounter } from '../../actions/counterActions.js'
-import { addChat, setChattings } from '../../actions/chattingsActions.js'
-import { addMessage, setMessages } from '../../actions/messagesActions.js'
-import { setLiveChat } from '../../actions/liveChatActions.js'
+import {  setChattings } from '../../actions/chattingsActions.js'
+import { addMessage } from '../../actions/messagesActions.js'
 
 import send from '../../assets/send.png';
 import { streamAsyncIterator, saveInLocalStorage, searchInCache, fetchFromAPI, sortLatestChatUp } from '../../utilities/generalUtilities.js'
@@ -27,7 +24,7 @@ import { API_KEY, API_URL } from "../../constants.js"
 
 import Commonfaqs from "../Commonfaqs/Commonfaqs.js" 
 
-const UserInput = ({ counter , chattings, messages, liveChat, setCounter, addChat, setChattings, addMessage, setMessages, setLiveChat, message , setMessage ,
+const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addMessage, message , setMessage ,
     	pageNo , setPageNo , isStreaming , setIsStreaming , streamData , setStreamData , isTypingLeft , setIsTypingLeft ,
     	isTypingRight , setIsTypingRight , isHamburger , setIsHamburger , isHamburgerAnimate , setIsHamburgerAnimate }) => {
 
@@ -156,12 +153,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  setCounter: (dataObject) => dispatch(setCounter(dataObject)),
-  addChat: (dataObject) => dispatch(addChat(dataObject)),
   setChattings: (dataObject) => dispatch(setChattings(dataObject)),
   addMessage: (dataObject) => dispatch(addMessage(dataObject)),
-  setMessages: (dataObject) => dispatch(setMessages(dataObject)),
-  setLiveChat: (dataObject) => dispatch(setLiveChat(dataObject)),
   setMessage: (dataValue) => dispatch(setMessage(dataValue)),
   setPageNo: (dataValue) => dispatch(setPageNo(dataValue)),
   setIsStreaming: (dataValue) => dispatch(setIsStreaming(dataValue)),
