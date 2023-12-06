@@ -6,7 +6,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import Commonfaqs from './components/Commonfaqs/Commonfaqs.js'
 import ChatText from './components/ChatText/ChatText.js'
 import HamburgerMenu from './components/Hamburger/HamburgerMenu.js'
-import UserInput from './components/UserInput/UserInput.js'
 
 
 function App(props) {   
