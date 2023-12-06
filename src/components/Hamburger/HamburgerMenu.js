@@ -13,7 +13,7 @@ import { setLiveChat } from '../../actions/liveChatActions.js'
 import { setPageNo } from '../../actions/commonActions.js'
 
 
-const HamburgerMenu = ({  chattings, counter, liveChat, messages , setChattings, setCounter, setLiveChat, setMessages, setPageNo}) => { 
+const HamburgerMenu = ({  chattings, counter, liveChat, messages , setChattings, setCounter, setLiveChat, setMessages, setPageNo, isStreaming}) => { 
   const [showEditInsideIcons, setShowEditInsideIcons] = useState(false)
   const [editChatHeading, setEditChatHeading] = useState('')
 
@@ -225,7 +225,7 @@ const HamburgerMenu = ({  chattings, counter, liveChat, messages , setChattings,
     </div>
 
     <div className={ isHamburger ? 'hamburger' : 'hamburger hamburger2'} >
-        <div className="newChatButton" onClick={startNewChat} >New Chat +</div>
+        <button disabled={isStreaming ? true : false} className="newChatButton" onClick={startNewChat} >New Chat +</button>
         {chattings?.map((value,index) => {
           let keyRr = "chat" + value.name.toString();
           let returnString = localStorage.getItem(keyRr);
@@ -268,6 +268,7 @@ const mapStateToProps = (state) => ({
   counter: state.counter.counter,
   liveChat: state.liveChat.liveChat,
   messages: state.messages.messages,
+  isStreaming: state.common.isStreaming
 })
 
 const mapDispatchToProps = (dispatch) => ({

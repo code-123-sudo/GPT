@@ -158,7 +158,6 @@ button {
   text-align: center;
   font-size: 20px;
   cursor:pointer;
-  margin-left: -100px;
 }
 button :: hover {
   cursor : pointer
