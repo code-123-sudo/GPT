@@ -1,6 +1,7 @@
 import React, { useState , useEffect , useRef } from 'react';
 import './ChatText.css';
 import { connect } from 'react-redux';
+import SingleMessage from '../SingleMessage/SingleMessage.js'
 
 const ChatText = ({ messages , isTypingLeft , isTypingRight , isStreaming , streamData}) => {
   let messagesEndRef = useRef(null);
@@ -15,50 +16,25 @@ const ChatText = ({ messages , isTypingLeft , isTypingRight , isStreaming , stre
       {messages?.map((value) => {
         if (!value.isReply) {
           return (
-            <div className="chatLeftContainer">
-              <div className="user">You</div>
-                <div className='chat-left'>
-                    {value.text}
-                  </div>
-              </div>
+            <SingleMessage left={true} text={value.text} />
           )
         } else {
           return (
-            <div className="chatLeftContainer">
-              <div className="user">Assistant</div>
-                <div className='chat-right'>
-                  {value.text}
-                </div>
-            </div>
+            <SingleMessage left={false} text={value.text} />
           )
         }
       })}
       {
         isTypingLeft &&
-          <div className="chatLeftContainer">
-            <div className="user">Assistant</div>
-            <div className='chat-left'>
-              ...typing
-            </div>
-          </div>
+          <SingleMessage left={true} text="typing..." />
       }
       {
         isTypingRight &&
-          <div className="chatLeftContainer">
-            <div className="user">Assistant</div>
-            <div className='chat-right'>
-              ...typing
-            </div>
-          </div>
+          <SingleMessage left={false} text="typing..." />
       }
       {
         isStreaming &&
-          <div className="chatLeftContainer">
-            <div className="user">Assistant</div>
-            <div className='chat-right'>
-              {streamData}
-            </div>
-          </div>
+          <SingleMessage left={false} text={streamData} />
       }
       <div className="scroll-point" ref={messagesEndRef}>
       </div>
