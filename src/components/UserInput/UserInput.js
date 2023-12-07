@@ -49,19 +49,19 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
       for await (const chunk of streamAsyncIterator(response.body)) {
         setIsTypingRight(false)
         const data = decoder.decode(chunk)
-        const lsData = data.split("\n\n")
-        lsData.map((data) => {
+        const splitData = data.split("\n\n")
+        for ( const jsonData of splitData ) {
           try {
-            const jd = JSON.parse(data.replace("data: ",""));
-            if ( jd["choices"][0]["delta"]["content"] ){
-              const txt = jd["choices"][0]["delta"]["content"]
-              textRecieved += txt;
+            const parsedData = JSON.parse(jsonData.replace("data: ",""));
+            const deltaContent = parsedData?.choices?.[0]?.delta?.content
+            if ( deltaContent ){
+              textRecieved += deltaContent
               setStreamData(textRecieved)
             }
           } catch(err) {
-            // console.log(err)
+            console.error("Error parsing JSON data",err)
           }
-        })
+        }
       }
       return textRecieved
   }
@@ -70,8 +70,8 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
     try {
       setIsTypingRight(true);
       // first search in cache for the user question
-      let cacheAns = searchInCache(message,data)
-      if (!cacheAns){
+      const cachedAns = searchInCache(message,data)
+      if (!cachedAns){
         // if not found in cache , get answer from open chat ai
         const response = await fetchFromAPI(API_URL,API_KEY,message);
         const textRecieved = await getAsyncStream(response); 
@@ -83,7 +83,8 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
       }
     } 
     catch(error) {
-      console.log(error)
+      console.error("Error adding AI answer to chat",error)
+      // Add more specefic handler based on the error type if needed
       setIsTypingRight(false);
       toast("something went wrong");
     }
@@ -99,15 +100,11 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
   },[messages])
  
   const addUserQuestionToChat = async (fromCache) => { 
-
-    if ( fromCache ){
-      addMessage({text:fromCache,isReply:false});
-    }else {
-      addMessage({text:message,isReply:false});
-    }
-    let currentChattings = sortLatestChatUp(chattings,pageNo); 
-    if(currentChattings){
-      setChattings(currentChattings)
+    const userQuestion = fromCache ? fromCache : message;
+      addMessage({text:userQuestion,isReply:false});
+    let sortedChattings = sortLatestChatUp(chattings,pageNo); 
+    if(sortedChattings){
+      setChattings(sortedChattings)
     }
     setStreamData("")
     setMessage(null)
@@ -123,16 +120,16 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
 
 	return (
 		<div data-testid="userinput-1">
-		{messages.length == 0 ? <Commonfaqs addUserQuestionToChat={addUserQuestionToChat} > </Commonfaqs> : null}
-		<div className="flexRowContainer">
-          <div className="flexRow">
-            <div className="inputContainer">
-              <input type='text' ref={refr} placeholder='Ask me anything about Jainism' onKeyDown={enterKeySend} onChange={handleChange} value={message}/>
-            </div>
-            <div className="icon" onClick={addUserQuestionToChat}> <img src={send} /> </div>
+		  {messages.length == 0 ? <Commonfaqs addUserQuestionToChat={addUserQuestionToChat} > </Commonfaqs> : null}
+		  <div className="flexRowContainer">
+        <div className="flexRow">
+          <div className="inputContainer">
+            <input type='text' ref={refr} placeholder='Ask me anything about Jainism' onKeyDown={enterKeySend} onChange={handleChange} value={message}/>
           </div>
+          <div className="icon" onClick={addUserQuestionToChat}> <img src={send} /> </div>
         </div>
-        </div>
+      </div>
+    </div>
 	)
 }
 
