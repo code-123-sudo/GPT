@@ -21,50 +21,45 @@ const saveInLocalStorage = (key,value) => {
 }
 
 const searchInCache = (message,data) => {
-  let ans = {}
   let flag = false;
-  data.forEach( (quesAns) => {
-      if ( quesAns.question == message ) {
-        ans = {text:quesAns.answer,isReply:true};
-        flag = true;
-      }
-  })
-  if (flag) return ans;
+  const foundItem = data.find( (quesAns) => quesAns.question === message )
+  if ( foundItem ) return {text:foundItem.answer,isReply:true};
   return false
 }
 
 const fetchFromAPI = async (API_URL,API_KEY,message) => {
-  let finalMessage = "chatgpt " + message + " Reply in a maximum of 20 words. Always reply in Hindi with English characters";
-  let response = await fetch(API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${API_KEY}`,
-    },
-    body: JSON.stringify({
-      model: "gpt-3.5-turbo",
-      messages: [{ role: "user",content: finalMessage }],
-      temperature: 0.1,
-      stream : true
+  try {
+    const finalMessage = "chatgpt " + message + " Reply in a maximum of 20 words. Always reply in Hindi with English characters";
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo",
+        messages: [{ role: "user",content: finalMessage }],
+        temperature: 0.1,
+        stream : true
+      })
     })
-  })
-  return response;
+    return response;
+  } catch ( error ) {
+    console.error("Error fetching from API:",error.message)
+    throw error // Propage the error for higher level handling
+  }
 }
 
 const sortLatestChatUp = (currentChattings,pageNo) => {
-  let index = currentChattings.findIndex((chatValue) => {
-    if (chatValue.name == pageNo ) {
-      return true;
-    }else {
-      return false;
-    }
-  })
+  let index = currentChattings.findIndex((chatValue) => chatValue.name === pageNo )
   if (index > -1 ) { 
-    let editField = currentChattings[index].isEditing
-    let headerField = currentChattings[index].header
-    currentChattings.splice(index, 1);
-    currentChattings = [{'name':pageNo,'isEditing':editField,header:headerField},...currentChattings]
-    return currentChattings
+    const { isEditing, header } = currentChattings[index]
+    const updatedChattings = [
+      { name: pageNo, isEditing, header },
+      ...currentChattings.slice(0, index),
+      ...currentChattings.slice(index + 1)
+    ];
+    return updatedChattings
   }
   return false;
 }
