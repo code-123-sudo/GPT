@@ -25,14 +25,7 @@ const HamburgerMenu = ({  chattings, counter, liveChat, messages , setChattings,
   const [isHamburgerAnimate,setIsHamburgerAnimate] = useState(false);
 
   const deleteChat = (valueName,LSkey) => {
-    let chatsAfterDeletion = chattings;
-    chatsAfterDeletion.filter((chatValue) => {
-      if (chatValue.name == valueName ){
-        return false;
-      }else {
-        return true;
-      }
-    })
+    const chatsAfterDeletion = chattings.filter((chatValue) => chatValue.name == valueName)
     setChattings([...chatsAfterDeletion]);
     localStorage.removeItem(LSkey);
     if ( LSkey == liveChat ) {
@@ -45,14 +38,14 @@ const HamburgerMenu = ({  chattings, counter, liveChat, messages , setChattings,
     }
   }
 
-   const handleChange2 = (event) => {
+   const handleChange = (event) => {
     setEditChatHeading(event.target.value)
   }
 
-  const showModal = (a,b) => {
+  const showModal = (deletingChat,deleteChatKey) => {
     setShowModalFlag(true)
-    setDeletingChat(a)
-    setDeleteChatKey(b)
+    setDeletingChat(deletingChat)
+    setDeleteChatKey(deleteChatKey)
   }
 
   const hideModal = (modalAnswer) => {
@@ -72,20 +65,20 @@ const HamburgerMenu = ({  chattings, counter, liveChat, messages , setChattings,
   }
 
   const startNewChat = (isDeletion=false) => {
-    if ( messages?.length == 0 ) return;
+    if ( messages?.length === 0 || !messages ){ 
+      return;
+    }
     let isOld = false;
-    const LSkeys = Object.keys(localStorage);
-    LSkeys.forEach((LSkey) => {
-      if ( LSkey == liveChat) {
-          //previous was a old chat edition, save it first
-          isOld = true;
-          let stringConverted = JSON.stringify(messages);
-          localStorage.setItem(LSkey,stringConverted);
-          //start a new chat
-          setNewEmptyChatValues(counter)
-          return;
-      }
-    });
+    const LSkeyExist = localStorage.getItem(liveChat) !== null;
+    if ( LSkeyExist ) {
+      //previous was a old chat edition, save it first
+      isOld = true;
+      let stringConverted = JSON.stringify(messages);
+      localStorage.setItem(LSkey,stringConverted);
+      //start a new chat
+      setNewEmptyChatValues(counter)
+      return;
+    }
     if ( isDeletion ) {
           // start a new chat, do not save previous chat
           setNewEmptyChatValues(counter);
@@ -105,34 +98,22 @@ const HamburgerMenu = ({  chattings, counter, liveChat, messages , setChattings,
 
 
    const editHeading = (index) => {
-    // setEditChatHeading("")
     setShowEditInsideIcons(true)
-    let chatsAfterEdition = []
-    for ( let i = 0; i < chattings.length ; i++ ) {
+    const chatsAfterEdition = chattings.map((chat,i)
       if ( i == index ) {
-        let clickedChat = {
-          isEditing : true,
-          name : '',
-          header: ''
-        }
-        clickedChat.isEditing = !chattings[i].isEditing
-        clickedChat.name = chattings[i].name
-        clickedChat.header = chattings[i].header
-        chatsAfterEdition[i] = clickedChat
+        return {
+          isEditing : !chat.isEditing,
+          name : chat.name,
+          header: chat.header
       }
       else {
-        let otherChatName = chattings[i].name
-        let otherChatHeader = chattings[i].header
-        let otherChat = {
+       return  {
           isEditing : false,
-          name: otherChatName,
-          header : otherChatHeader
+          name: chat.name,
+          header : chat.header
         }
-        chatsAfterEdition[i] = otherChat
-      }
     }
     setChattings([...chatsAfterEdition])
-
    }
 
    const editHeadingFinal =  (index) => {
@@ -242,7 +223,7 @@ const HamburgerMenu = ({  chattings, counter, liveChat, messages , setChattings,
             <div className="chatsListItem">
               { !value.isEditing ? <div className="chatText" onClick={ () => {fetchOldChat(value.name)}}>
                 {value.header.length > 0  ? value.header : quesText + '....' }
-              </div> : <input type="text" className="editHead" value={editChatHeading} onChange={handleChange2}/> }
+              </div> : <input type="text" className="editHead" value={editChatHeading} onChange={handleChange}/> }
               
               {showEditInsideIcons && value.isEditing ?
                 <>
