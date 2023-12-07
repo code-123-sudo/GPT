@@ -74,7 +74,7 @@ const HamburgerMenu = ({  chattings, counter, liveChat, messages , setChattings,
       //previous was a old chat edition, save it first
       isOld = true;
       let stringConverted = JSON.stringify(messages);
-      localStorage.setItem(LSkey,stringConverted);
+      localStorage.setItem(liveChat,stringConverted);
       //start a new chat
       setNewEmptyChatValues(counter)
       return;
@@ -98,37 +98,39 @@ const HamburgerMenu = ({  chattings, counter, liveChat, messages , setChattings,
 
 
    const editHeading = (index) => {
+    setEditChatHeading("")
     setShowEditInsideIcons(true)
-    const chatsAfterEdition = chattings.map((chat,i)
-      if ( i == index ) {
-        return {
-          isEditing : !chat.isEditing,
-          name : chat.name,
-          header: chat.header
-      }
-      else {
-       return  {
-          isEditing : false,
-          name: chat.name,
-          header : chat.header
+    const chatsAfterEdition = chattings.map((chat,i) => {
+        if ( i == index ) {
+          return {
+            isEditing : !chat.isEditing,
+            name : chat.name,
+            header: chat.header
+          }
         }
-    }
+        else {
+          return  {
+            isEditing : false,
+            name: chat.name,
+            header : chat.header
+          }
+        }
+    })
     setChattings([...chatsAfterEdition])
-   }
+  }
 
    const editHeadingFinal =  (index) => {
-    let chatsAfterEditionFinal = []
-    for ( let i = 0; i < chattings.length ; i++ ) {
+    const chatsAfterEditionFinal = chattings.map((chat,i) => {
       if ( i == index ) {
         let selectedChat = {
           isEditing : true,
           name : '',
           header: ''
         }
-        selectedChat.isEditing = !chattings[i].isEditing
-        selectedChat.name = chattings[i].name
-        selectedChat.header = chattings[i].header
-        if ( chattings[i].isEditing ){
+        selectedChat.isEditing = !chat.isEditing
+        selectedChat.name = chat.name
+        selectedChat.header = chat.header
+        if ( chat.isEditing ){
           if(!editChatHeading) {
             selectedChat.header = " "
           }else {
@@ -138,55 +140,45 @@ const HamburgerMenu = ({  chattings, counter, liveChat, messages , setChattings,
         else {
           // do nothing 
         }
-        chatsAfterEditionFinal[i] = selectedChat
+        return selectedChat
       }
       else {
-        let otherChatName = chattings[i].name
-        let otherChatHeader = chattings[i].header
-        let otherChat = {
+        return {
           isEditing : false,
-          name: otherChatName,
-          header : otherChatHeader
+          name : chat.name,
+          header : chat.header
         }
-        chatsAfterEditionFinal[i] = otherChat
       }
-    }
+    })
     setChattings([...chatsAfterEditionFinal])
     setShowEditInsideIcons(false)
    }
 
    const discardEditing = () => {
-    let resetChats = []
-    for ( let i = 0 ; i < chattings.length; i++ ) {
-      let resetChat = {
+    let resetChats = chattings.map((chat,i) => {
+      return {
         isEditing: false,
-        name: '',
-        header: ''
+        name: chat.name,
+        header: chat.header
       }
-      resetChat.name = chattings[i].name
-      resetChat.header = chattings[i].header
-      resetChats[i] = resetChat;
-    }
+      }
+    )
     setChattings([...resetChats])
     setShowEditInsideIcons(false)
    }
 
   const fetchOldChat = (countNo) => {
 
-    if(messages?.length != 0) {
+    if(messages?.length !== 0) {
       let stringsConverted2 = JSON.stringify(messages);
       localStorage.setItem(liveChat,stringsConverted2);
       /* checking wether its a new chat or old chat */
       let oldChatFlag = 0;
-      oldChatFlag = chattings.find((chatting)=> {
-        if (chatting.name == counter ) return true;
-        else return false;
-      })
-      if ( oldChatFlag == -1 ) setChattings([{'name':counter,'isEditing':false,header:""},...chattings])
-
+      oldChatFlag = chattings.some((chatting) => chatting.name === counter ) 
+      if ( !oldChatFlag ) setChattings([{'name':counter,'isEditing':false,header:""},...chattings])
     }
     let liveKey = "chat" + countNo.toString();
-    if ( liveKey == liveChat ) return;/*user clicked on same chat button twice */
+    if ( liveKey === liveChat ) return;/*user clicked on same chat button twice */
     setLiveChat(liveKey)
     /*update the chat messages of button being clicked */
     let retString = localStorage.getItem(liveKey);
