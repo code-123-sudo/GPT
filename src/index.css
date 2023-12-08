@@ -183,6 +183,7 @@ button :: hover {
   }
   .parentDiv{
     padding-left: 0px;
+    justify-content: flex-start;
   }
 }
 
