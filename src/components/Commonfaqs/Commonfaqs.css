@@ -28,3 +28,13 @@
   overflow-y: hidden;
   cursor: pointer;
 }
+@media only screen and (max-width: 500px) {
+  .faqs2{
+    display: none;
+    padding-bottom: 20px;
+  }
+  .faq{
+    margin-left:0px;
+    margin-bottom: -5px;
+  }
+}
