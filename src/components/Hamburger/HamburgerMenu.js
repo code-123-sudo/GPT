@@ -10,19 +10,17 @@ import { setCounter } from '../../actions/counterActions.js'
 import { addChat, setChattings } from '../../actions/chattingsActions.js'
 import { addMessage, setMessages } from '../../actions/messagesActions.js'
 import { setLiveChat } from '../../actions/liveChatActions.js'
-import { setPageNo } from '../../actions/commonActions.js'
+import { setPageNo, setIsHamburger, setIsHamburgerAnimate } from '../../actions/commonActions.js'
 
 
-const HamburgerMenu = ({  chattings, counter, liveChat, messages , setChattings, setCounter, setLiveChat, setMessages, setPageNo, isStreaming}) => { 
+const HamburgerMenu = ({  chattings, counter, liveChat, messages , setChattings, setCounter, setLiveChat, setMessages, setPageNo, isStreaming,
+isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => { 
   const [showEditInsideIcons, setShowEditInsideIcons] = useState(false)
   const [editChatHeading, setEditChatHeading] = useState('')
 
   const [deletingChat,setDeletingChat] = useState("")
   const [deleteChatKey,setDeleteChatKey] = useState("")
   const [showModalFlag,setShowModalFlag] = useState(false)
-
-  const [isHamburger,setIsHamburger] = useState(false);
-  const [isHamburgerAnimate,setIsHamburgerAnimate] = useState(false);
 
   const deleteChat = (valueName,LSkey) => {
     const chatsAfterDeletion = chattings.filter((chatValue) => chatValue.name == valueName)
@@ -241,7 +239,9 @@ const mapStateToProps = (state) => ({
   counter: state.counter.counter,
   liveChat: state.liveChat.liveChat,
   messages: state.messages.messages,
-  isStreaming: state.common.isStreaming
+  isStreaming: state.common.isStreaming,
+  isHamburger: state.common.isHamburger,
+  isHamburgerAnimate: state.common.isHamburgerAnimate
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -250,6 +250,8 @@ const mapDispatchToProps = (dispatch) => ({
   setLiveChat: (dataObject) => dispatch(setLiveChat(dataObject)),
   setCounter: (dataObject) => dispatch(setCounter(dataObject)),
   setPageNo:  (dataObject) => dispatch(setPageNo(dataObject)),
+  setIsHamburger: (dataObject) => dispatch(setIsHamburger(dataObject)),
+  setIsHamburgerAnimate: (dataObject) => dispatch(setIsHamburgerAnimate(dataObject)) 
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(HamburgerMenu);

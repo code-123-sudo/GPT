@@ -1,9 +1,6 @@
 .hamburger {
   height : 100vh;
   width : 200px;
-  top: 0;
-  left: 0;
-  position: absolute;
   background: grey;
   opacity: 0.9;
   display: flex;
@@ -84,4 +81,9 @@
   display:none;
 }
 @media only screen and (max-width: 500px) {
+  .hamburger{
+    top: 0;
+    left: 0;
+    position: absolute;
+  }
 }
