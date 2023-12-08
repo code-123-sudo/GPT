@@ -13,7 +13,7 @@ function App(props) {
   return (
       <div className="topDiv">
         <HamburgerMenu></HamburgerMenu>
-        <div className= { props.isHamburgerAnimate ? "chatBox" : "chatBox chatBox2" }>
+        <div className= { props.isHamburgerAnimate ? "chatBox chatBox2" : "chatBox" }>
           <div className="parentDiv">
             <div className="box">
               <ToastContainer />
