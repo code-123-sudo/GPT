@@ -198,7 +198,7 @@ const HamburgerMenu = ({  chattings, counter, liveChat, messages , setChattings,
     </div>
 
     <div className={ isHamburger ? 'hamburger' : 'hamburger hamburger2'} >
-        <button disabled={isStreaming ? true : false} className="newChatButton" onClick={startNewChat} >New Chat +</button>
+        <button disabled={isStreaming ? true : false} className={ isHamburger ? "newChatButton" : "displayNone"} onClick={startNewChat} >New Chat +</button>
         {chattings?.map((value,index) => {
           let keyRr = "chat" + value.name.toString();
           let returnString = localStorage.getItem(keyRr);
@@ -212,7 +212,7 @@ const HamburgerMenu = ({  chattings, counter, liveChat, messages , setChattings,
           }
           quesText = quesText?.slice(0,5)
           return (
-            <div className="chatsListItem">
+            <div className={ isHamburger ? "chatsListItem" : "displayNone"}>
               { !value.isEditing ? <div className="chatText" onClick={ () => {fetchOldChat(value.name)}}>
                 {value.header.length > 0  ? value.header : quesText + '....' }
               </div> : <input type="text" className="editHead" value={editChatHeading} onChange={handleChange}/> }

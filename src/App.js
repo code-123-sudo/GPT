@@ -11,18 +11,18 @@ import UserInput from './components/UserInput/UserInput.js'
 
 function App(props) {   
   return (
-    <div className="topDiv">
-      <HamburgerMenu></HamburgerMenu>
-      <div className= {"chatBox " +  (props.isHamburgerAnimate ? 'chatBox2' : null) }>
-        <div className="parentDiv">
-          <div className="box">
-            <ToastContainer />
-            <ChatText></ChatText>  
+      <div className="topDiv">
+        <HamburgerMenu></HamburgerMenu>
+        <div className= {"chatBox " +  (props.isHamburgerAnimate ? 'chatBox2' : null) }>
+          <div className="parentDiv">
+            <div className="box">
+              <ToastContainer />
+              <ChatText></ChatText>  
+            </div>
           </div>
+          <UserInput></UserInput>     
         </div>
-       <UserInput></UserInput>     
       </div>
-    </div>
   );
 }
 

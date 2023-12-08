@@ -18,3 +18,14 @@ input {
 .icon {
   margin-left: -54px;
 }
+@media only screen and (max-width: 500px) {
+  .inputContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  input {
+    width : 100vw;
+  }
+}
+
