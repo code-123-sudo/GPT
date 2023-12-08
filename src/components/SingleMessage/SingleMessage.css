@@ -3,7 +3,7 @@
   flex-direction: row;
 }
 .user {
-  width: 70px;
+  min-width: 70px;
   height: 47px;
   background: grey;
   text-align: center;

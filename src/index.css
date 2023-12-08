@@ -147,8 +147,8 @@ main {
 
 .parentDiv{
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start;
+  padding-left: 34px;
   height : 47vh;
 }
 
@@ -179,6 +179,9 @@ button :: hover {
 @media only screen and (max-width: 500px) {
   .chatBox2{
     width: 100vw;
+  }
+  .parentDiv{
+    padding-left: 0px;
   }
 }
 

@@ -9,6 +9,7 @@ input {
   flex-direction: row;
   position: fixed;
   bottom: 35px;
+  z-index: -35;
 }
 .flexRowContainer {
   display: flex;
