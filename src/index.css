@@ -147,7 +147,8 @@ main {
 
 .parentDiv{
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
+  align-items: center;
   padding-left: 34px;
   height : 47vh;
 }
