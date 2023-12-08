@@ -46,7 +46,7 @@ const fetchFromAPI = async (API_URL,API_KEY,message) => {
     return response;
   } catch ( error ) {
     console.error("Error fetching from API:",error.message)
-    throw error // Propage the error for higher level handling
+    throw error // Propagate the error for higher level handling
   }
 }
 

@@ -14,7 +14,7 @@ import { setIsTypingLeft } from '../../actions/commonActions.js'
 import { setIsTypingRight } from '../../actions/commonActions.js'
 import { setIsHamburger } from '../../actions/commonActions.js'
 import { setIsHamburgerAnimate } from '../../actions/commonActions.js'
-import {  setChattings } from '../../actions/chattingsActions.js'
+import { setChattings } from '../../actions/chattingsActions.js'
 import { addMessage } from '../../actions/messagesActions.js'
 
 import send from '../../assets/send.png';

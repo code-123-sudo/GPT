@@ -1,6 +1,7 @@
 .hamburger {
   height : 100vh;
   width : 200px;
+  min-width: 200px;
   background: grey;
   margin-left: 0px;
   display: flex;
@@ -23,6 +24,7 @@
   border-radius: 4px;
   cursor: pointer;
   font-size: 1rem;
+  border: 4px solid lightgrey;
 }
 .chatsListItem {
   width: 150px;
@@ -59,4 +61,19 @@
 }
 .xmark{
   height:23px;
+}
+.menuButton {
+  top: 10;
+  left : 10;
+  width : 50px;
+  height : 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  cursor: pointer;
+}
+.iconImg{
+  height : 30px;
+  width : 30px;
 }

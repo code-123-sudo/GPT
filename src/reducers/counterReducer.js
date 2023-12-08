@@ -1,4 +1,3 @@
-// reducers/countReducer.js
 const initialState = {
   counter: JSON.parse(localStorage.getItem('counter')) || 0,
 };

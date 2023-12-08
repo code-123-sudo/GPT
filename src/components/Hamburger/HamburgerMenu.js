@@ -38,7 +38,7 @@ const HamburgerMenu = ({  chattings, counter, liveChat, messages , setChattings,
     }
   }
 
-   const handleChange = (event) => {
+  const handleChange = (event) => {
     setEditChatHeading(event.target.value)
   }
 

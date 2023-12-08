@@ -1,4 +1,3 @@
-// reducers/dataReducer.js
 const initialState = {
   chattings: JSON.parse(localStorage.getItem('chats')) || [],
 };

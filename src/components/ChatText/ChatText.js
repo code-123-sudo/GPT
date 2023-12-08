@@ -41,7 +41,7 @@ const ChatText = ({ messages , isTypingLeft , isTypingRight , isStreaming , stre
     </div>
   )
 }
-// isStreaming={isStreaming} isTypingLeft={isTypingLeft} isTypingRight={isTypingRight} streamData={streamData}>
+
 const mapStateToProps = (state) => ({
   messages: state.messages.messages,
   isStreaming: state.common.isStreaming,
