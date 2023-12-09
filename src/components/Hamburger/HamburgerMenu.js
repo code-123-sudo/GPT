@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Modal from '../Modal/Modal.js'
 import './HamburgerMenu.css'
 import menu from '../../assets/menu.png';
+import menuWhite from '../../assets/menuWhite.svg'
 import editSolid from '../../assets/edit-solid.svg'
 import xmark from '../../assets/xmark.svg'
 
@@ -192,7 +193,7 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
     <Modal show={showModalFlag} handleClose={hideModal}>Modal</Modal>
 
     <div className="menuButton" onClick={() => {setIsHamburger(!isHamburger);setIsHamburgerAnimate(!isHamburgerAnimate)}}>
-        <img src={menu} className="iconImg" />
+        <img src={isHamburger ? menuWhite : menu} className="iconImg" />
     </div>
 
     <div className={ isHamburger ? 'hamburger' : 'hamburger hamburger2'} >
@@ -217,12 +218,12 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
               
               {showEditInsideIcons && value.isEditing ?
                 <>
-                  <div className="editButton" onClick={() => {editHeadingFinal(index)}}><img src={editSolid} className="editSo" /></div>
-                  <div className="deleteButton" onClick={ () => {discardEditing()} }><img src={xmark} className="xmark"/></div>
+                  <div className="editButton" onClick={() => {editHeadingFinal(index)}}>E</div>
+                  <div className="deleteButton" onClick={ () => {discardEditing()} }>D</div>
                 </> :
                 <>
-                <div className="editButton" onClick={() => {editHeading(index)}}>E</div>
-                <div className="deleteButton" onClick={ () => {showModal(value.name,keyRr)} }>D</div>
+                <div className="editButton" onClick={() => {editHeading(index)}}><img src={editSolid} className="editSo" /></div>
+                <div className="deleteButton" onClick={ () => {showModal(value.name,keyRr)} }><img src={xmark} className="xmark"/></div>
                 </>
               }
             </div>
