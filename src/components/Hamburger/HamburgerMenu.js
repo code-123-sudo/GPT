@@ -211,7 +211,7 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
           }
           quesText = quesText?.slice(0,5)
           return (
-            <div className={ isHamburger ? "chatsListItem" : "displayNone"}>
+            <div className={ isHamburger ?  value.isEditing ? "chatsListItem chatsListItemHover" : "chatsListItem"  : "displayNone"}>
               { !value.isEditing ? <div className="chatText" onClick={ () => {fetchOldChat(value.name)}}>
                 {value.header.length > 0  ? value.header : quesText + '....' }
               </div> : <input type="text" className="editHead" value={editChatHeading} onChange={handleChange}/> }

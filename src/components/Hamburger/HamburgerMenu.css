@@ -43,6 +43,10 @@
   background-color: #202123;
   border-radius: 30px;
 }
+.chatsListItemHover{
+  background-color: #202123;
+  border-radius: 30px;
+}
 .chatText{
   width:140px;
   height : 40px;
@@ -52,8 +56,10 @@
   color: rgba(236,236,241,1);
 }
 .editHead {
-  width: 90px;
-  height: 30px;
+  width: 106px;
+  height: 40px;
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px;
 }
 .editButton, .deleteButton {
   width: 30px;
