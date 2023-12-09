@@ -124,7 +124,7 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
 		  <div className="flexRowContainer">
         <div className="flexRow">
           <div className="inputContainer">
-            <input type='text' ref={refr} placeholder='Ask me anything about Jainism' onKeyDown={enterKeySend} onChange={handleChange} value={message}/>
+            <input type='text' ref={refr} placeholder='Ask me anything about Jainism....' onKeyDown={enterKeySend} onChange={handleChange} value={message}/>
           </div>
           <div className="icon" onClick={addUserQuestionToChat}> <img src={send} /> </div>
         </div>
