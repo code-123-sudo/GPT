@@ -1,0 +1,12 @@
+.searchContainer{
+	width : 200px;
+	height : 50px;
+	margin-left : 48px;
+	margin-top: 5px;
+}
+.searchInput{
+	width: 150px;
+	height: 35px;
+	border: 2px solid #d3d3d3;
+    border-radius: 8px;
+}

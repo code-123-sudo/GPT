@@ -1,6 +1,7 @@
 import React, { useState , useEffect , useRef } from 'react';
 import { connect } from 'react-redux';
-import Modal from '../Modal/Modal.js'
+import Modal from '../Modal/Modal.js';
+import Search from '../Search/Search.js';
 import './HamburgerMenu.css'
 import menu from '../../assets/menu.png';
 import editSolid from '../../assets/edit-solid.svg'
@@ -11,7 +12,6 @@ import { addChat, setChattings } from '../../actions/chattingsActions.js'
 import { addMessage, setMessages } from '../../actions/messagesActions.js'
 import { setLiveChat } from '../../actions/liveChatActions.js'
 import { setPageNo, setIsHamburger, setIsHamburgerAnimate } from '../../actions/commonActions.js'
-
 
 const HamburgerMenu = ({  chattings, counter, liveChat, messages , setChattings, setCounter, setLiveChat, setMessages, setPageNo, isStreaming,
 isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => { 
@@ -197,6 +197,7 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
 
     <div className={ isHamburger ? 'hamburger' : 'hamburger hamburger2'} >
         <button disabled={isStreaming ? true : false} className={ isHamburger ? "newChatButton" : "displayNone"} onClick={startNewChat} >New Chat +</button>
+        <Search></Search>
         {chattings?.map((value,index) => {
           let keyRr = "chat" + value.name.toString();
           let returnString = localStorage.getItem(keyRr);
