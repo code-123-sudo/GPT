@@ -197,7 +197,6 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
 
     <div className={ isHamburger ? 'hamburger' : 'hamburger hamburger2'} >
         <button disabled={isStreaming ? true : false} className={ isHamburger ? "newChatButton" : "displayNone"} onClick={startNewChat} >New Chat +</button>
-        <Search></Search>
         {chattings?.map((value,index) => {
           let keyRr = "chat" + value.name.toString();
           let returnString = localStorage.getItem(keyRr);
@@ -231,6 +230,7 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
           }
         )}
       </div>
+      <Search> </Search>
       </>
   )
 }
