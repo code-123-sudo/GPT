@@ -1,9 +1,10 @@
 import React, { useState , useEffect , useRef } from 'react';
 import { connect } from 'react-redux';
 import { setLiveChat } from '../../actions/liveChatActions.js'
+import { setMessages } from '../../actions/messagesActions.js'
 import "./Search.css"
 
-const Search = ({chattings,liveChat,setLiveChat,messages}) => {
+const Search = ({chattings,liveChat,setLiveChat,messages,setMessages}) => {
   const [searchValue,setSearchValue] = useState("")
   const [allChattingsText,setAllChattingsText] = useState([])
   
@@ -63,6 +64,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setLiveChat: (dataObject) => dispatch(setLiveChat(dataObject)),
+  setMessages: (dataObject) => dispatch(setMessages(dataObject))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search)
