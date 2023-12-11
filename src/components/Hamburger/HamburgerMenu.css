@@ -19,7 +19,6 @@
   height: 30px;
   width: 150px;
   background: #D3D3D3;
-  margin-top: 50px;
   border-radius: 4px;
   cursor: pointer;
   font-size: 1rem;
@@ -87,4 +86,9 @@
     position: absolute;
     z-index: 2;
   }
+}
+.searchContainer{
+  width : 200px;
+  height : 50px;
+  margin-top: 55px;
 }

@@ -22,6 +22,12 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
   const [deleteChatKey,setDeleteChatKey] = useState("")
   const [showModalFlag,setShowModalFlag] = useState(false)
 
+  const [searchValue,setSearchValue] = useState("")
+
+  const handleChange1 = (e) => {
+    setSearchValue(e.target.value)
+  }
+
   const deleteChat = (valueName,LSkey) => {
     const chatsAfterDeletion = chattings.filter((chatValue) => chatValue.name == valueName)
     setChattings([...chatsAfterDeletion]);
@@ -196,6 +202,12 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
     </div>
 
     <div className={ isHamburger ? 'hamburger' : 'hamburger hamburger2'} >
+        
+        { isHamburger &&
+        <div className="searchContainer">
+          <input type="text" placeholder="search" onChange={() => {handleChange1(event)}} value={searchValue} className="searchInput" />
+        </div>}
+
         <button disabled={isStreaming ? true : false} className={ isHamburger ? "newChatButton" : "displayNone"} onClick={startNewChat} >New Chat +</button>
         {chattings?.map((value,index) => {
           let keyRr = "chat" + value.name.toString();
@@ -206,31 +218,71 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
             return null;
           }
           if ( returnArray ){
-            quesText = returnArray[0]?.text
+              quesText = returnArray[0]?.text
           }
           quesText = quesText?.slice(0,5)
-          return (
-            <div className={ isHamburger ? "chatsListItem" : "displayNone"}>
-              { !value.isEditing ? <div className="chatText" onClick={ () => {fetchOldChat(value.name)}}>
-                {value.header.length > 0  ? value.header : quesText + '....' }
-              </div> : <input type="text" className="editHead" value={editChatHeading} onChange={handleChange}/> }
-              
-              {showEditInsideIcons && value.isEditing ?
-                <>
-                  <div className="editButton" onClick={() => {editHeadingFinal(index)}}><img src={editSolid} className="editSo" /></div>
-                  <div className="deleteButton" onClick={ () => {discardEditing()} }><img src={xmark} className="xmark"/></div>
-                </> :
-                <>
-                <div className="editButton" onClick={() => {editHeading(index)}}>E</div>
-                <div className="deleteButton" onClick={ () => {showModal(value.name,keyRr)} }>D</div>
-                </>
-              }
-            </div>
-          )
+          
+          let searchResultIndex = -1
+          let searchText = '';
+
+          for ( let i = 0; i < returnArray.length ; i++ ) {
+            searchResultIndex = returnArray[i].text.search(searchValue);
+            console.log("searchValue",searchValue)
+            console.log("returnArray",returnArray[i].text)
+            console.log("search result index is",searchResultIndex)
+            if ( searchResultIndex != -1 ) {
+              searchText = returnArray[i].text.slice(searchResultIndex,searchResultIndex+5)
+              break;
+            }
           }
+          if ( searchResultIndex === -1 ) {
+            searchResultIndex = value.header.search(searchValue)
+          }
+          
+          if ( searchValue != "" ){
+            if( searchResultIndex != -1 ) {
+              return (
+                <div className={ isHamburger ? "chatsListItem" : "displayNone"}>
+                  { !value.isEditing ? <div className="chatText" onClick={ () => {fetchOldChat(value.name)}}>
+                    {value.header.length > 0  ? value.header : quesText + '....' }
+                  </div> : <input type="text" className="editHead" value={editChatHeading} onChange={handleChange}/> }
+                
+                  {showEditInsideIcons && value.isEditing ?
+                    <>
+                      <div className="editButton" onClick={() => {editHeadingFinal(index)}}><img src={editSolid} className="editSo" /></div>
+                      <div className="deleteButton" onClick={ () => {discardEditing()} }><img src={xmark} className="xmark"/></div>
+                    </> :
+                    <>
+                    <div className="editButton" onClick={() => {editHeading(index)}}>E</div>
+                    <div className="deleteButton" onClick={ () => {showModal(value.name,keyRr)} }>D</div>
+                    </>
+                  }
+                </div>
+              )
+            }
+          }else {
+            return (
+              <div className={ isHamburger ? "chatsListItem" : "displayNone"}>
+                { !value.isEditing ? <div className="chatText" onClick={ () => {fetchOldChat(value.name)}}>
+                  {value.header.length > 0  ? value.header : quesText + '....' }
+                </div> : <input type="text" className="editHead" value={editChatHeading} onChange={handleChange}/> }
+              
+                {showEditInsideIcons && value.isEditing ?
+                  <>
+                    <div className="editButton" onClick={() => {editHeadingFinal(index)}}><img src={editSolid} className="editSo" /></div>
+                    <div className="deleteButton" onClick={ () => {discardEditing()} }><img src={xmark} className="xmark"/></div>
+                  </> :
+                  <>
+                  <div className="editButton" onClick={() => {editHeading(index)}}>E</div>
+                  <div className="deleteButton" onClick={ () => {showModal(value.name,keyRr)} }>D</div>
+                  </>
+                }
+              </div>
+            )
+          }
+        }
         )}
       </div>
-      <Search> </Search>
       </>
   )
 }
