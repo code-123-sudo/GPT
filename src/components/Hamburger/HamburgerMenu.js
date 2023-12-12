@@ -13,6 +13,8 @@ import { addMessage, setMessages } from '../../actions/messagesActions.js'
 import { setLiveChat } from '../../actions/liveChatActions.js'
 import { setPageNo, setIsHamburger, setIsHamburgerAnimate } from '../../actions/commonActions.js'
 
+import { editHeading, editHeadingFinal , discardEditing } from '../../utilities/generalUtilities.js'
+
 const HamburgerMenu = ({  chattings, counter, liveChat, messages , setChattings, setCounter, setLiveChat, setMessages, setPageNo, isStreaming,
 isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => { 
   const [showEditInsideIcons, setShowEditInsideIcons] = useState(false)
@@ -100,77 +102,6 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
     }
   }
 
-
-   const editHeading = (index) => {
-    setEditChatHeading("")
-    setShowEditInsideIcons(true)
-    const chatsAfterEdition = chattings.map((chat,i) => {
-        if ( i == index ) {
-          return {
-            isEditing : !chat.isEditing,
-            name : chat.name,
-            header: chat.header
-          }
-        }
-        else {
-          return  {
-            isEditing : false,
-            name: chat.name,
-            header : chat.header
-          }
-        }
-    })
-    setChattings([...chatsAfterEdition])
-  }
-
-   const editHeadingFinal =  (index) => {
-    const chatsAfterEditionFinal = chattings.map((chat,i) => {
-      if ( i == index ) {
-        let selectedChat = {
-          isEditing : true,
-          name : '',
-          header: ''
-        }
-        selectedChat.isEditing = !chat.isEditing
-        selectedChat.name = chat.name
-        selectedChat.header = chat.header
-        if ( chat.isEditing ){
-          if(!editChatHeading) {
-            selectedChat.header = " "
-          }else {
-            selectedChat.header = editChatHeading;
-          } 
-        }
-        else {
-          // do nothing 
-        }
-        return selectedChat
-      }
-      else {
-        return {
-          isEditing : false,
-          name : chat.name,
-          header : chat.header
-        }
-      }
-    })
-    setChattings([...chatsAfterEditionFinal])
-    setShowEditInsideIcons(false)
-   }
-
-   const discardEditing = () => {
-    let resetChats = chattings.map((chat,i) => {
-      return {
-        isEditing: false,
-        name: chat.name,
-        header: chat.header
-      }
-      }
-    )
-    setChattings([...resetChats])
-    setShowEditInsideIcons(false)
-   }
-
   const fetchOldChat = (countNo) => {
 
     if(messages?.length !== 0) {
@@ -244,11 +175,11 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
                 
                   {showEditInsideIcons && value.isEditing ?
                     <>
-                      <div className="editButton" onClick={() => {editHeadingFinal(index)}}><img src={editSolid} className="editSo" /></div>
-                      <div className="deleteButton" onClick={ () => {discardEditing()} }><img src={xmark} className="xmark"/></div>
+                      <div className="editButton" onClick={() => {editHeadingFinal(index,chattings,setChattings,setShowEditInsideIcons,editChatHeading)}}><img src={editSolid} className="editSo" /></div>
+                      <div className="deleteButton" onClick={ () => {discardEditing(chattings,setChattings,setShowEditInsideIcons)} }><img src={xmark} className="xmark"/></div>
                     </> :
                     <>
-                    <div className="editButton" onClick={() => {editHeading(index)}}>E</div>
+                    <div className="editButton" onClick={() => {editHeading(index,setEditChatHeading,setShowEditInsideIcons,chattings,setChattings)}}>E</div>
                     <div className="deleteButton" onClick={ () => {showModal(value.name,keyRr)} }>D</div>
                     </>
                   }

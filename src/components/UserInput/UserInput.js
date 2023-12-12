@@ -35,7 +35,7 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
 
   useEffect(() => {
     saveInLocalStorage('isHamburger',JSON.stringify(isHamburger))
-   	saveInLocalStorage('isHamburgerAnimate',JSON.stringify(isHamburgerAnimate))
+    saveInLocalStorage('isHamburgerAnimate',JSON.stringify(isHamburgerAnimate))
     saveInLocalStorage('chattings',JSON.stringify(chattings))
     saveInLocalStorage('counter',JSON.stringify(counter))
     saveInLocalStorage('liveChat',JSON.stringify(liveChat))

@@ -83,6 +83,74 @@ const sortLatestChatUp = (currentChattings,pageNo) => {
   }
   return false;
 }
+const editHeading = (index,setEditChatHeading,setShowEditInsideIcons,chattings,setChattings) => {
+  setEditChatHeading("")
+  setShowEditInsideIcons(true)
+  const chatsAfterEdition = chattings.map((chat,i) => {
+    if ( i == index ) {
+      return {
+        isEditing : !chat.isEditing,
+        name : chat.name,
+        header: chat.header
+      }
+    }
+    else {
+      return  {
+        isEditing : false,
+        name: chat.name,
+        header : chat.header
+      }
+    }
+  })
+  setChattings([...chatsAfterEdition])
+}
 
+const editHeadingFinal =  (index,chattings,setChattings,setShowEditInsideIcons,editChatHeading) => {
+  const chatsAfterEditionFinal = chattings.map((chat,i) => {
+    if ( i == index ) {
+      let selectedChat = {
+        isEditing : true,
+        name : '',
+        header: ''
+      }
+      selectedChat.isEditing = !chat.isEditing
+      selectedChat.name = chat.name
+      selectedChat.header = chat.header
+      if ( chat.isEditing ){
+          if(!editChatHeading) {
+            selectedChat.header = " "
+          }else {
+            selectedChat.header = editChatHeading;
+          } 
+      }
+      else {
+          // do nothing 
+      }
+        return selectedChat
+    }
+    else {
+      return {
+        isEditing : false,
+        name : chat.name,
+        header : chat.header
+      }
+    }
+  })
+  setChattings([...chatsAfterEditionFinal])
+  setShowEditInsideIcons(false)
+}
 
-export { streamAsyncIterator, getAsyncStream, saveInLocalStorage, searchInCache, fetchFromAPI, sortLatestChatUp };
+const discardEditing = (chattings,setChattings,setShowEditInsideIcons) => {
+  let resetChats = chattings.map((chat,i) => {
+    return {
+      isEditing: false,
+      name: chat.name,
+      header: chat.header
+    }
+    }
+  )
+  setChattings([...resetChats])
+  setShowEditInsideIcons(false)
+}
+
+export { streamAsyncIterator, getAsyncStream, saveInLocalStorage, searchInCache, fetchFromAPI, sortLatestChatUp, editHeading, editHeadingFinal,discardEditing };
