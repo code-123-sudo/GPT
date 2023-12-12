@@ -227,9 +227,6 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
 
           for ( let i = 0; i < returnArray.length ; i++ ) {
             searchResultIndex = returnArray[i].text.search(searchValue);
-            console.log("searchValue",searchValue)
-            console.log("returnArray",returnArray[i].text)
-            console.log("search result index is",searchResultIndex)
             if ( searchResultIndex != -1 ) {
               searchText = returnArray[i].text.slice(searchResultIndex,searchResultIndex+5)
               break;
@@ -238,10 +235,8 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
           if ( searchResultIndex === -1 ) {
             searchResultIndex = value.header.search(searchValue)
           }
-          
-          if ( searchValue != "" ){
-            if( searchResultIndex != -1 ) {
-              return (
+          if ( (searchValue !== "" && searchResultIndex !== -1) || searchValue === ""){
+            return (
                 <div className={ isHamburger ? "chatsListItem" : "displayNone"}>
                   { !value.isEditing ? <div className="chatText" onClick={ () => {fetchOldChat(value.name)}}>
                     {value.header.length > 0  ? value.header : quesText + '....' }
@@ -259,26 +254,6 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
                   }
                 </div>
               )
-            }
-          }else {
-            return (
-              <div className={ isHamburger ? "chatsListItem" : "displayNone"}>
-                { !value.isEditing ? <div className="chatText" onClick={ () => {fetchOldChat(value.name)}}>
-                  {value.header.length > 0  ? value.header : quesText + '....' }
-                </div> : <input type="text" className="editHead" value={editChatHeading} onChange={handleChange}/> }
-              
-                {showEditInsideIcons && value.isEditing ?
-                  <>
-                    <div className="editButton" onClick={() => {editHeadingFinal(index)}}><img src={editSolid} className="editSo" /></div>
-                    <div className="deleteButton" onClick={ () => {discardEditing()} }><img src={xmark} className="xmark"/></div>
-                  </> :
-                  <>
-                  <div className="editButton" onClick={() => {editHeading(index)}}>E</div>
-                  <div className="deleteButton" onClick={ () => {showModal(value.name,keyRr)} }>D</div>
-                  </>
-                }
-              </div>
-            )
           }
         }
         )}

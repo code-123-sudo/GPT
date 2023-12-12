@@ -15,7 +15,27 @@ async function* streamAsyncIterator(stream) {
       reader.releaseLock();
   }
 }
-
+const getAsyncStream = async (response,setStreamData) => {
+  let textRecieved = ""
+  const decoder = new TextDecoder();
+  for await (const chunk of streamAsyncIterator(response.body)) {
+    const data = decoder.decode(chunk)
+    const splitData = data.split("\n\n")
+    for ( const jsonData of splitData ) {
+      try {
+        const parsedData = JSON.parse(jsonData.replace("data: ",""));
+        const deltaContent = parsedData?.choices?.[0]?.delta?.content
+        if ( deltaContent ){
+          textRecieved += deltaContent
+          setStreamData(textRecieved)
+        }
+      } catch(err) {
+        console.error("Error parsing JSON data",err)
+      }
+    }
+  }
+  return textRecieved
+}
 const saveInLocalStorage = (key,value) => {
     localStorage.setItem(key,value);
 }
@@ -65,4 +85,4 @@ const sortLatestChatUp = (currentChattings,pageNo) => {
 }
 
 
-export { streamAsyncIterator, saveInLocalStorage, searchInCache, fetchFromAPI, sortLatestChatUp };
+export { streamAsyncIterator, getAsyncStream, saveInLocalStorage, searchInCache, fetchFromAPI, sortLatestChatUp };

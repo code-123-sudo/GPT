@@ -18,15 +18,15 @@ import { setChattings } from '../../actions/chattingsActions.js'
 import { addMessage } from '../../actions/messagesActions.js'
 
 import send from '../../assets/send.png';
-import { streamAsyncIterator, saveInLocalStorage, searchInCache, fetchFromAPI, sortLatestChatUp } from '../../utilities/generalUtilities.js'
+import { streamAsyncIterator, getAsyncStream, saveInLocalStorage, searchInCache, fetchFromAPI, sortLatestChatUp } from '../../utilities/generalUtilities.js'
 
 import { API_KEY, API_URL } from "../../constants.js"
 
 import Commonfaqs from "../Commonfaqs/Commonfaqs.js" 
 
 const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addMessage, message , setMessage ,
-    	pageNo , setPageNo , isStreaming , setIsStreaming , streamData , setStreamData , isTypingLeft , setIsTypingLeft ,
-    	isTypingRight , setIsTypingRight , isHamburger , setIsHamburger , isHamburgerAnimate , setIsHamburgerAnimate }) => {
+    	pageNo , setPageNo , setIsStreaming  , setStreamData ,
+    	 setIsTypingRight , isHamburger , setIsHamburger , isHamburgerAnimate , setIsHamburgerAnimate }) => {
 
   let refr = useRef(null);
   const handleChange = (event) => {
@@ -42,30 +42,6 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
     saveInLocalStorage('messages',JSON.stringify(messages))  
    })
 
-  const getAsyncStream = async (response) => {
-      let textRecieved = ""
-      const decoder = new TextDecoder();
-      setIsStreaming(true);
-      for await (const chunk of streamAsyncIterator(response.body)) {
-        setIsTypingRight(false)
-        const data = decoder.decode(chunk)
-        const splitData = data.split("\n\n")
-        for ( const jsonData of splitData ) {
-          try {
-            const parsedData = JSON.parse(jsonData.replace("data: ",""));
-            const deltaContent = parsedData?.choices?.[0]?.delta?.content
-            if ( deltaContent ){
-              textRecieved += deltaContent
-              setStreamData(textRecieved)
-            }
-          } catch(err) {
-            console.error("Error parsing JSON data",err)
-          }
-        }
-      }
-      return textRecieved
-  }
-
   const addAiAnswerToChat = async () => {
     try {
       setIsTypingRight(true);
@@ -74,7 +50,9 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
       if (!cachedAns){
         // if not found in cache , get answer from open chat ai
         const response = await fetchFromAPI(API_URL,API_KEY,message);
-        const textRecieved = await getAsyncStream(response); 
+        setIsStreaming(true)
+        setIsTypingRight(false)
+        const textRecieved = await getAsyncStream(response,setStreamData); 
         setIsStreaming(false)
         addMessage({text:textRecieved,isReply:true});
       } else {
@@ -141,10 +119,6 @@ const mapStateToProps = (state) => ({
   liveChat: state.liveChat.liveChat,
   message: state.common.message,
   pageNo: state.common.pageNo,
-  isStreaming: state.common.isStreaming,
-  streamData: state.common.streamData,
-  isTypingLeft: state.common.isTypingLeft,
-  isTypingRight: state.common.isTypingRight,
   isHamburger: state.common.isHamburger,
   isHamburgerAnimate: state.common.isHamburgerAnimate
 })
@@ -156,7 +130,6 @@ const mapDispatchToProps = (dispatch) => ({
   setPageNo: (dataValue) => dispatch(setPageNo(dataValue)),
   setIsStreaming: (dataValue) => dispatch(setIsStreaming(dataValue)),
   setStreamData: (dataValue) => dispatch(setStreamData(dataValue)),
-  setIsTypingLeft: (dataValue) => dispatch(setIsTypingLeft(dataValue)),
   setIsTypingRight: (dataValue) => dispatch(setIsTypingRight(dataValue)),
   setIsHamburger: (dataValue) => dispatch(setIsHamburger(dataValue)),
   setIsHamburgerAnimate: (dataValue) => dispatch(setIsHamburgerAnimate(dataValue))
