@@ -15,6 +15,9 @@ import { setPageNo, setIsHamburger, setIsHamburgerAnimate } from '../../actions/
 
 import { editHeading, editHeadingFinal , discardEditing } from '../../utilities/generalUtilities.js'
 
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+
 const HamburgerMenu = ({  chattings, counter, liveChat, messages , setChattings, setCounter, setLiveChat, setMessages, setPageNo, isStreaming,
 isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => { 
   const [showEditInsideIcons, setShowEditInsideIcons] = useState(false)
@@ -132,14 +135,14 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
         <img src={menu} className="iconImg" />
     </div>
 
+    { isHamburger &&
     <div className={ isHamburger ? 'hamburger' : 'hamburger hamburger2'} >
-        
-        { isHamburger &&
+             
         <div className="searchContainer">
-          <input type="text" placeholder="search" onChange={() => {handleChange1(event)}} value={searchValue} className="searchInput" />
-        </div>}
-
-        <button disabled={isStreaming ? true : false} className={ isHamburger ? "newChatButton" : "displayNone"} onClick={startNewChat} >New Chat +</button>
+          <TextField id="outlined-search" label="Search" type="search" onChange={() => {handleChange1(event)}} value={searchValue} className="searchInput" />
+          
+        </div>
+        <Button variant="outlined" disabled={isStreaming ? true : false} className={ isHamburger ? "newChatButton" : "displayNone"} onClick={startNewChat} >New Chat +</Button>
         {chattings?.map((value,index) => {
           let keyRr = "chat" + value.name.toString();
           let returnString = localStorage.getItem(keyRr);
@@ -188,7 +191,7 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
           }
         }
         )}
-      </div>
+      </div>} 
       </>
   )
 }

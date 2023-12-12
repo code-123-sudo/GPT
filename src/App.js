@@ -8,7 +8,6 @@ import ChatText from './components/ChatText/ChatText.js'
 import HamburgerMenu from './components/Hamburger/HamburgerMenu.js'
 import UserInput from './components/UserInput/UserInput.js'
 
-
 function App(props) {   
   return (
       <div className="topDiv">
