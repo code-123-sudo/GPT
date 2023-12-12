@@ -1,0 +1,5 @@
+Prepare a small written description of project highlighting main tech used etc for adding to resume. Use chatGPT if needed.
+
+
+
+Built a open ai based chat application in ReactJs and Javascript in which a user can ask his/her questions from chat input for which he/she will get answer replies updating fast in the form of chunks as soon as they are fetched from server.A user can save any chat and come back to it later and continue the chat again from where he left it earlier,can delete it thus can manage multiple chats simultaneously.User can edit title of any chat.There are some default questions whose answers are fetched fast using caching.

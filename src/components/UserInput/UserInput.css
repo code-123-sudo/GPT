@@ -1,0 +1,33 @@
+input {
+  width : 700px;
+  height : 50px;
+  font-size: 1rem;
+  border: none;
+}
+
+.flexRow{
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  bottom: 35px;
+  z-index: 1;
+}
+.flexRowContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.icon {
+  margin-left: -54px;
+}
+@media only screen and (max-width: 500px) {
+  .inputContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  input {
+    width : 100vw;
+  }
+}
+
