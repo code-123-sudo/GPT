@@ -156,12 +156,28 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
               '& .MuiOutlinedInput-notchedOutline': {
                 height: '45px',
                 width: '150px',
-                marginLeft: '10px'
+                marginLeft: '10px',
               },
-              '& MuiFormLabel-root-MuiInputLabel-root':{
-                marginTop: '-7px',
-                marginLeft: '5px' ,
-              }
+              '& label.Mui-focused': {
+                display: 'none',
+              },
+              '& div.Mui-focused': {
+                color: '#A0AAB4',
+              },
+              '& .MuiInput-underline:after': {
+                borderBottomColor: '#B2BAC2',
+              },
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: '#E0E3E7',
+                },
+                '&:hover fieldset': {
+                  borderColor: '#B2BAC2',
+                },
+                '&.Mui-focused fieldset': {
+                  border: '0px solid grey',
+                },
+              },
             }}
             />
         </div>

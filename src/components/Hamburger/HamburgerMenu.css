@@ -101,7 +101,13 @@
   width: 160px;
   margin-left: 20px;
 }
-
+input:focus {
+  outline: none !important;
+}
+input:focus-visible{
+  outline: none !important;
+  outline-offset: none !important;
+}
 
 input[type="search"]::-webkit-search-decoration,
 input[type="search"]::-webkit-search-cancel-button,
