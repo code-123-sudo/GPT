@@ -6,6 +6,8 @@ import './HamburgerMenu.css'
 
 import menu from '../../assets/menu.png';
 import MenuIcon from '@mui/icons-material/Menu';
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import DeleteIcon from '@mui/icons-material/Delete';
 import editSolid from '../../assets/edit-solid.svg'
 import xmark from '../../assets/xmark.svg'
 
@@ -142,10 +144,29 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
     { isHamburger &&
     <div className={ isHamburger ? 'hamburger' : 'hamburger hamburger2'} >
              
+        
+        <br/>
+
         <div className="searchContainer">
-          <TextField id="outlined-search" label="Search" type="search" onChange={() => {handleChange1(event)}} value={searchValue} className="searchInput" />
+          <TextField 
+            id="outlined-search" label="Search" type="search" onChange={() => {handleChange1(event)}} value={searchValue} className="searchInput2" 
+            sx={{
+              width: 300,
+              color: 'success.main',
+              '& .MuiOutlinedInput-notchedOutline': {
+                height: '45px',
+                width: '150px',
+                marginLeft: '10px'
+              },
+              '& MuiFormLabel-root-MuiInputLabel-root':{
+                marginTop: '-7px',
+                marginLeft: '5px' ,
+              }
+            }}
+            />
         </div>
-        <Button variant="outlined" disabled={isStreaming ? true : false} className={ isHamburger ? "newChatButton" : "displayNone"} onClick={startNewChat} >New Chat +</Button>
+        <Button variant="contained" disabled={isStreaming ? true : false} className={ isHamburger ? "newChatButton" : "displayNone"} onClick={startNewChat} >New Chat +</Button>
+
         {chattings?.map((value,index) => {
           let keyRr = "chat" + value.name.toString();
           let returnString = localStorage.getItem(keyRr);
@@ -181,12 +202,12 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
                 
                   {showEditInsideIcons && value.isEditing ?
                     <>
-                      <div className="editButton" onClick={() => {editHeadingFinal(index,chattings,setChattings,setShowEditInsideIcons,editChatHeading)}}><img src={editSolid} className="editSo" /></div>
-                      <div className="deleteButton" onClick={ () => {discardEditing(chattings,setChattings,setShowEditInsideIcons)} }><img src={xmark} className="xmark"/></div>
+                      <div className="editButton" onClick={() => {editHeadingFinal(index,chattings,setChattings,setShowEditInsideIcons,editChatHeading)}}>E</div>
+                      <div className="deleteButton" onClick={ () => {discardEditing(chattings,setChattings,setShowEditInsideIcons)} }>D</div>
                     </> :
                     <>
-                    <div className="editButton" onClick={() => {editHeading(index,setEditChatHeading,setShowEditInsideIcons,chattings,setChattings)}}>E</div>
-                    <div className="deleteButton" onClick={ () => {showModal(value.name,keyRr)} }>D</div>
+                    <div className="editButton" onClick={() => {editHeading(index,setEditChatHeading,setShowEditInsideIcons,chattings,setChattings)}}><EditNoteIcon fontSize="large" sx={{ color: "#1E68D7" }} /></div>
+                    <div className="deleteButton" onClick={ () => {showModal(value.name,keyRr)} }><DeleteIcon fontSize="large" sx={{ color: "#1E68D7", width: "23px" }} /></div>
                     </>
                   }
                 </div>

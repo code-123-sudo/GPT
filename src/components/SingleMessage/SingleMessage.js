@@ -5,7 +5,7 @@ const SingleMessage = ({ left , text }) => {
     return (
       <div className="chatLeftContainer">
         <div className="user">{ left ? "YOU" : "AI"}</div>
-          <div className= { left ? 'chat-left' : 'chat-right'}>
+          <div className= { left ? "chat-left" : "chat-right"}>
             {text}
           </div>
       </div>

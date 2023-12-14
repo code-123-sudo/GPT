@@ -105,10 +105,10 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
 		  <div className="flexRowContainer">
         <div className="flexRow">
           <div className="inputContainer">
-            <TextField id="outlined-search" label="Ask me anything about Jainism" type="search" onKeyDown={enterKeySend} onChange={handleChange} value={message} className="searchBox" />
+            <TextField ref={refr} id="outlined-search" placeholder="Ask me anything about Jainism" type="search" onKeyDown={enterKeySend} onChange={handleChange} value={message} className="searchBox" />
           </div>
 
-          <div className="icon" onClick={addUserQuestionToChat}> <SendIcon sx={{ color: "#1E68D7" ,fontSize: 40, marginTop : "9px" }} /> </div>
+          <div className="icon" onClick={addUserQuestionToChat}> <SendIcon onClick={addUserQuestionToChat} sx={{ color: "#1E68D7" ,fontSize: 40, marginTop : "9px", cursor: "pointer" }} /> </div>
         </div>
       </div>
     </div>

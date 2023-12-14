@@ -16,14 +16,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 30px;
+  height: 45px;
+  margin-left: 10px;
   width: 150px;
-  background: #D3D3D3;
   border-radius: 4px;
   cursor: pointer;
   font-size: 1rem;
-  border: 4px solid lightgrey;
-  color: white;
+  text-transform: none;
 }
 .chatsListItem {
   width: 150px;
@@ -33,6 +32,7 @@
   border-radius: 4px;
   cursor: pointer;
   display: flex;
+  margin-left:8px;
 }
 .chatText{
   width:90px;
@@ -48,11 +48,11 @@
 .editButton, .deleteButton {
   width: 30px;
   height: 30px;
-  background: darkgrey;
+  background: white;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid grey;
+  border: none;
   cursor: pointer;
 }
 .editSo{
@@ -94,17 +94,14 @@
   margin-top: 55px;
 }
 .searchInput2:hover{
-  border-bottom: 40px solid lightgrey;
   outline:none;
   text-decoration: none;
 }
 .searchInput2{
-  border: 10px solid grey;
+  width: 160px;
+  margin-left: 20px;
 }
 
-input[type="search"] {
-  width: 150px;
-}
 
 input[type="search"]::-webkit-search-decoration,
 input[type="search"]::-webkit-search-cancel-button,

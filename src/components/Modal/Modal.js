@@ -1,5 +1,6 @@
 import  React  from 'react';
 import './Modal.css';
+import Button from '@mui/material/Button';
 
 const Modal = ({ handleClose, show, children }) => {
   const showHideClassName = show ? "modal display-block" : "modal display-none";
@@ -12,8 +13,8 @@ const Modal = ({ handleClose, show, children }) => {
         		Are you sure you want to delete chat 
         	</div>
         	<div className="modalButtonContainer">
-        		<div className="yesButton" onClick={() => {handleClose("true")}}> Yes </div>
-        		<div className="noButton" onClick={() => {handleClose("false")}}> No </div>
+            <Button variant="outlined" className="yesButton" onClick={() => {handleClose("true")}}>Yes</Button>
+            <Button variant="outlined" className="noButton" onClick={() => {handleClose("false")}}>No</Button>
         	</div>
           </div>
       </section>
