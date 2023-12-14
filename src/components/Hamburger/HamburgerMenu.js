@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import Modal from '../Modal/Modal.js';
 import Search from '../Search/Search.js';
 import './HamburgerMenu.css'
+
 import menu from '../../assets/menu.png';
+import MenuIcon from '@mui/icons-material/Menu';
 import editSolid from '../../assets/edit-solid.svg'
 import xmark from '../../assets/xmark.svg'
 
@@ -17,6 +19,7 @@ import { editHeading, editHeadingFinal , discardEditing } from '../../utilities/
 
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import Input from '@mui/material/Input';
 
 const HamburgerMenu = ({  chattings, counter, liveChat, messages , setChattings, setCounter, setLiveChat, setMessages, setPageNo, isStreaming,
 isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => { 
@@ -32,6 +35,8 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
   const handleChange1 = (e) => {
     setSearchValue(e.target.value)
   }
+
+  const ariaLabel = { 'aria-label': 'description' };
 
   const deleteChat = (valueName,LSkey) => {
     const chatsAfterDeletion = chattings.filter((chatValue) => chatValue.name == valueName)
@@ -132,15 +137,13 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
     <Modal show={showModalFlag} handleClose={hideModal}>Modal</Modal>
 
     <div className="menuButton" onClick={() => {setIsHamburger(!isHamburger);setIsHamburgerAnimate(!isHamburgerAnimate)}}>
-        <img src={menu} className="iconImg" />
+        <MenuIcon fontSize="large" sx={{ color: "#1E68D7" }} />
     </div>
-
     { isHamburger &&
     <div className={ isHamburger ? 'hamburger' : 'hamburger hamburger2'} >
              
         <div className="searchContainer">
           <TextField id="outlined-search" label="Search" type="search" onChange={() => {handleChange1(event)}} value={searchValue} className="searchInput" />
-          
         </div>
         <Button variant="outlined" disabled={isStreaming ? true : false} className={ isHamburger ? "newChatButton" : "displayNone"} onClick={startNewChat} >New Chat +</Button>
         {chattings?.map((value,index) => {

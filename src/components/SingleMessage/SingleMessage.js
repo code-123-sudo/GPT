@@ -4,7 +4,7 @@ import './SingleMessage.css';
 const SingleMessage = ({ left , text }) => {
     return (
       <div className="chatLeftContainer">
-        <div className="user">You</div>
+        <div className="user">{ left ? "YOU" : "AI"}</div>
           <div className= { left ? 'chat-left' : 'chat-right'}>
             {text}
           </div>

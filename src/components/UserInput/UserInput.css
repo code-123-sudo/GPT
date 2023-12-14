@@ -1,9 +1,3 @@
-input {
-  width : 700px;
-  height : 50px;
-  font-size: 20px;
-}
-
 .flexRow{
   display: flex;
   flex-direction: row;
@@ -19,14 +13,23 @@ input {
 .icon {
   margin-left: -54px;
 }
+
 @media only screen and (max-width: 500px) {
   .inputContainer {
     display: flex;
     justify-content: center;
     align-items: center;
   }
-  input {
+  .searchBox {
     width : 100vw;
   }
 }
 
+.searchBox {
+  width : 700px;
+  height : 50px;
+  font-size: 20px;
+}
+.searchBox:focus-visible{
+  outline: none;
+}

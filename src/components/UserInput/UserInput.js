@@ -2,6 +2,8 @@ import React ,{ useEffect , useState , useRef } from 'react';
 import { connect } from 'react-redux';
 import './UserInput.css'
 
+import TextField from '@mui/material/TextField';
+
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { data, defaultQuestions } from '../../data.js'
@@ -18,6 +20,7 @@ import { setChattings } from '../../actions/chattingsActions.js'
 import { addMessage } from '../../actions/messagesActions.js'
 
 import send from '../../assets/send.png';
+import SendIcon from '@mui/icons-material/Send';
 import { streamAsyncIterator, getAsyncStream, saveInLocalStorage, searchInCache, fetchFromAPI, sortLatestChatUp } from '../../utilities/generalUtilities.js'
 
 import { API_KEY, API_URL } from "../../constants.js"
@@ -102,9 +105,10 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
 		  <div className="flexRowContainer">
         <div className="flexRow">
           <div className="inputContainer">
-            <input type='text' ref={refr} placeholder='Ask me anything about Jainism' onKeyDown={enterKeySend} onChange={handleChange} value={message}/>
+            <TextField id="outlined-search" label="Ask me anything about Jainism" type="search" onKeyDown={enterKeySend} onChange={handleChange} value={message} className="searchBox" />
           </div>
-          <div className="icon" onClick={addUserQuestionToChat}> <img src={send} /> </div>
+
+          <div className="icon" onClick={addUserQuestionToChat}> <SendIcon sx={{ color: "#1E68D7" ,fontSize: 40, marginTop : "9px" }} /> </div>
         </div>
       </div>
     </div>
