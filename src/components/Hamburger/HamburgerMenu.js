@@ -16,12 +16,32 @@ import { addChat, setChattings } from '../../actions/chattingsActions.js'
 import { addMessage, setMessages } from '../../actions/messagesActions.js'
 import { setLiveChat } from '../../actions/liveChatActions.js'
 import { setPageNo, setIsHamburger, setIsHamburgerAnimate } from '../../actions/commonActions.js'
+import OutlinedInput from "@mui/material/OutlinedInput";
+import { styled } from "@mui/material/styles";
 
 import { editHeading, editHeadingFinal , discardEditing } from '../../utilities/generalUtilities.js'
 
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Input from '@mui/material/Input';
+
+const SearchInput = styled(OutlinedInput)({
+  "& label.Mui-focused": {
+    display: "none",
+  },
+  "& fieldset": {
+    border: "4px solid #D3D3D3",
+    borderRadius: "30px",
+    overflow: "hidden",
+  },
+  "&.Mui-focused fieldset": {
+    display: "none",
+  },
+  "&:hover fieldset": {
+    border: "4px solid #D3D3D3 !important",
+    backgroundColor: "transparent",
+  },
+});
 
 const HamburgerMenu = ({  chattings, counter, liveChat, messages , setChattings, setCounter, setLiveChat, setMessages, setPageNo, isStreaming,
 isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => { 
@@ -139,7 +159,7 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
     <Modal show={showModalFlag} handleClose={hideModal}>Modal</Modal>
 
     <div className="menuButton" onClick={() => {setIsHamburger(!isHamburger);setIsHamburgerAnimate(!isHamburgerAnimate)}}>
-        <MenuIcon fontSize="large" sx={{ color: "#1E68D7" }} />
+        <MenuIcon fontSize="large" sx={{ color: "#3d3d3d" }} />
     </div>
     { isHamburger &&
     <div className={ isHamburger ? 'hamburger' : 'hamburger hamburger2'} >
@@ -147,41 +167,11 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
         
         <br/>
 
-        <div className="searchContainer">
-          <TextField 
-            id="outlined-search" label="Search" type="search" onChange={() => {handleChange1(event)}} value={searchValue} className="searchInput2" 
-            sx={{
-              width: 300,
-              color: 'success.main',
-              '& .MuiOutlinedInput-notchedOutline': {
-                height: '45px',
-                width: '150px',
-                marginLeft: '10px',
-              },
-              '& label.Mui-focused': {
-                display: 'none',
-              },
-              '& div.Mui-focused': {
-                color: '#A0AAB4',
-              },
-              '& .MuiInput-underline:after': {
-                borderBottomColor: '#B2BAC2',
-              },
-              '& .MuiOutlinedInput-root': {
-                '& fieldset': {
-                  borderColor: '#E0E3E7',
-                },
-                '&:hover fieldset': {
-                  borderColor: '#B2BAC2',
-                },
-                '&.Mui-focused fieldset': {
-                  border: '0px solid grey',
-                },
-              },
-            }}
-            />
-        </div>
         <Button variant="contained" disabled={isStreaming ? true : false} className={ isHamburger ? "newChatButton" : "displayNone"} onClick={startNewChat} >New Chat +</Button>
+        <div className="searchContainer">
+          <SearchInput 
+            id="outlined-search" placeholder="Search" type="search" onChange={() => {handleChange1(event)}} value={searchValue} className="searchInput2" />
+        </div>
 
         {chattings?.map((value,index) => {
           let keyRr = "chat" + value.name.toString();
@@ -222,8 +212,8 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
                       <div className="deleteButton" onClick={ () => {discardEditing(chattings,setChattings,setShowEditInsideIcons)} }>D</div>
                     </> :
                     <>
-                    <div className="editButton" onClick={() => {editHeading(index,setEditChatHeading,setShowEditInsideIcons,chattings,setChattings)}}><EditNoteIcon fontSize="large" sx={{ color: "#1E68D7" }} /></div>
-                    <div className="deleteButton" onClick={ () => {showModal(value.name,keyRr)} }><DeleteIcon fontSize="large" sx={{ color: "#1E68D7", width: "23px" }} /></div>
+                    <div className="editButton" onClick={() => {editHeading(index,setEditChatHeading,setShowEditInsideIcons,chattings,setChattings)}}><EditNoteIcon fontSize="large" sx={{ color: "#3d3d3d" }} /></div>
+                    <div className="deleteButton" onClick={ () => {showModal(value.name,keyRr)} }><DeleteIcon fontSize="large" sx={{ color: "#3d3d3d", width: "23px" }} /></div>
                     </>
                   }
                 </div>

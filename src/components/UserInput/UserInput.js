@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import './UserInput.css'
 
 import TextField from '@mui/material/TextField';
+import OutlinedInput from "@mui/material/OutlinedInput";
+import { alpha, styled } from "@mui/material/styles";
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -27,12 +29,33 @@ import { API_KEY, API_URL } from "../../constants.js"
 
 import Commonfaqs from "../Commonfaqs/Commonfaqs.js" 
 
+const Checking = styled(OutlinedInput)({
+  "& label.Mui-focused": {
+    display: "none",
+  },
+  "& fieldset": {
+    border: "4px solid #D3D3D3",
+    borderRadius: "30px",
+    overflow: "hidden",
+  },
+  "&.Mui-focused fieldset": {
+    display: "none",
+  },
+  "&:hover fieldset": {
+    border: "4px solid #D3D3D3 !important",
+    backgroundColor: "transparent",
+  },
+});
+
 const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addMessage, message , setMessage ,
     	pageNo , setPageNo , setIsStreaming  , setStreamData ,
     	 setIsTypingRight , isHamburger , setIsHamburger , isHamburgerAnimate , setIsHamburgerAnimate }) => {
 
+  const [messageInput,setMessageInput] = useState("")
+
   let refr = useRef(null);
   const handleChange = (event) => {
+    setMessageInput(event.target.value)
     setMessage(event.target.value)
   }
 
@@ -94,6 +117,8 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
 
   const enterKeySend = e => {
     if (e.keyCode === 13) {
+      setMessageInput("")
+      refr.current.blur();
       refr.current.value = "";
       addUserQuestionToChat();
     }
@@ -105,10 +130,10 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
 		  <div className="flexRowContainer">
         <div className="flexRow">
           <div className="inputContainer">
-            <TextField ref={refr} id="outlined-search" placeholder="Ask me anything about Jainism" type="search" onKeyDown={enterKeySend} onChange={handleChange} value={message} className="searchBox" />
+            <Checking ref={refr} id="outlined-search" placeholder="Ask me anything about Jainism" type="text" onKeyDown={enterKeySend} onChange={handleChange} value={messageInput} className="searchBox" />
           </div>
 
-          <div className="icon" onClick={addUserQuestionToChat}> <SendIcon onClick={addUserQuestionToChat} sx={{ color: "#1E68D7" ,fontSize: 40, marginTop : "9px", cursor: "pointer" }} /> </div>
+          <div className="icon" onClick={addUserQuestionToChat}> <SendIcon onClick={addUserQuestionToChat} sx={{ color: "#3d3d3d" ,fontSize: 40, marginTop : "9px", cursor: "pointer" }} /> </div>
         </div>
       </div>
     </div>
