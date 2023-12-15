@@ -49,7 +49,6 @@ const SearchInput = styled(OutlinedInput)({
   },
   "&:hover fieldset": {
     border: "1px solid #D3D3D3 !important",
-    backgroundColor: "transparent",
   },
 });
 
@@ -169,7 +168,7 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
     <Modal show={showModalFlag} handleClose={hideModal}>Modal</Modal>
 
     <div className="menuButton" onClick={() => {setIsHamburger(!isHamburger);setIsHamburgerAnimate(!isHamburgerAnimate)}}>
-        <MenuIcon fontSize="large" sx={{ color: "#3d3d3d" }} />
+        <MenuIcon fontSize="large" sx={{ color: "white" }} />
     </div>
     { isHamburger &&
     <div className={ isHamburger ? 'hamburger' : 'hamburger hamburger2'} >

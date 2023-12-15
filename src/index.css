@@ -132,6 +132,7 @@ Questions
 .topDiv{
   display: flex;
   flex-direction: row;
+  background-color: black;
 }
 main {
   min-height: 100vh;
@@ -151,7 +152,7 @@ main {
   align-items: center;
   padding-left: 34px;
   height : 27vh;
-  background: red;
+  background: #474747;
   margin-top: 150px;
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
