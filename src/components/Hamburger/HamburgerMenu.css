@@ -39,7 +39,21 @@
   display: flex;
   margin-left:121px;
   border-radius: 120px;
+  z-index: 100;
 }
+/*.chatsListItem:hover {
+  background-color: green !important;
+}
+.chatsListItem:hover > .buttonBox {
+    background-color: green;
+}
+.chatsListItem:hover > .editButton {
+    background-color: green;
+}
+.chatsListItem:hover > .deleteButton {
+    background-color: green;
+}*/
+
 .chatText{
   width:190px;
   height : 30px;
@@ -48,7 +62,7 @@
   align-items: center;
 }
 .editHead {
-  width: 90px;
+  width: 150px;
   height: 30px;
 }
 .editButton, .deleteButton {

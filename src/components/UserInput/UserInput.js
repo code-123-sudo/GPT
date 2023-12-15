@@ -125,7 +125,7 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
   };
 
 	return (
-		<div data-testid="userinput-1">
+		<div data-testid="userinput-1" style={{backgroundColor:"#474747"}}>
     {messages.length == 0 ? <Commonfaqs addUserQuestionToChat={addUserQuestionToChat} > </Commonfaqs> : null}
 		  <div className="flexRowContainer">
         <div className="flexRow">

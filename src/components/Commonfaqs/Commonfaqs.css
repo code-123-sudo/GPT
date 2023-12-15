@@ -28,6 +28,12 @@
   overflow-y: hidden;
   cursor: pointer;
    text-transform: none;
+  background-color: #d3d3d3;
+  color: black;
+}
+.faq:hover{
+  background-color: #d3d3d3;
+  color: black;
 }
 @media only screen and (max-width: 500px) {
   .faqs2{

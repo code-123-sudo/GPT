@@ -222,7 +222,7 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
                   </div>
                      :
                   <div className="buttonBox">
-                    <div className="editButton" onClick={() => {editHeading(index,setEditChatHeading,setShowEditInsideIcons,chattings,setChattings)}}><EditNoteIcon fontSize="large" sx={{ color: "#3d3d3d" }} /></div>
+                    <div className="editButton" onClick={() => {editHeading(index,setEditChatHeading,setShowEditInsideIcons,chattings,setChattings)}}><EditNoteIcon className="iconImage" fontSize="large" sx={{ color: "#3d3d3d" }} /></div>
                     <div className="deleteButton" onClick={ () => {showModal(value.name,keyRr)} }><DeleteIcon fontSize="large" sx={{ color: "#3d3d3d", width: "23px" }} /></div>
                   </div>
                   }
