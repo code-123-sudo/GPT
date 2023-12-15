@@ -1,12 +1,12 @@
 .hamburger {
   height : 100vh;
   width : 200px;
-  background: ;
   opacity: 0.9;
   display: flex;
   flex-direction: column;
   align-items: center;
   transition: 0.2s cubic-bezier(.36,-0.01,0,.77);
+  background-color: black;
  /*transition: 0.2s;*/
 }
 .hamburger2 {
@@ -16,7 +16,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 45px;
+  height: 40px;
   margin-left: 10px;
   width: 150px;
   border-radius: 24px;
@@ -26,18 +26,22 @@
   background-color: #2a2a2a;
   margin-top: 50px;
 }
+.newChatButton:hover{
+  background-color: #2a2a2a;
+}
 .chatsListItem {
-  width: 150px;
+  width: 250px;
   height: 30px;
   background: #D3D3D3;
   margin-top:10px;
   border-radius: 4px;
   cursor: pointer;
   display: flex;
-  margin-left:8px;
+  margin-left:121px;
+  border-radius: 120px;
 }
 .chatText{
-  width:90px;
+  width:190px;
   height : 30px;
   display: flex;
   justify-content: center;
@@ -50,12 +54,23 @@
 .editButton, .deleteButton {
   width: 30px;
   height: 30px;
-  background: white;
+  background: #d3d3d3;
   display: flex;
   justify-content: center;
   align-items: center;
   border: none;
   cursor: pointer;
+}
+.deleteButton{
+  margin-left: 11px;
+}
+.buttonBox{
+  display: flex;
+  width: 100px;
+  height: 30px;
+  background-color: #d3d3d3;
+  border-top-right-radius: 25px;
+  border-bottom-right-radius: 25px;
 }
 .editSo{
   height : 16px;
@@ -100,10 +115,12 @@
   text-decoration: none;
 }
 .searchInput2{
-  margin-left: 20px;
+  color: white;
   width: 250px;
-  height: 45px;
-  margin-left: 20px;
+  height: 40px;
+  margin-left: 30px;
+  background-color: #2a2a2a;
+  border-radius: 20px;
 }
 input:focus {
   outline: none !important;

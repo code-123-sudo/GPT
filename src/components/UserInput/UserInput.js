@@ -34,6 +34,7 @@ const Checking = styled(OutlinedInput)({
     display: "none",
   },
   "& fieldset": {
+    color: "white",
     border: "4px solid #D3D3D3",
     borderRadius: "30px",
     overflow: "hidden",
@@ -133,7 +134,7 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
             <Checking ref={refr} id="outlined-search" placeholder="Ask me anything about Jainism" type="text" onKeyDown={enterKeySend} onChange={handleChange} value={messageInput} className="searchBox" />
           </div>
 
-          <div className="icon" onClick={addUserQuestionToChat}> <SendIcon onClick={addUserQuestionToChat} sx={{ color: "#3d3d3d" ,fontSize: 40, marginTop : "9px", cursor: "pointer" }} /> </div>
+          <div className="icon" onClick={addUserQuestionToChat}> <SendIcon onClick={addUserQuestionToChat} sx={{ color: "#3d3d3d" ,fontSize: 30, marginTop : "12px", cursor: "pointer" }} /> </div>
         </div>
       </div>
     </div>

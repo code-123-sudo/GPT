@@ -29,8 +29,18 @@ const SearchInput = styled(OutlinedInput)({
   "& label.Mui-focused": {
     display: "none",
   },
+  'input': {
+    '&::placeholder': {
+      textOverflow: 'ellipsis !important',
+      color: 'white !important'
+    },
+  },
+  "& label": {
+    color: "white",
+  },
   "& fieldset": {
-    border: "4px solid #D3D3D3",
+    color: "white",
+    border: "1px solid #D3D3D3",
     borderRadius: "30px",
     overflow: "hidden",
   },
@@ -38,7 +48,7 @@ const SearchInput = styled(OutlinedInput)({
     display: "none",
   },
   "&:hover fieldset": {
-    border: "4px solid #D3D3D3 !important",
+    border: "1px solid #D3D3D3 !important",
     backgroundColor: "transparent",
   },
 });
@@ -207,14 +217,15 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
                   </div> : <input type="text" className="editHead" value={editChatHeading} onChange={handleChange}/> }
                 
                   {showEditInsideIcons && value.isEditing ?
-                    <>
-                      <div className="editButton" onClick={() => {editHeadingFinal(index,chattings,setChattings,setShowEditInsideIcons,editChatHeading)}}>E</div>
-                      <div className="deleteButton" onClick={ () => {discardEditing(chattings,setChattings,setShowEditInsideIcons)} }>D</div>
-                    </> :
-                    <>
+                  <div className="buttonBox">
+                    <div className="editButton" onClick={() => {editHeadingFinal(index,chattings,setChattings,setShowEditInsideIcons,editChatHeading)}}>E</div>
+                    <div className="deleteButton" onClick={ () => {discardEditing(chattings,setChattings,setShowEditInsideIcons)} }>D</div>
+                  </div>
+                     :
+                  <div className="buttonBox">
                     <div className="editButton" onClick={() => {editHeading(index,setEditChatHeading,setShowEditInsideIcons,chattings,setChattings)}}><EditNoteIcon fontSize="large" sx={{ color: "#3d3d3d" }} /></div>
                     <div className="deleteButton" onClick={ () => {showModal(value.name,keyRr)} }><DeleteIcon fontSize="large" sx={{ color: "#3d3d3d", width: "23px" }} /></div>
-                    </>
+                  </div>
                   }
                 </div>
               )

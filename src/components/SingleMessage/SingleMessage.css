@@ -1,6 +1,7 @@
 .chatLeftContainer{
   display: flex;
   flex-direction: row;
+  z-index: 1;
 }
 .user {
   min-width: 70px;
