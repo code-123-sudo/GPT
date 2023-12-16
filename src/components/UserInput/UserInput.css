@@ -7,9 +7,10 @@
 }
 .flexRowContainer {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 50vh;
+  height: 47vh;
   background-color: #474747;
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;

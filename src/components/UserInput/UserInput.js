@@ -125,9 +125,9 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
   };
 
 	return (
-		<div data-testid="userinput-1" style={{backgroundColor:"#474747"}}>
-    {messages.length == 0 ? <Commonfaqs addUserQuestionToChat={addUserQuestionToChat} > </Commonfaqs> : null}
+		<div data-testid="userinput-1">
 		  <div className="flexRowContainer">
+        {messages.length == 0 ? <Commonfaqs addUserQuestionToChat={addUserQuestionToChat} > </Commonfaqs> : null}
         <div className="flexRow">
           <div className="inputContainer">
             <Checking ref={refr} id="outlined-search" placeholder="Ask me anything about Jainism" type="text" onKeyDown={enterKeySend} onChange={handleChange} value={messageInput} className="searchBox" />
