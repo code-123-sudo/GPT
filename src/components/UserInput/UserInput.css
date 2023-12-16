@@ -15,7 +15,7 @@
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
 }
-.icon {
+.sendIcon {
   margin-left: 4px;
   margin-top: -4px;
   min-width: 100px;
@@ -44,7 +44,7 @@
   .searchBox {
     width : 80vw;
   }
-  .icon {
+  .sendIcon {
     margin-left: 4px;
     margin-top: 0px;
     min-width: 0px;

@@ -1,12 +1,19 @@
 .chat-container {
   display: flex;
   flex-direction: column;
-  max-height: 80vh;
+  max-height: 60vh;
+  margin-top: 103px;
   overflow: scroll;
 }
 @media only screen and (min-width: 600px) {
   .chat-container {
     width: 800px;
+  }
+}
+@media only screen and (max-width: 500px) {
+  .chat-container {
+    margin-top: 150px;
+    max-height: 50vh;
   }
 }
 .scrollPoint {
