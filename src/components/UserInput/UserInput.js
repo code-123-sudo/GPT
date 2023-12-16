@@ -83,7 +83,7 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
         addMessage({text:textRecieved,isReply:true});
       } else {
         setIsTypingRight(false);
-        addMessage(cacheAns)
+        addMessage(cachedAns)
       }
     } 
     catch(error) {

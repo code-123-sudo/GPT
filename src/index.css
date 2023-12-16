@@ -68,6 +68,8 @@ body {
   line-height: 1.5;
   font-size: 0.875rem;
   overflow: hidden;
+  overflow-y: hidden; /* Hide vertical scrollbar */
+  overflow-x: hidden; 
 }
 ul {
   list-style-type: none;
@@ -135,6 +137,7 @@ Questions
   flex-direction: row;
   height: 100vh;
   background-color: black;
+  overflow: hidden;
 }
 main {
   min-height: 100vh;
