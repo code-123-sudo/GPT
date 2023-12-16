@@ -24,17 +24,6 @@
   cursor: pointer;
 }
 
-@media only screen and (max-width: 500px) {
-  .inputContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .searchBox {
-    width : 100vw;
-  }
-}
-
 .searchBox {
   background-color: #2a2a2a;
   color: white;
@@ -45,4 +34,25 @@
 }
 .searchBox:focus-visible{
   outline: none;
+}
+@media only screen and (max-width: 500px) {
+  .inputContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .searchBox {
+    width : 80vw;
+  }
+  .icon {
+    margin-left: 4px;
+    margin-top: 0px;
+    min-width: 0px;
+    min-height: 0px;
+    z-index: 100;
+    cursor: pointer;
+  }
+  .flexRowContainer{
+    height: 55vh;
+  }
 }
