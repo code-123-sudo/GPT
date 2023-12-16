@@ -111,7 +111,7 @@ This is an example of how to list things you need to use the software and how to
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
+1. Get a free API Key from openai
 2. Clone the repo
    ```sh
    git clone https://github.com/code-123-sudo/GPT.git
@@ -120,7 +120,7 @@ This is an example of how to list things you need to use the software and how to
    ```sh
    npm install
    ```
-4. In the root directory create a new file constants.js.Enter your API in `constants.js`
+4. In the root directory create a new file constants.js.Enter your API key in `constants.js` like below
    ```js
    export const API_KEY = 'ENTER YOUR API';
    ```
@@ -131,10 +131,7 @@ This is an example of how to list things you need to use the software and how to
 
 <!-- USAGE EXAMPLES -->
 ## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
+after installation , simply ask your question in input text box
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
