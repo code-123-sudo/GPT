@@ -137,7 +137,7 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
             <Checking ref={refr} id="outlined-search" placeholder="Ask me anything about Jainism" type="text" onKeyDown={enterKeySend} onChange={handleChange} value={messageInput} className="searchBox" />
           </div>
 
-          <div className="sendIcon" onClick={callAddUserQuestionToChat} > <SendIcon onClick={addUserQuestionToChat} sx={{ color: "#2a2a2a" ,fontSize: 30, marginTop : "12px", cursor: "pointer" }} /> </div>
+          <div className="sendIcon" onClick={callAddUserQuestionToChat} > <SendIcon onClick={callAddUserQuestionToChat} sx={{ color: "#2a2a2a" ,fontSize: 30, marginTop : "12px", cursor: "pointer" }} /> </div>
         </div>
       </div>
     </div>
