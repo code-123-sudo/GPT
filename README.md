@@ -18,12 +18,6 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
 
 
 
@@ -143,6 +137,7 @@ after installation , simply ask your question in input text box
 - [ ] a user can ask his/her questions from chat input for which he/she will get answer replies from open ai API
 - [ ] replies updating fast in the form of chunks as soon as they are fetched from server
 - [ ] There is a set of default questions that user may ask by simply clicking on it, their ans is saved in mock database and is cache implemented
+- [ ] A search bar to search from list of chats 
 - [ ] A user can save any chat and come back to it later and continue the chat again from where he left it earlier can thus manage multiple chats simultaneously in sidebar
     - [ ] can edit chat heading
     - [ ] delete chat
