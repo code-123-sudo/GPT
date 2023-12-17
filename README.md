@@ -119,13 +119,18 @@ This is an example of how to list things you need to use the software and how to
    export const API_KEY = 'ENTER YOUR API';
    ```
 5. start the server by running below command:
+   ```sh
    npm start
-6. if face this error - 
+   ```
+6. if face this error -
+   ```js
    ERROR in ./node_modules/@mui/system/esm/index.js Module build failed: Error: ENOENT: no such file 
    or  directory, open 'Jain GPT/final/node_modules/@mui/system/esm/index.js'
+   ```
    run the following command -
+   ```sh
    npm install @mui/system @emotion/react @emotion/styled  
-
+   ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
