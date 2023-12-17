@@ -114,9 +114,10 @@ This is an example of how to list things you need to use the software and how to
    ```sh
    npm install
    ```
-4. In the root directory create a new file constants.js.Enter your API key in `constants.js` like below
+4. In the root directory create a new file constants.js.Enter your API key and API_URL in `constants.js` like below
    ```js
    export const API_KEY = 'ENTER YOUR API';
+   export const API_URL = "https://api.openai.com/v1/chat/completions";
    ```
 5. start the server by running below command:
    ```sh
