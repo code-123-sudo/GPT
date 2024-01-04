@@ -29,6 +29,9 @@ import { API_KEY, API_URL } from "../../constants.js"
 
 import Commonfaqs from "../Commonfaqs/Commonfaqs.js" 
 
+import { createChat, getChat, getChats, updateChat, deleteChat } from "../../apis/chatAPI.js";
+import { createChatInfo, getChatInfo, getChatsInfo, updateChatInfo, deleteChatInfo } from "../../apis/chatInfoAPI.js";
+
 const Checking = styled(OutlinedInput)({
   "& label.Mui-focused": {
     display: "none",
@@ -96,14 +99,124 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
 
   useEffect(() => {
     if ( messages?.length == 1 ) {
-      let stringsConverted = JSON.stringify(messages);
-      let key = "chat" + counter.toString();
-      localStorage.setItem(key,stringsConverted);
       setChattings([{'name':counter,'isEditing':false,header:""},...chattings])
     }
+    let stringsConverted = JSON.stringify(messages);
+    let key = "chat" + counter.toString();
+    localStorage.setItem(key,stringsConverted);
   },[messages])
  
   const addUserQuestionToChat = async (fromCache) => { 
+    let reqBody = {
+      "name": "count2",
+      "messages": messages
+    }
+    let res = await createChat(reqBody);
+    console.log("1",res);
+
+    reqBody = {
+      "queryKey":"name",
+      "queryValue":"count2"
+    }
+    res = await getChat("count2");
+    console.log("2",res);
+
+    reqBody = {
+    }
+    res = await getChats();
+    console.log("3",res);
+
+    reqBody = {
+      "filterQueryValue" : "count2",
+      "filterQueryKey" : "name",
+      "updateQueryValue" : messages,
+      "updateQueryKey" : "messages"
+    }
+    res = await updateChat(reqBody);
+    console.log("4",res);
+
+    reqBody = {
+      "filterQueryKey": "name",
+      "filterQueryValue": "count2"
+    }
+    res = await deleteChat(reqBody);
+    console.log(res);
+
+// second apu start
+    let reqBody2 = {   
+      "name": "0", 
+      "isEditing": "false", 
+      "header": ""
+    };
+
+    let res2 = await createChatInfo(reqBody2);
+    console.log("1",res2);
+
+    reqBody2 = {
+      "queryKey":"name",
+      "queryValue":"count2"
+    }
+    res2 = await getChatInfo("count2");
+    console.log("2",res2);
+
+    reqBody2 = {
+    }
+    res2 = await getChatsInfo();
+    console.log("3",res2);
+
+    reqBody2 = {
+      "filterQueryValue" : "count2",
+      "filterQueryKey" : "name",
+      "updateQueryValue" : true,
+      "updateQueryKey" : "isEditing"
+    }
+    res2 = await updateChatInfo(reqBody2);
+    console.log("4",res2);
+
+    reqBody2 = {
+      "filterQueryKey": "name",
+      "filterQueryValue": 0
+    }
+    res2 = await deleteChatInfo(reqBody2);
+    console.log("5",res2);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     const userQuestion = fromCache ? fromCache : message;
       addMessage({text:userQuestion,isReply:false});
     let sortedChattings = sortLatestChatUp(chattings,pageNo); 
