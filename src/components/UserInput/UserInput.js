@@ -98,17 +98,30 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
   }
 
   useEffect(() => {
+    let chatName = "chat" + counter.toString();
     if ( messages?.length == 1 ) {
-      setChattings([{'name':counter,'isEditing':false,header:""},...chattings])
       let stringsConverted = JSON.stringify(messages);
+      setChattings([ {name:chatName,isEditing:false,header:"",msgs:messages},...chattings])
+      console.log(chattings)
       let key = "chat" + counter.toString();
       localStorage.setItem(key,stringsConverted);
     } else {
-      let stringsConverted = JSON.stringify(messages);
-      let key = "chat" + counter.toString();
-      localStorage.setItem(key,stringsConverted);
+      let index = chattings.findIndex((chat) => chat.name === chatName );
+      if ( index > -1 ) {
+        let x = chattings[index];
+        const updatedChattings = [
+          ...chattings.slice(0, index),
+          { name:x.name,isEditing:x.isEditing,header:x.header,msgs:messages },
+          ...chattings.slice(index + 1)
+        ];
+        setChattings(updatedChattings);
+      }
     }
   },[messages])
+
+    useEffect(() => {
+    console.log(chattings)
+  },[chattings])
  
   const addUserQuestionToChat = async (fromCache) => { 
     let reqBody = {
@@ -168,43 +181,6 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
 
     res2 = await deleteChatInfo("count0");
     console.log("5",res2);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     const userQuestion = fromCache ? fromCache : message;
       addMessage({text:userQuestion,isReply:false});

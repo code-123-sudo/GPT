@@ -58,7 +58,6 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
   const [editChatHeading, setEditChatHeading] = useState('')
 
   const [deletingChat,setDeletingChat] = useState("")
-  const [deleteChatKey,setDeleteChatKey] = useState("")
   const [showModalFlag,setShowModalFlag] = useState(false)
 
   const [searchValue,setSearchValue] = useState("")
@@ -69,11 +68,11 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
 
   const ariaLabel = { 'aria-label': 'description' };
 
-  const deleteChat = (valueName,LSkey) => {
+  const deleteChat = (valueName) => {
     const chatsAfterDeletion = chattings.filter((chatValue) => chatValue.name == valueName)
     setChattings([...chatsAfterDeletion]);
-    localStorage.removeItem(LSkey);
-    if ( LSkey == liveChat ) {
+    localStorage.removeItem(valueName);
+    if ( valueName == liveChat ) {
       startNewChat(true) // the chat to be deleted is the current chat opened , so no need to preprocess 
       // it before starting a new chat, its already deleted
     }
@@ -90,12 +89,11 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
   const showModal = (deletingChat,deleteChatKey) => {
     setShowModalFlag(true)
     setDeletingChat(deletingChat)
-    setDeleteChatKey(deleteChatKey)
   }
 
   const hideModal = (modalAnswer) => {
     if ( modalAnswer == "true" ) {
-      deleteChat(deletingChat,deleteChatKey)
+      deleteChat(deletingChat)
     }
     setShowModalFlag(false)
   }
@@ -183,25 +181,22 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
         </div>
 
         {chattings?.map((value,index) => {
-          let keyRr = "chat" + value.name.toString();
-          let returnString = localStorage.getItem(keyRr);
-          let returnArray = JSON.parse(returnString);
           let quesText = '';
-          if (!returnArray ){
+          if (!value.msgs ){
             return null;
           }
-          if ( returnArray ){
-              quesText = returnArray[0]?.text
+          if ( value.msgs ){
+              quesText = value.msgs[0].text
           }
           quesText = quesText?.slice(0,5)
           
           let searchResultIndex = -1
           let searchText = '';
 
-          for ( let i = 0; i < returnArray.length ; i++ ) {
-            searchResultIndex = returnArray[i].text.search(searchValue);
+          for ( let i = 0; i < value.msgs.length ; i++ ) {
+            searchResultIndex = value.msgs[i].text.search(searchValue);
             if ( searchResultIndex != -1 ) {
-              searchText = returnArray[i].text.slice(searchResultIndex,searchResultIndex+5)
+              searchText = value.msgs[i].text.slice(searchResultIndex,searchResultIndex+5)
               break;
             }
           }
@@ -223,7 +218,7 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
                      :
                   <div className="buttonBox">
                     <div className="editButton" onClick={() => {editHeading(index,setEditChatHeading,setShowEditInsideIcons,chattings,setChattings)}}><EditNoteIcon className="iconImage" fontSize="large" sx={{ color: "#3d3d3d" }} /></div>
-                    <div className="deleteButton" onClick={ () => {showModal(value.name,keyRr)} }><DeleteIcon fontSize="large" sx={{ color: "#3d3d3d", width: "23px" }} /></div>
+                    <div className="deleteButton" onClick={ () => {showModal(value.name)} }><DeleteIcon fontSize="large" sx={{ color: "#3d3d3d", width: "23px" }} /></div>
                   </div>
                   }
                 </div>
