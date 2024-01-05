@@ -100,10 +100,14 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
   useEffect(() => {
     if ( messages?.length == 1 ) {
       setChattings([{'name':counter,'isEditing':false,header:""},...chattings])
+      let stringsConverted = JSON.stringify(messages);
+      let key = "chat" + counter.toString();
+      localStorage.setItem(key,stringsConverted);
+    } else {
+      let stringsConverted = JSON.stringify(messages);
+      let key = "chat" + counter.toString();
+      localStorage.setItem(key,stringsConverted);
     }
-    let stringsConverted = JSON.stringify(messages);
-    let key = "chat" + counter.toString();
-    localStorage.setItem(key,stringsConverted);
   },[messages])
  
   const addUserQuestionToChat = async (fromCache) => { 
@@ -114,10 +118,7 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
     let res = await createChat(reqBody);
     console.log("1",res);
 
-    reqBody = {
-      "queryKey":"name",
-      "queryValue":"count2"
-    }
+   
     res = await getChat("count2");
     console.log("2",res);
 
@@ -135,16 +136,12 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
     res = await updateChat(reqBody);
     console.log("4",res);
 
-    reqBody = {
-      "filterQueryKey": "name",
-      "filterQueryValue": "count2"
-    }
-    res = await deleteChat(reqBody);
-    console.log(res);
+    res = await deleteChat("count2");
+    console.log("5",res);
 
 // second apu start
     let reqBody2 = {   
-      "name": "0", 
+      "name": "count0", 
       "isEditing": "false", 
       "header": ""
     };
@@ -152,11 +149,7 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
     let res2 = await createChatInfo(reqBody2);
     console.log("1",res2);
 
-    reqBody2 = {
-      "queryKey":"name",
-      "queryValue":"count2"
-    }
-    res2 = await getChatInfo("count2");
+    res2 = await getChatInfo("count0");
     console.log("2",res2);
 
     reqBody2 = {
@@ -165,7 +158,7 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
     console.log("3",res2);
 
     reqBody2 = {
-      "filterQueryValue" : "count2",
+      "filterQueryValue" : "count0",
       "filterQueryKey" : "name",
       "updateQueryValue" : true,
       "updateQueryKey" : "isEditing"
@@ -173,11 +166,7 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
     res2 = await updateChatInfo(reqBody2);
     console.log("4",res2);
 
-    reqBody2 = {
-      "filterQueryKey": "name",
-      "filterQueryValue": 0
-    }
-    res2 = await deleteChatInfo(reqBody2);
+    res2 = await deleteChatInfo("count0");
     console.log("5",res2);
 
 

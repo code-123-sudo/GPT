@@ -76,16 +76,15 @@ export const updateChat = async (chatReqBody) => {
     }
 };
 
-export const deleteChat = async (chatReqBody) => {
+export const deleteChat = async (chatName) => {
 	try {
-    	const response = await fetch(`${BASE_URL}/chat/`, {
+    	const response = await fetch(`${BASE_URL}/chat/?name=${chatName}`, {
         	method: "DELETE",
         	mode: "cors",
         	cache: "no-cache",
         	headers: {
           		"Content-Type": "application/json",
         	},
-        	body: JSON.stringify(chatReqBody),
       	});
       	const data = await response.json();
       	return data;

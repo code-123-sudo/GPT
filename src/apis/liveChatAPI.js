@@ -1,10 +1,9 @@
-// CRUD operations on chatInfo
 // CRUD operations on chat
 import { BASE_URL } from "../constants.js";
 
-export const createChatInfo = async (chatReqBody) => {
+export const createLiveChat = async (chatReqBody) => {
 	try {
-    	const response = await fetch(`${BASE_URL}/chatInfo/`, {
+    	const response = await fetch(`${BASE_URL}/liveChat/`, {
         	method: "POST",
         	mode: "cors",
         	cache: "no-cache",
@@ -20,29 +19,10 @@ export const createChatInfo = async (chatReqBody) => {
     }
 };
 
-export const getChatInfo = async (chatName) => {
-	try {
-		console.log("function reached here")
-    	const response = await fetch(`${BASE_URL}/chatInfo/?name=${chatName}`, {
-        	method: "GET",
-        	mode: "cors",
-        	cache: "no-cache",
-        	headers: {
-          		"Content-Type": "application/json",
-        	}
-      	});
-      	console.log("response is ",response)
-      	const data = await response.json();
-      	return data;
-    } catch (error) {
-      	const resMessage = error.message || error.detail || error.toString();
-    }
-};
-
-export const getChatsInfo = async () => {
+export const getLiveChat = async () => {
 	try {
 		console.log("function reached here2")
-    	const response = await fetch(`${BASE_URL}/chatsInfo/`, {
+    	const response = await fetch(`${BASE_URL}/liveChat/`, {
         	method: "GET",
         	mode: "cors",
         	cache: "no-cache",
@@ -58,9 +38,9 @@ export const getChatsInfo = async () => {
     }
 };
 
-export const updateChatInfo = async (chatReqBody) => {
+export const updateLiveChat = async (chatReqBody) => {
 	try {
-    	const response = await fetch(`${BASE_URL}/chatInfo/`, {
+    	const response = await fetch(`${BASE_URL}/liveChat/`, {
         	method: "PUT",
         	mode: "cors",
         	cache: "no-cache",
@@ -77,15 +57,16 @@ export const updateChatInfo = async (chatReqBody) => {
     }
 };
 
-export const deleteChatInfo = async (chatName) => {
+export const deleteLiveChat = async (chatReqBody) => {
 	try {
-    	const response = await fetch(`${BASE_URL}/chatInfo/?name=${chatName}`, {
+    	const response = await fetch(`${BASE_URL}/liveChat/`, {
         	method: "DELETE",
         	mode: "cors",
         	cache: "no-cache",
         	headers: {
           		"Content-Type": "application/json",
         	},
+        	body: JSON.stringify(chatReqBody),
       	});
       	const data = await response.json();
       	return data;
