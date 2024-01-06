@@ -1,5 +1,5 @@
 const initialState = {
-  liveChat: JSON.parse(localStorage.getItem('currentChat')) || 'chat0',
+  liveChat: "",
 };
 
 const liveChatReducer = (state = initialState, action) => {

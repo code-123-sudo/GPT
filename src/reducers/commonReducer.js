@@ -1,12 +1,12 @@
 const initialState = {
   message: '',
-  pageNo: JSON.parse(localStorage.getItem('pageNo')) || 0,
+  pageNo: 0,
   isStreaming: '',
   streamData: '',
   isTypingLeft: false,
   isTypingRight: false,
-  isHamburger:JSON.parse(localStorage.getItem('isHamburger')) || false,
-  isHamburgerAnimate:JSON.parse(localStorage.getItem('isHamburgerAnimate')) || false,
+  isHamburger:false,
+  isHamburgerAnimate:false,
 };
 
 const commonReducer = (state = initialState, action) => {

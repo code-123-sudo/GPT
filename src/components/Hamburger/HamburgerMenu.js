@@ -1,7 +1,6 @@
 import React, { useState , useEffect , useRef } from 'react';
 import { connect } from 'react-redux';
 import Modal from '../Modal/Modal.js';
-import Search from '../Search/Search.js';
 import './HamburgerMenu.css'
 
 import menu from '../../assets/menu.png';
@@ -11,7 +10,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import editSolid from '../../assets/edit-solid.svg'
 import xmark from '../../assets/xmark.svg'
 
-import { setCounter } from '../../actions/counterActions.js'
 import { addChat, setChattings } from '../../actions/chattingsActions.js'
 import { addMessage, setMessages } from '../../actions/messagesActions.js'
 import { setLiveChat } from '../../actions/liveChatActions.js'
@@ -52,7 +50,7 @@ const SearchInput = styled(OutlinedInput)({
   },
 });
 
-const HamburgerMenu = ({  chattings, counter, liveChat, messages , setChattings, setCounter, setLiveChat, setMessages, setPageNo, isStreaming,
+const HamburgerMenu = ({  chattings, liveChat, messages , setChattings, setLiveChat, setMessages, setPageNo, isStreaming,
 isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => { 
   const [showEditInsideIcons, setShowEditInsideIcons] = useState(false)
   const [editChatHeading, setEditChatHeading] = useState('')
@@ -70,9 +68,7 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
 
   const deleteChat = (valueName) => {
     const chatsAfterDeletion = chattings.filter((chatValue) => chatValue.name != valueName)
-    console.log("chats after deletion",chatsAfterDeletion)
     setChattings([...chatsAfterDeletion]);
-    localStorage.removeItem(valueName);
     if ( valueName == liveChat ) {
       startNewChat(true) // the chat to be deleted is the current chat opened , so no need to preprocess 
       // it before starting a new chat, its already deleted
@@ -100,70 +96,26 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
   }
 
 
-  const setNewEmptyChatValues = (counter) => {
+  const setNewEmptyChatValues = () => {
       setMessages([]);
-      let currentCounter = counter+1;
-      setCounter(currentCounter)
-      let liveChatValue = "chat"+currentCounter.toString();
+      let liveChatValue = Math.random().toString(36).substring(7);
       setLiveChat(liveChatValue)
   }
 
   const startNewChat = (isDeletion=false) => {
-    if ( messages?.length === 0 || !messages ){ 
-      return;
-    }
-    let isOld = false;
-    const LSkeyExist = localStorage.getItem(liveChat) !== null;
-    // if ( LSkeyExist ) {
-    //   //previous was a existing old chat messaging, save it first
-    //   isOld = true;
-    //   let stringConverted = JSON.stringify(messages);
-    //   localStorage.setItem(liveChat,stringConverted);
-    //   //start a new chat
-    //   setNewEmptyChatValues(counter)
-    //   return;
-    // }
-    // if ( isDeletion ) {
-    //       // start a new chat, do not save previous chat
-    //       setNewEmptyChatValues(counter);
-    //       return
-    // }
-    // if (!isOld ){
-    //   //previous was a new chat, save it first
-    //   let stringsConverted = JSON.stringify(messages);
-    //   let key = "chat" + counter.toString();
-    //   localStorage.setItem(key,stringsConverted);
-    //   // setChats([{'name':count,'isEditing': false, header: ""},...chats])
-    //   setChattings([{'name':counter,'isEditing': false, header: ""},...chattings])
-    //   // start a new chat
-    //   setNewEmptyChatValues(counter);
-    // }
-    setNewEmptyChatValues(counter);
+    setNewEmptyChatValues();
   }
 
-  const fetchOldChat = (countNo) => {
-
-    // if(messages?.length !== 0) {
-    //   let stringsConverted2 = JSON.stringify(messages);
-    //   localStorage.setItem(liveChat,stringsConverted2);
-    //   /* checking wether its a new chat or old chat */
-    //   let oldChatFlag = 0;
-    //   oldChatFlag = chattings.some((chatting) => chatting.name === counter ) 
-    //   if ( !oldChatFlag ) setChattings([{'name':counter,'isEditing':false,header:""},...chattings])
-    // }
-    let liveKey = countNo;
+  const fetchOldChat = (chatUniqueName) => {
+    let liveKey = chatUniqueName;
     if ( liveKey === liveChat ) return;/*user clicked on same chat button twice */
     setLiveChat(liveKey)
-    /*update the chat messages of button being clicked */
-    console.log("===1=====")
-    console.log(liveKey)
-    console.log("===2====")
     let index = chattings.findIndex((chatValue) => chatValue.name === liveKey )
     if (index > -1 ) { 
       let retString = chattings[index].msgs;
       setMessages(retString)
     /* sorting the chat order as newest first */
-      setPageNo(countNo)
+      setPageNo(chatUniqueName)
     }
   }
 
@@ -239,7 +191,6 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
 
 const mapStateToProps = (state) => ({
   chattings: state.chattings.chattings,
-  counter: state.counter.counter,
   liveChat: state.liveChat.liveChat,
   messages: state.messages.messages,
   isStreaming: state.common.isStreaming,
@@ -251,7 +202,6 @@ const mapDispatchToProps = (dispatch) => ({
   setChattings: (dataObject) => dispatch(setChattings(dataObject)),
   setMessages: (dataObject) => dispatch(setMessages(dataObject)),
   setLiveChat: (dataObject) => dispatch(setLiveChat(dataObject)),
-  setCounter: (dataObject) => dispatch(setCounter(dataObject)),
   setPageNo:  (dataObject) => dispatch(setPageNo(dataObject)),
   setIsHamburger: (dataObject) => dispatch(setIsHamburger(dataObject)),
   setIsHamburgerAnimate: (dataObject) => dispatch(setIsHamburgerAnimate(dataObject)) 

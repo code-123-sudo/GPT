@@ -12,6 +12,7 @@ import { data, defaultQuestions } from '../../data.js'
 
 import { setMessage } from '../../actions/commonActions.js'
 import { setPageNo } from '../../actions/commonActions.js'
+import { setLiveChat } from '../../actions/liveChatActions.js'
 import { setIsStreaming } from '../../actions/commonActions.js'
 import { setStreamData } from '../../actions/commonActions.js'
 import { setIsTypingLeft } from '../../actions/commonActions.js'
@@ -23,14 +24,13 @@ import { addMessage } from '../../actions/messagesActions.js'
 
 import send from '../../assets/send.png';
 import SendIcon from '@mui/icons-material/Send';
-import { streamAsyncIterator, getAsyncStream, saveInLocalStorage, searchInCache, fetchFromAPI, sortLatestChatUp } from '../../utilities/generalUtilities.js'
+import { streamAsyncIterator, getAsyncStream, searchInCache, fetchFromAPI, sortLatestChatUp } from '../../utilities/generalUtilities.js'
 
 import { API_KEY, API_URL } from "../../constants.js"
 
 import Commonfaqs from "../Commonfaqs/Commonfaqs.js" 
 
 import { createChat, getChat, getChats, updateChat, deleteChat } from "../../apis/chatAPI.js";
-import { createChatInfo, getChatInfo, getChatsInfo, updateChatInfo, deleteChatInfo } from "../../apis/chatInfoAPI.js";
 
 const Checking = styled(OutlinedInput)({
   "& label.Mui-focused": {
@@ -50,7 +50,7 @@ const Checking = styled(OutlinedInput)({
   },
 });
 
-const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addMessage, message , setMessage ,
+const UserInput = ({chattings, messages, liveChat, setLiveChat, setChattings, addMessage, message , setMessage ,
     	pageNo , setPageNo , setIsStreaming  , setStreamData ,
     	 setIsTypingRight , isHamburger , setIsHamburger , isHamburgerAnimate , setIsHamburgerAnimate }) => {
 
@@ -62,15 +62,6 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
     setMessageInput(event.target.value)
     setMessage(event.target.value)
   }
-
-  useEffect(() => {
-    saveInLocalStorage('isHamburger',JSON.stringify(isHamburger))
-    saveInLocalStorage('isHamburgerAnimate',JSON.stringify(isHamburgerAnimate))
-    saveInLocalStorage('chattings',JSON.stringify(chattings))
-    saveInLocalStorage('counter',JSON.stringify(counter))
-    saveInLocalStorage('liveChat',JSON.stringify(liveChat))
-    saveInLocalStorage('messages',JSON.stringify(messages))  
-   })
 
   const addAiAnswerToChat = async () => {
     try {
@@ -99,17 +90,15 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
   }
 
   useEffect(() => {
-    let chatName = "chat" + counter.toString();
+    let chatName = Math.random().toString(36).substring(7);
     let index = chattings.findIndex((chat) => chat.name === liveChat );
     if ( messages?.length == 1 && index == - 1) {
+      setLiveChat(chatName)
       let stringsConverted = JSON.stringify(messages);
       setChattings([ {name:chatName,isEditing:false,header:"",msgs:messages},...chattings])
       console.log(chattings)
-      let key = "chat" + counter.toString();
-      localStorage.setItem(key,stringsConverted);
     } else {
       if ( index > -1 ) {
-        localStorage.setItem(chatName,messages);
         let x = chattings[index];
         const updatedChattings = [
           ...chattings.slice(0, index),
@@ -155,36 +144,6 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
 //     res = await deleteChat("count2");
 //     console.log("5",res);
 
-// // second apu start
-//     let reqBody2 = {   
-//       "name": "count0", 
-//       "isEditing": "false", 
-//       "header": ""
-//     };
-
-//     let res2 = await createChatInfo(reqBody2);
-//     console.log("1",res2);
-
-//     res2 = await getChatInfo("count0");
-//     console.log("2",res2);
-
-//     reqBody2 = {
-//     }
-//     res2 = await getChatsInfo();
-//     console.log("3",res2);
-
-//     reqBody2 = {
-//       "filterQueryValue" : "count0",
-//       "filterQueryKey" : "name",
-//       "updateQueryValue" : true,
-//       "updateQueryKey" : "isEditing"
-//     }
-//     res2 = await updateChatInfo(reqBody2);
-//     console.log("4",res2);
-
-//     res2 = await deleteChatInfo("count0");
-//     console.log("5",res2);
-
     const userQuestion = fromCache ? fromCache : message;
       addMessage({text:userQuestion,isReply:false});
     let sortedChattings = sortLatestChatUp(chattings,pageNo); 
@@ -217,7 +176,6 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
           <div className="inputContainer">
             <Checking ref={refr} id="outlined-search" placeholder="Ask me anything about Jainism" type="text" onKeyDown={enterKeySend} onChange={handleChange} value={messageInput} className="searchBox" />
           </div>
-
           <div className="sendIcon" onClick={callAddUserQuestionToChat} > <SendIcon onClick={callAddUserQuestionToChat} sx={{ color: "#2a2a2a" ,fontSize: 30, marginTop : "12px", cursor: "pointer" }} /> </div>
         </div>
       </div>
@@ -227,7 +185,6 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
 
 
 const mapStateToProps = (state) => ({
-  counter: state.counter.counter,
   chattings: state.chattings.chattings,
   messages: state.messages.messages,
   liveChat: state.liveChat.liveChat,
@@ -241,6 +198,7 @@ const mapDispatchToProps = (dispatch) => ({
   setChattings: (dataObject) => dispatch(setChattings(dataObject)),
   addMessage: (dataObject) => dispatch(addMessage(dataObject)),
   setMessage: (dataValue) => dispatch(setMessage(dataValue)),
+  setLiveChat:  (dataValue) => dispatch(setLiveChat(dataValue)),
   setPageNo: (dataValue) => dispatch(setPageNo(dataValue)),
   setIsStreaming: (dataValue) => dispatch(setIsStreaming(dataValue)),
   setStreamData: (dataValue) => dispatch(setStreamData(dataValue)),

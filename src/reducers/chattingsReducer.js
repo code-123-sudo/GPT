@@ -1,5 +1,5 @@
 const initialState = {
-  chattings: JSON.parse(localStorage.getItem('chats')) || [],
+  chattings: [],
 };
 
 const chattingsReducer = (state = initialState, action) => {
