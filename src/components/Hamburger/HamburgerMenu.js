@@ -69,7 +69,8 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
   const ariaLabel = { 'aria-label': 'description' };
 
   const deleteChat = (valueName) => {
-    const chatsAfterDeletion = chattings.filter((chatValue) => chatValue.name == valueName)
+    const chatsAfterDeletion = chattings.filter((chatValue) => chatValue.name != valueName)
+    console.log("chats after deletion",chatsAfterDeletion)
     setChattings([...chatsAfterDeletion]);
     localStorage.removeItem(valueName);
     if ( valueName == liveChat ) {
@@ -113,52 +114,57 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
     }
     let isOld = false;
     const LSkeyExist = localStorage.getItem(liveChat) !== null;
-    if ( LSkeyExist ) {
-      //previous was a old chat edition, save it first
-      isOld = true;
-      let stringConverted = JSON.stringify(messages);
-      localStorage.setItem(liveChat,stringConverted);
-      //start a new chat
-      setNewEmptyChatValues(counter)
-      return;
-    }
-    if ( isDeletion ) {
-          // start a new chat, do not save previous chat
-          setNewEmptyChatValues(counter);
-          return
-    }
-    if (!isOld ){
-      //previous was a new chat, save it first
-      let stringsConverted = JSON.stringify(messages);
-      let key = "chat" + counter.toString();
-      localStorage.setItem(key,stringsConverted);
-      // setChats([{'name':count,'isEditing': false, header: ""},...chats])
-      setChattings([{'name':counter,'isEditing': false, header: ""},...chattings])
-      // start a new chat
-      setNewEmptyChatValues(counter);
-    }
+    // if ( LSkeyExist ) {
+    //   //previous was a existing old chat messaging, save it first
+    //   isOld = true;
+    //   let stringConverted = JSON.stringify(messages);
+    //   localStorage.setItem(liveChat,stringConverted);
+    //   //start a new chat
+    //   setNewEmptyChatValues(counter)
+    //   return;
+    // }
+    // if ( isDeletion ) {
+    //       // start a new chat, do not save previous chat
+    //       setNewEmptyChatValues(counter);
+    //       return
+    // }
+    // if (!isOld ){
+    //   //previous was a new chat, save it first
+    //   let stringsConverted = JSON.stringify(messages);
+    //   let key = "chat" + counter.toString();
+    //   localStorage.setItem(key,stringsConverted);
+    //   // setChats([{'name':count,'isEditing': false, header: ""},...chats])
+    //   setChattings([{'name':counter,'isEditing': false, header: ""},...chattings])
+    //   // start a new chat
+    //   setNewEmptyChatValues(counter);
+    // }
+    setNewEmptyChatValues(counter);
   }
 
   const fetchOldChat = (countNo) => {
 
-    if(messages?.length !== 0) {
-      let stringsConverted2 = JSON.stringify(messages);
-      localStorage.setItem(liveChat,stringsConverted2);
-      /* checking wether its a new chat or old chat */
-      let oldChatFlag = 0;
-      oldChatFlag = chattings.some((chatting) => chatting.name === counter ) 
-      if ( !oldChatFlag ) setChattings([{'name':counter,'isEditing':false,header:""},...chattings])
-    }
-    let liveKey = "chat" + countNo.toString();
+    // if(messages?.length !== 0) {
+    //   let stringsConverted2 = JSON.stringify(messages);
+    //   localStorage.setItem(liveChat,stringsConverted2);
+    //   /* checking wether its a new chat or old chat */
+    //   let oldChatFlag = 0;
+    //   oldChatFlag = chattings.some((chatting) => chatting.name === counter ) 
+    //   if ( !oldChatFlag ) setChattings([{'name':counter,'isEditing':false,header:""},...chattings])
+    // }
+    let liveKey = countNo;
     if ( liveKey === liveChat ) return;/*user clicked on same chat button twice */
     setLiveChat(liveKey)
     /*update the chat messages of button being clicked */
-    let retString = localStorage.getItem(liveKey);
-    let retArray = JSON.parse(retString);
-    setMessages(retArray)
-    
+    console.log("===1=====")
+    console.log(liveKey)
+    console.log("===2====")
+    let index = chattings.findIndex((chatValue) => chatValue.name === liveKey )
+    if (index > -1 ) { 
+      let retString = chattings[index].msgs;
+      setMessages(retString)
     /* sorting the chat order as newest first */
-    setPageNo(countNo)
+      setPageNo(countNo)
+    }
   }
 
   return (

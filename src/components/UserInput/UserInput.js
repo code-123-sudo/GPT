@@ -55,6 +55,7 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
     	 setIsTypingRight , isHamburger , setIsHamburger , isHamburgerAnimate , setIsHamburgerAnimate }) => {
 
   const [messageInput,setMessageInput] = useState("")
+  const [textTransactionFlag,setTextTransactionFlag] = useState(false)
 
   let refr = useRef(null);
   const handleChange = (event) => {
@@ -99,21 +100,23 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
 
   useEffect(() => {
     let chatName = "chat" + counter.toString();
-    if ( messages?.length == 1 ) {
+    let index = chattings.findIndex((chat) => chat.name === liveChat );
+    if ( messages?.length == 1 && index == - 1) {
       let stringsConverted = JSON.stringify(messages);
       setChattings([ {name:chatName,isEditing:false,header:"",msgs:messages},...chattings])
       console.log(chattings)
       let key = "chat" + counter.toString();
       localStorage.setItem(key,stringsConverted);
     } else {
-      let index = chattings.findIndex((chat) => chat.name === chatName );
       if ( index > -1 ) {
+        localStorage.setItem(chatName,messages);
         let x = chattings[index];
         const updatedChattings = [
           ...chattings.slice(0, index),
           { name:x.name,isEditing:x.isEditing,header:x.header,msgs:messages },
           ...chattings.slice(index + 1)
         ];
+        console.log("updating chattins",updatedChattings)
         setChattings(updatedChattings);
       }
     }
@@ -124,63 +127,63 @@ const UserInput = ({ counter , chattings, messages, liveChat, setChattings, addM
   },[chattings])
  
   const addUserQuestionToChat = async (fromCache) => { 
-    let reqBody = {
-      "name": "count2",
-      "messages": messages
-    }
-    let res = await createChat(reqBody);
-    console.log("1",res);
+//     let reqBody = {
+//       "name": "count2",
+//       "messages": messages
+//     }
+//     let res = await createChat(reqBody);
+//     console.log("1",res);
 
    
-    res = await getChat("count2");
-    console.log("2",res);
+//     res = await getChat("count2");
+//     console.log("2",res);
 
-    reqBody = {
-    }
-    res = await getChats();
-    console.log("3",res);
+//     reqBody = {
+//     }
+//     res = await getChats();
+//     console.log("3",res);
 
-    reqBody = {
-      "filterQueryValue" : "count2",
-      "filterQueryKey" : "name",
-      "updateQueryValue" : messages,
-      "updateQueryKey" : "messages"
-    }
-    res = await updateChat(reqBody);
-    console.log("4",res);
+//     reqBody = {
+//       "filterQueryValue" : "count2",
+//       "filterQueryKey" : "name",
+//       "updateQueryValue" : messages,
+//       "updateQueryKey" : "messages"
+//     }
+//     res = await updateChat(reqBody);
+//     console.log("4",res);
 
-    res = await deleteChat("count2");
-    console.log("5",res);
+//     res = await deleteChat("count2");
+//     console.log("5",res);
 
-// second apu start
-    let reqBody2 = {   
-      "name": "count0", 
-      "isEditing": "false", 
-      "header": ""
-    };
+// // second apu start
+//     let reqBody2 = {   
+//       "name": "count0", 
+//       "isEditing": "false", 
+//       "header": ""
+//     };
 
-    let res2 = await createChatInfo(reqBody2);
-    console.log("1",res2);
+//     let res2 = await createChatInfo(reqBody2);
+//     console.log("1",res2);
 
-    res2 = await getChatInfo("count0");
-    console.log("2",res2);
+//     res2 = await getChatInfo("count0");
+//     console.log("2",res2);
 
-    reqBody2 = {
-    }
-    res2 = await getChatsInfo();
-    console.log("3",res2);
+//     reqBody2 = {
+//     }
+//     res2 = await getChatsInfo();
+//     console.log("3",res2);
 
-    reqBody2 = {
-      "filterQueryValue" : "count0",
-      "filterQueryKey" : "name",
-      "updateQueryValue" : true,
-      "updateQueryKey" : "isEditing"
-    }
-    res2 = await updateChatInfo(reqBody2);
-    console.log("4",res2);
+//     reqBody2 = {
+//       "filterQueryValue" : "count0",
+//       "filterQueryKey" : "name",
+//       "updateQueryValue" : true,
+//       "updateQueryKey" : "isEditing"
+//     }
+//     res2 = await updateChatInfo(reqBody2);
+//     console.log("4",res2);
 
-    res2 = await deleteChatInfo("count0");
-    console.log("5",res2);
+//     res2 = await deleteChatInfo("count0");
+//     console.log("5",res2);
 
     const userQuestion = fromCache ? fromCache : message;
       addMessage({text:userQuestion,isReply:false});

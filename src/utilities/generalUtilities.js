@@ -73,9 +73,9 @@ const fetchFromAPI = async (API_URL,API_KEY,message) => {
 const sortLatestChatUp = (currentChattings,pageNo) => {
   let index = currentChattings.findIndex((chatValue) => chatValue.name === pageNo )
   if (index > -1 ) { 
-    const { isEditing, header } = currentChattings[index]
+    const { isEditing, header, msgs } = currentChattings[index]
     const updatedChattings = [
-      { name: pageNo, isEditing, header },
+      { name: pageNo, isEditing, header, msgs },
       ...currentChattings.slice(0, index),
       ...currentChattings.slice(index + 1)
     ];
@@ -91,17 +91,20 @@ const editHeading = (index,setEditChatHeading,setShowEditInsideIcons,chattings,s
       return {
         isEditing : !chat.isEditing,
         name : chat.name,
-        header: chat.header
+        header: chat.header,
+        msgs: chat.msgs
       }
     }
     else {
       return  {
         isEditing : false,
         name: chat.name,
-        header : chat.header
+        header : chat.header,
+        msgs: chat.msgs
       }
     }
   })
+  console.log("chats after edition",chatsAfterEdition)
   setChattings([...chatsAfterEdition])
 }
 
@@ -111,11 +114,13 @@ const editHeadingFinal =  (index,chattings,setChattings,setShowEditInsideIcons,e
       let selectedChat = {
         isEditing : true,
         name : '',
-        header: ''
+        header: '',
+        msgs: []
       }
       selectedChat.isEditing = !chat.isEditing
       selectedChat.name = chat.name
       selectedChat.header = chat.header
+      selectedChat.msgs = chat.msgs
       if ( chat.isEditing ){
           if(!editChatHeading) {
             selectedChat.header = " "
@@ -132,7 +137,8 @@ const editHeadingFinal =  (index,chattings,setChattings,setShowEditInsideIcons,e
       return {
         isEditing : false,
         name : chat.name,
-        header : chat.header
+        header : chat.header,
+        msgs: chat.msgs
       }
     }
   })
@@ -145,7 +151,8 @@ const discardEditing = (chattings,setChattings,setShowEditInsideIcons) => {
     return {
       isEditing: false,
       name: chat.name,
-      header: chat.header
+      header: chat.header,
+      msgs: chat.msgs
     }
     }
   )
