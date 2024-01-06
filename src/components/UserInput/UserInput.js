@@ -90,59 +90,97 @@ const UserInput = ({chattings, messages, liveChat, setLiveChat, setChattings, ad
   }
 
   useEffect(() => {
-    let chatName = Math.random().toString(36).substring(7);
-    let index = chattings.findIndex((chat) => chat.name === liveChat );
-    if ( messages?.length == 1 && index == - 1) {
-      setLiveChat(chatName)
-      let stringsConverted = JSON.stringify(messages);
-      setChattings([ {name:chatName,isEditing:false,header:"",msgs:messages},...chattings])
-      console.log(chattings)
-    } else {
-      if ( index > -1 ) {
-        let x = chattings[index];
-        const updatedChattings = [
-          ...chattings.slice(0, index),
-          { name:x.name,isEditing:x.isEditing,header:x.header,msgs:messages },
-          ...chattings.slice(index + 1)
-        ];
-        console.log("updating chattins",updatedChattings)
-        setChattings(updatedChattings);
+
+    let pushChat = async () => {
+      let chatName = Math.random().toString(36).substring(7);
+      let index = chattings.findIndex((chat) => chat.name === liveChat );
+
+      if ( messages?.length == 1 && index == - 1) {
+        let reqBody = {name:chatName,isEditing:false,header:"",msgs:messages}
+        let res = await createChat(reqBody);
+        setLiveChat(chatName)
+        await loadChats();
+        console.log(chattings)
+      }
+      else if ( index > -1 ) {
+        reqBody = {
+          "filterQueryValue" : liveChat,
+          "filterQueryKey" : "name",
+          "updateQueryValue" : messages,
+          "updateQueryKey" : "msgs"
+        }
+        res = await updateChat(reqBody);
+        await loadChats();
+      }
+
+
+
+
+
+
+      if ( messages?.length == 1 && index == - 1) {
+        setLiveChat(chatName)
+        setChattings([ {name:chatName,isEditing:false,header:"",msgs:messages},...chattings])
+        console.log(chattings)
+      } else {
+        if ( index > -1 ) {
+          let x = chattings[index];
+          const updatedChattings = [
+            ...chattings.slice(0, index),
+            { name:x.name,isEditing:x.isEditing,header:x.header,msgs:messages },
+            ...chattings.slice(index + 1)
+          ];
+          console.log("updating chattins",updatedChattings)
+          setChattings(updatedChattings);
+        }
       }
     }
+
   },[messages])
 
-    useEffect(() => {
-    console.log(chattings)
+  let loadChats = async () => {
+      let res = await getChats();
+      setChattings(res.result);
+  }
+
+  useEffect(() => {
+    loadChats();
+  },[])
+
+  useEffect(() => {
+    if ( chattings.length > 0 ) {
+      setLiveChat(chattings[0].name)
+    }
   },[chattings])
  
   const addUserQuestionToChat = async (fromCache) => { 
-//     let reqBody = {
-//       "name": "count2",
-//       "messages": messages
-//     }
-//     let res = await createChat(reqBody);
-//     console.log("1",res);
+    let reqBody = {
+      "name": "count2",
+      "messages": messages
+    }
+    let res = await createChat(reqBody);
+    console.log("1",res);
 
    
-//     res = await getChat("count2");
-//     console.log("2",res);
+    res = await getChat("count2");
+    console.log("2",res);
 
-//     reqBody = {
-//     }
-//     res = await getChats();
-//     console.log("3",res);
+    reqBody = {
+    }
+    res = await getChats();
+    console.log("3",res);
 
-//     reqBody = {
-//       "filterQueryValue" : "count2",
-//       "filterQueryKey" : "name",
-//       "updateQueryValue" : messages,
-//       "updateQueryKey" : "messages"
-//     }
-//     res = await updateChat(reqBody);
-//     console.log("4",res);
+    reqBody = {
+      "filterQueryValue" : "count2",
+      "filterQueryKey" : "name",
+      "updateQueryValue" : messages,
+      "updateQueryKey" : "messages"
+    }
+    res = await updateChat(reqBody);
+    console.log("4",res);
 
-//     res = await deleteChat("count2");
-//     console.log("5",res);
+    // res = await deleteChat("count2");
+    // console.log("5",res);
 
     const userQuestion = fromCache ? fromCache : message;
       addMessage({text:userQuestion,isReply:false});
