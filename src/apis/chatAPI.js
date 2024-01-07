@@ -3,6 +3,7 @@ import { BASE_URL } from "../constants.js";
 
 export const createChat = async (chatReqBody) => {
 	try {
+        console.log(chatReqBody)
     	const response = await fetch(`${BASE_URL}/chat/`, {
         	method: "POST",
         	mode: "cors",

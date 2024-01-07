@@ -113,6 +113,7 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
     let index = chattings.findIndex((chatValue) => chatValue.name === liveKey )
     if (index > -1 ) { 
       let retString = chattings[index].msgs;
+      console.log("return string",retString)
       setMessages(retString)
     /* sorting the chat order as newest first */
       setPageNo(chatUniqueName)
