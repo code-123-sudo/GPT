@@ -37,3 +37,8 @@ export const setIsHamburgerAnimate = (isHamburgerAnimateValue) => ({
   type: 'SET_IS_HAMBURGER_ANIMATE',
   payload: isHamburgerAnimateValue,
 });
+
+export const setIsNavigate = (isNavigateValue) => ({
+  type: 'SET_IS_NAVIGATE',
+  payload: isNavigateValue,
+});

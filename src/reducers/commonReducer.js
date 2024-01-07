@@ -7,6 +7,7 @@ const initialState = {
   isTypingRight: false,
   isHamburger:false,
   isHamburgerAnimate:false,
+  isNavigate:false
 };
 
 const commonReducer = (state = initialState, action) => {
@@ -27,6 +28,8 @@ const commonReducer = (state = initialState, action) => {
       return { ...state , isHamburger: action.payload };
     case 'SET_IS_HAMBURGER_ANIMATE':
       return { ...state , isHamburgerAnimate: action.payload };
+    case 'SET_IS_NAVIGATE':
+      return { ...state , isNavigate: action.payload };
     default:
       return state;
   }

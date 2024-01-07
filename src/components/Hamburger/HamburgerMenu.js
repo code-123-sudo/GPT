@@ -13,7 +13,7 @@ import xmark from '../../assets/xmark.svg'
 import { addChat, setChattings } from '../../actions/chattingsActions.js'
 import { addMessage, setMessages } from '../../actions/messagesActions.js'
 import { setLiveChat } from '../../actions/liveChatActions.js'
-import { setPageNo, setIsHamburger, setIsHamburgerAnimate } from '../../actions/commonActions.js'
+import { setPageNo, setIsHamburger, setIsHamburgerAnimate, setIsNavigate } from '../../actions/commonActions.js'
 import OutlinedInput from "@mui/material/OutlinedInput";
 import { styled } from "@mui/material/styles";
 
@@ -50,8 +50,8 @@ const SearchInput = styled(OutlinedInput)({
   },
 });
 
-const HamburgerMenu = ({  chattings, liveChat, messages , setChattings, setLiveChat, setMessages, setPageNo, isStreaming,
-isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => { 
+const HamburgerMenu = ({ isNavigate, chattings, liveChat, messages , setChattings, setLiveChat, setMessages, setPageNo, isStreaming,
+isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate,setIsNavigate}) => { 
   const [showEditInsideIcons, setShowEditInsideIcons] = useState(false)
   const [editChatHeading, setEditChatHeading] = useState('')
 
@@ -116,12 +116,12 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
 
   const fetchOldChat = (chatUniqueName) => {
     let liveKey = chatUniqueName;
+    setIsNavigate(true)
     if ( liveKey === liveChat ) return;/*user clicked on same chat button twice */
     setLiveChat(liveKey)
     let index = chattings.findIndex((chatValue) => chatValue.name === liveKey )
     if (index > -1 ) { 
       let retString = chattings[index].msgs;
-      console.log("return string",retString)
       setMessages(retString)
     }
   }
@@ -202,11 +202,13 @@ const mapStateToProps = (state) => ({
   messages: state.messages.messages,
   isStreaming: state.common.isStreaming,
   isHamburger: state.common.isHamburger,
-  isHamburgerAnimate: state.common.isHamburgerAnimate
+  isHamburgerAnimate: state.common.isHamburgerAnimate,
+  isNavigate: state.common.isNavigate
 })
 
 const mapDispatchToProps = (dispatch) => ({
   setChattings: (dataObject) => dispatch(setChattings(dataObject)),
+  setIsNavigate: (dataObject) => dispatch(setIsNavigate(dataObject)),
   setMessages: (dataObject) => dispatch(setMessages(dataObject)),
   setLiveChat: (dataObject) => dispatch(setLiveChat(dataObject)),
   setPageNo:  (dataObject) => dispatch(setPageNo(dataObject)),

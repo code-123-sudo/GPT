@@ -13,6 +13,7 @@ import { data, defaultQuestions } from '../../data.js'
 import { setMessage } from '../../actions/commonActions.js'
 import { setPageNo } from '../../actions/commonActions.js'
 import { setLiveChat } from '../../actions/liveChatActions.js'
+import { setIsNavigate } from '../../actions/commonActions.js'
 import { setIsStreaming } from '../../actions/commonActions.js'
 import { setStreamData } from '../../actions/commonActions.js'
 import { setIsTypingLeft } from '../../actions/commonActions.js'
@@ -52,7 +53,7 @@ const Checking = styled(OutlinedInput)({
 
 const UserInput = ({chattings, messages, liveChat, setLiveChat, setChattings, addMessage, message , setMessage ,
     	pageNo , setPageNo , setIsStreaming  , setStreamData ,
-    	 setIsTypingRight , isHamburger , setIsHamburger , isHamburgerAnimate , setIsHamburgerAnimate }) => {
+    	 setIsTypingRight , isHamburger , setIsHamburger , isHamburgerAnimate , setIsHamburgerAnimate, isNavigate, setIsNavigate }) => {
 
   const [messageInput,setMessageInput] = useState("")
   const [textTransactionFlag,setTextTransactionFlag] = useState(false)
@@ -101,8 +102,9 @@ const UserInput = ({chattings, messages, liveChat, setLiveChat, setChattings, ad
         let res = await createChat(reqBody);
         setLiveChat(chatName)
         await loadChats();
+        console.log("chattings",chattings)
       }
-      else if ( index > -1 ) {
+      else if ( index > -1 && !isNavigate) {
         timeStamp = currDate.getTime();
         let reqBody = {
           "filterQueryValue" : liveChat,
@@ -112,10 +114,13 @@ const UserInput = ({chattings, messages, liveChat, setLiveChat, setChattings, ad
           "updateQueryValue2" : timeStamp,
           "updateQueryKey2" : "updatedAt"
         }
+        setIsNavigate(false);
         let res = await updateChat(reqBody);
         await loadChats();
-        console.log(chattings);
+        console.log("isnabi",isNavigate)
+        console.log("chattings",chattings);
       }
+      setIsNavigate(false)
 
 
 
@@ -229,10 +234,12 @@ const mapStateToProps = (state) => ({
   message: state.common.message,
   pageNo: state.common.pageNo,
   isHamburger: state.common.isHamburger,
-  isHamburgerAnimate: state.common.isHamburgerAnimate
+  isHamburgerAnimate: state.common.isHamburgerAnimate,
+  isNavigate: state.common.isNavigate
 })
 
 const mapDispatchToProps = (dispatch) => ({
+  setIsNavigate: (dataObject) => dispatch(setIsNavigate(dataObject)),
   setChattings: (dataObject) => dispatch(setChattings(dataObject)),
   addMessage: (dataObject) => dispatch(addMessage(dataObject)),
   setMessage: (dataValue) => dispatch(setMessage(dataValue)),
