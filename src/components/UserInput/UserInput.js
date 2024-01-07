@@ -25,7 +25,7 @@ import { addMessage } from '../../actions/messagesActions.js'
 
 import send from '../../assets/send.png';
 import SendIcon from '@mui/icons-material/Send';
-import { streamAsyncIterator, getAsyncStream, searchInCache, fetchFromAPI, sortLatestChatUp } from '../../utilities/generalUtilities.js'
+import { streamAsyncIterator, getAsyncStream, searchInCache, fetchFromAPI} from '../../utilities/generalUtilities.js'
 
 import { API_KEY, API_URL } from "../../constants.js"
 
@@ -102,7 +102,6 @@ const UserInput = ({chattings, messages, liveChat, setLiveChat, setChattings, ad
         let res = await createChat(reqBody);
         setLiveChat(chatName)
         await loadChats();
-        console.log("chattings",chattings)
       }
       else if ( index > -1 && !isNavigate) {
         timeStamp = currDate.getTime();
@@ -117,31 +116,8 @@ const UserInput = ({chattings, messages, liveChat, setLiveChat, setChattings, ad
         setIsNavigate(false);
         let res = await updateChat(reqBody);
         await loadChats();
-        console.log("isnabi",isNavigate)
-        console.log("chattings",chattings);
       }
       setIsNavigate(false)
-
-
-
-
-
-      // if ( messages?.length == 1 && index == - 1) {
-      //   setLiveChat(chatName)
-      //   setChattings([ {name:chatName,isEditing:false,header:"",msgs:messages},...chattings])
-      //   console.log(chattings)
-      // } else {
-      //   if ( index > -1 ) {
-      //     let x = chattings[index];
-      //     const updatedChattings = [
-      //       ...chattings.slice(0, index),
-      //       { name:x.name,isEditing:x.isEditing,header:x.header,msgs:messages },
-      //       ...chattings.slice(index + 1)
-      //     ];
-      //     console.log("updating chattins",updatedChattings)
-      //     setChattings(updatedChattings);
-      //   }
-      // }
     }
     pushChat()
 
@@ -163,34 +139,6 @@ const UserInput = ({chattings, messages, liveChat, setLiveChat, setChattings, ad
   },[])
  
   const addUserQuestionToChat = async (fromCache) => { 
-    // let reqBody = {
-    //   "name": "count2",
-    //   "messages": messages
-    // }
-    // let res = await createChat(reqBody);
-    // console.log("1",res);
-
-   
-    // res = await getChat("count2");
-    // console.log("2",res);
-
-    // reqBody = {
-    // }
-    // res = await getChats();
-    // console.log("3",res);
-
-    // reqBody = {
-    //   "filterQueryValue" : "count2",
-    //   "filterQueryKey" : "name",
-    //   "updateQueryValue" : messages,
-    //   "updateQueryKey" : "messages"
-    // }
-    // res = await updateChat(reqBody);
-    // console.log("4",res);
-
-    // res = await deleteChat("count2");
-    // console.log("5",res);
-
     const userQuestion = fromCache ? fromCache : message;
     addMessage({text:userQuestion,isReply:false});
     setStreamData("")
