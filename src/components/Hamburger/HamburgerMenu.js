@@ -177,12 +177,12 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
                 
                   {showEditInsideIcons && value.isEditing ?
                   <div className="buttonBox">
-                    <div className="editButton" onClick={() => {editHeadingFinal(index,chattings,setChattings,setShowEditInsideIcons,editChatHeading)}}>E</div>
-                    <div className="deleteButton" onClick={ () => {discardEditing(chattings,setChattings,setShowEditInsideIcons)} }>D</div>
+                    <div className="editButton" onClick={() => {editHeadingFinal(index,chattings,setChattings,setShowEditInsideIcons,editChatHeading,loadChats)}}>E</div>
+                    <div className="deleteButton" onClick={ () => {discardEditing(chattings,setChattings,setShowEditInsideIcons,loadChats)} }>D</div>
                   </div>
                      :
                   <div className="buttonBox">
-                    <div className="editButton" onClick={() => {editHeading(index,setEditChatHeading,setShowEditInsideIcons,chattings,setChattings)}}><EditNoteIcon className="iconImage" fontSize="large" sx={{ color: "#3d3d3d" }} /></div>
+                    <div className="editButton" onClick={() => {editHeading(index,setEditChatHeading,setShowEditInsideIcons,chattings,setChattings,loadChats)}}><EditNoteIcon className="iconImage" fontSize="large" sx={{ color: "#3d3d3d" }} /></div>
                     <div className="deleteButton" onClick={ () => {showModal(value.name)} }><DeleteIcon fontSize="large" sx={{ color: "#3d3d3d", width: "23px" }} /></div>
                   </div>
                   }

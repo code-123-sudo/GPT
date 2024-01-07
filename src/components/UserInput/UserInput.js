@@ -109,8 +109,8 @@ const UserInput = ({chattings, messages, liveChat, setLiveChat, setChattings, ad
           "filterQueryKey" : "name",
           "updateQueryValue1" : messages,
           "updateQueryKey1" : "msgs",
-          // "updateQueryValue2" : timeStamp,
-          // "updateQueryKey2" : "updatedAt"
+          "updateQueryValue2" : timeStamp,
+          "updateQueryKey2" : "updatedAt"
         }
         let res = await updateChat(reqBody);
         await loadChats();
@@ -144,7 +144,7 @@ const UserInput = ({chattings, messages, liveChat, setLiveChat, setChattings, ad
 
   let loadChats = async () => {
       let res = await getChats();
-      setChattings(res.result);
+      if (res && res.result) setChattings(res.result);
   }
 
   useEffect(() => {

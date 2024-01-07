@@ -85,20 +85,31 @@ const sortLatestChatUp = (currentChattings,pageNo) => {
   }
   return false;
 }
-const editHeading = async (index,setEditChatHeading,setShowEditInsideIcons,chattings,setChattings) => {
+const editHeading = async (index,setEditChatHeading,setShowEditInsideIcons,chattings,setChattings,loadChats
+  ) => {
   setEditChatHeading("")
   setShowEditInsideIcons(true)
 
   let reqBody = {
-          "filterQueryValue" : null,
-          "filterQueryKey" : null,
-          "updateQueryValue1" : true,
+          "updateQueryValue1" : false,
           "updateQueryKey1" : "isEditing",
           // "updateQueryValue2" : timeStamp,
           // "updateQueryKey2" : "updatedAt"
   }
-  let res = await updateManyChat(reqBody);
+  let res = await updateManyChats(reqBody);
+  res = await loadChats()
 
+  let nameValue = chattings[index].name
+  reqBody = {
+          "updateQueryValue1" : true,
+          "updateQueryKey1" : "isEditing",
+          "filterQueryValue" : nameValue,
+          "filterQueryKey" : "name"
+          // "updateQueryValue2" : timeStamp,
+          // "updateQueryKey2" : "updatedAt"
+  }
+  res = await updateChat(reqBody);
+  res = await loadChats()
 
 
 
@@ -137,58 +148,87 @@ const editHeading = async (index,setEditChatHeading,setShowEditInsideIcons,chatt
   // setChattings([...chatsAfterEdition])
 }
 
-const editHeadingFinal =  (index,chattings,setChattings,setShowEditInsideIcons,editChatHeading) => {
-  
+const editHeadingFinal =  async (index,chattings,setChattings,setShowEditInsideIcons,editChatHeading,loadChats) => {
+  let nameValue = chattings[index].name
+  let isEdit = !chattings[index].isEditing
+  let header = ""
+  if ( chattings[index].isEditing){
+    if(!editChatHeading) {
+      header = " "
+    }else {
+      header = editChatHeading;
+      let reqBody = {
+          "updateQueryValue1" : isEdit,
+          "updateQueryKey1" : "isEditing",
+          "filterQueryValue" : nameValue,
+          "filterQueryKey" : "name",
+          "updateQueryValue2" : header,
+          "updateQueryKey2" : "header"
+      } 
+      let res = await updateChat(reqBody);
+      res = await loadChats()
+    } 
+  }
+  else {
+    // do nothing
+  }
+
+  let reqBody = {
+          "updateQueryValue1" : false,
+          "updateQueryKey1" : "isEditing",
+          // "updateQueryValue2" : timeStamp,
+          // "updateQueryKey2" : "updatedAt"
+  }
+  let res = await updateManyChats(reqBody);
+  res = await loadChats()
  
 
-  const chatsAfterEditionFinal = chattings.map((chat,i) => {
-    if ( i == index ) {
-      let selectedChat = {
-        isEditing : true,
-        name : '',
-        header: '',
-        msgs: []
-      }
-      selectedChat.isEditing = !chat.isEditing
-      selectedChat.name = chat.name
-      selectedChat.header = chat.header
-      selectedChat.msgs = chat.msgs
-      if ( chat.isEditing ){
-          if(!editChatHeading) {
-            selectedChat.header = " "
-          }else {
-            selectedChat.header = editChatHeading;
-          } 
-      }
-      else {
-          // do nothing 
-      }
-        return selectedChat
-    }
-    else {
-      return {
-        isEditing : false,
-        name : chat.name,
-        header : chat.header,
-        msgs: chat.msgs
-      }
-    }
-  })
-  setChattings([...chatsAfterEditionFinal])
+  // const chatsAfterEditionFinal = chattings.map((chat,i) => {
+  //   if ( i == index ) {
+  //     let selectedChat = {
+  //       isEditing : true,
+  //       name : '',
+  //       header: '',
+  //       msgs: []
+  //     }
+  //     selectedChat.isEditing = !chat.isEditing
+  //     selectedChat.name = chat.name
+  //     selectedChat.header = chat.header
+  //     selectedChat.msgs = chat.msgs
+  //     if ( chat.isEditing ){
+  //         if(!editChatHeading) {
+  //           selectedChat.header = " "
+  //         }else {
+  //           selectedChat.header = editChatHeading;
+  //         } 
+  //     }
+  //     else {
+  //         // do nothing 
+  //     }
+  //       return selectedChat
+  //   }
+  //   else {
+  //     return {
+  //       isEditing : false,
+  //       name : chat.name,
+  //       header : chat.header,
+  //       msgs: chat.msgs
+  //     }
+  //   }
+  // })
+  // setChattings([...chatsAfterEditionFinal])
   setShowEditInsideIcons(false)
 }
 
-const discardEditing = (chattings,setChattings,setShowEditInsideIcons) => {
-  let resetChats = chattings.map((chat,i) => {
-    return {
-      isEditing: false,
-      name: chat.name,
-      header: chat.header,
-      msgs: chat.msgs
-    }
-    }
-  )
-  setChattings([...resetChats])
+const discardEditing = async (chattings,setChattings,setShowEditInsideIcons,loadChats) => {
+  let reqBody = {
+          "updateQueryValue1" : false,
+          "updateQueryKey1" : "isEditing",
+          // "updateQueryValue2" : timeStamp,
+          // "updateQueryKey2" : "updatedAt"
+  }
+  let res = await updateManyChats(reqBody);
+  res = await loadChats()
   setShowEditInsideIcons(false)
 }
 
