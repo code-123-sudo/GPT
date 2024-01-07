@@ -109,14 +109,13 @@ const UserInput = ({chattings, messages, liveChat, setLiveChat, setChattings, ad
           "filterQueryKey" : "name",
           "updateQueryValue1" : messages,
           "updateQueryKey1" : "msgs",
-          "updateQueryValue2" : timeStamp,
-          "updateQueryKey2" : "updatedAt"
+          // "updateQueryValue2" : timeStamp,
+          // "updateQueryKey2" : "updatedAt"
         }
         let res = await updateChat(reqBody);
         await loadChats();
         console.log(chattings);
       }
-
 
 
 
@@ -189,11 +188,6 @@ const UserInput = ({chattings, messages, liveChat, setLiveChat, setChattings, ad
 
     const userQuestion = fromCache ? fromCache : message;
     addMessage({text:userQuestion,isReply:false});
-    let sortedChattings = sortLatestChatUp(chattings,liveChat); 
-    
-    if(sortedChattings){
-      setChattings(sortedChattings)
-    }
     setStreamData("")
     setMessage(null)
     addAiAnswerToChat();

@@ -18,7 +18,7 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import { styled } from "@mui/material/styles";
 
 import { editHeading, editHeadingFinal , discardEditing } from '../../utilities/generalUtilities.js'
-
+import { deleteChat, getChats } from "../../apis/chatAPI.js";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Input from '@mui/material/Input';
@@ -64,11 +64,19 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
     setSearchValue(e.target.value)
   }
 
+  const loadChats = async () => {
+      let res = await getChats();
+      setChattings(res.result);
+  }
+
+
   const ariaLabel = { 'aria-label': 'description' };
 
-  const deleteChat = (valueName) => {
-    const chatsAfterDeletion = chattings.filter((chatValue) => chatValue.name != valueName)
-    setChattings([...chatsAfterDeletion]);
+  const removeChat = async (valueName) => {
+    // const chatsAfterDeletion = chattings.filter((chatValue) => chatValue.name != valueName)
+    // setChattings([...chatsAfterDeletion]);
+    await deleteChat(valueName)
+    await loadChats()
     if ( valueName == liveChat ) {
       startNewChat(true) // the chat to be deleted is the current chat opened , so no need to preprocess 
       // it before starting a new chat, its already deleted
@@ -90,7 +98,7 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
 
   const hideModal = (modalAnswer) => {
     if ( modalAnswer == "true" ) {
-      deleteChat(deletingChat)
+      removeChat(deletingChat)
     }
     setShowModalFlag(false)
   }
@@ -115,8 +123,6 @@ isHamburger, isHamburgerAnimate, setIsHamburger, setIsHamburgerAnimate}) => {
       let retString = chattings[index].msgs;
       console.log("return string",retString)
       setMessages(retString)
-    /* sorting the chat order as newest first */
-      setPageNo(chatUniqueName)
     }
   }
 

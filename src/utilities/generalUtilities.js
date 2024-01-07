@@ -1,3 +1,5 @@
+import {updateChat, updateManyChats, getChats } from "../apis/chatAPI.js"
+
 async function* streamAsyncIterator(stream) {
     // Get a lock on the stream
   const reader = stream.getReader();
@@ -83,32 +85,62 @@ const sortLatestChatUp = (currentChattings,pageNo) => {
   }
   return false;
 }
-const editHeading = (index,setEditChatHeading,setShowEditInsideIcons,chattings,setChattings) => {
+const editHeading = async (index,setEditChatHeading,setShowEditInsideIcons,chattings,setChattings) => {
   setEditChatHeading("")
   setShowEditInsideIcons(true)
-  const chatsAfterEdition = chattings.map((chat,i) => {
-    if ( i == index ) {
-      return {
-        isEditing : !chat.isEditing,
-        name : chat.name,
-        header: chat.header,
-        msgs: chat.msgs
-      }
-    }
-    else {
-      return  {
-        isEditing : false,
-        name: chat.name,
-        header : chat.header,
-        msgs: chat.msgs
-      }
-    }
-  })
-  console.log("chats after edition",chatsAfterEdition)
-  setChattings([...chatsAfterEdition])
+
+  let reqBody = {
+          "filterQueryValue" : null,
+          "filterQueryKey" : null,
+          "updateQueryValue1" : true,
+          "updateQueryKey1" : "isEditing",
+          // "updateQueryValue2" : timeStamp,
+          // "updateQueryKey2" : "updatedAt"
+  }
+  let res = await updateManyChat(reqBody);
+
+
+
+
+  // let nameValue = chattings[index].name;
+  // let isEditingValue = !chattings[index].isEditing
+  // let reqBody = {
+  //         "filterQueryValue" : nameValue,
+  //         "filterQueryKey" : "name",
+  //         "updateQueryValue1" : isEditingValue,
+  //         "updateQueryKey1" : "isEditing",
+  //         // "updateQueryValue2" : timeStamp,
+  //         // "updateQueryKey2" : "updatedAt"
+  // }
+  // let res = await updateChat(reqBody);
+  // await loadChats();
+
+  // const chatsAfterEdition = chattings.map((chat,i) => {
+  //   if ( i == index ) {
+  //     return {
+  //       isEditing : !chat.isEditing,
+  //       name : chat.name,
+  //       header: chat.header,
+  //       msgs: chat.msgs
+  //     }
+  //   }
+  //   else {
+  //     return  {
+  //       isEditing : false,
+  //       name: chat.name,
+  //       header : chat.header,
+  //       msgs: chat.msgs
+  //     }
+  //   }
+  // })
+  // console.log("chats after edition",chatsAfterEdition)
+  // setChattings([...chatsAfterEdition])
 }
 
 const editHeadingFinal =  (index,chattings,setChattings,setShowEditInsideIcons,editChatHeading) => {
+  
+ 
+
   const chatsAfterEditionFinal = chattings.map((chat,i) => {
     if ( i == index ) {
       let selectedChat = {

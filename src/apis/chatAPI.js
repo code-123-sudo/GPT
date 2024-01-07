@@ -77,6 +77,25 @@ export const updateChat = async (chatReqBody) => {
     }
 };
 
+export const updateManyChats = async (chatReqBody) => {
+    try {
+        const response = await fetch(`${BASE_URL}/chats/`, {
+            method: "PUT",
+            mode: "cors",
+            cache: "no-cache",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(chatReqBody),
+        });
+        const data = await response.json();
+        console.log(data)
+        return data;
+    } catch (error) {
+        const resMessage = error.message || error.detail || error.toString();
+    }
+};
+
 export const deleteChat = async (chatName) => {
 	try {
     	const response = await fetch(`${BASE_URL}/chat/?name=${chatName}`, {
