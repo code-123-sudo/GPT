@@ -159,6 +159,58 @@ See the [open issues](https://github.com/code-123-sudo/GPT/issues) for a full li
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+### Installation Backend
+
+1. Install brew in macos by following instruction at https://brew.sh/ 
+    Basically Its  below command 
+   ```sh
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+   ```
+   If face this error -
+
+   "Failed to connect to raw.githubusercontent.com port 443: Connection refused"
+
+   Follow below url (in below fix , get and replace  the actual ip address of raw.githubusercontent.com) - 
+
+   https://www.debugpoint.com/failed-connect-raw-githubusercontent-com-port-443/
+2. Install mongodb in macos
+
+   https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-os-x/
+ 
+   For fixing below error - 
+ 
+   "Upon executing  brew services start mongodb-community@5.0  , my terminal displays  Successfully started `mongodb-community` (label: homebrew.mxcl.mongodb-community)  . However, when I utilize  brew services list  to inspect my services list, my terminal presents a different output.It presents  error  12288"
+
+   This is the solution -
+
+   https://copyprogramming.com/howto/how-to-i-fix-mongodb-community-status-error-12288#google_vignette
+
+   https://stackoverflow.com/questions/70761645/how-to-i-fix-mongodb-community-status-error-12288
+3. As we are using below code directly in backend 
+    ```js
+    let myDB = client.db("chatGPT");
+    let myColl = myDB.collection("allChattings")
+    ```
+    Before starting backend server, make database 'chatGPT' using mongo shell.
+    In database 'chatGPT' make a collection 'allChattings'. 
+4. Move to backend directory
+5. Install the npm packages:
+   ```sh
+   npm install
+   ```
+6. start the server by running below command in the proper backend directory:
+   ```sh
+   node index.js
+   ```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- USAGE EXAMPLES -->
+## Usage
+after installation , simply check your apis in postman, or try to see changes in database after using frontend 
 
 
 <!-- CONTRIBUTING -->
@@ -184,7 +236,7 @@ Don't forget to give the project a star! Thanks again!
 
 Shishir Jain
 
-Project Link: [https://github.com/code-123-sudo/GPT](https://github.com/code-123-sudo/GPT)
+Project Link: [https://github.com/code-123-sudo/GPT](https://github.com/code-123-sudo/)
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
